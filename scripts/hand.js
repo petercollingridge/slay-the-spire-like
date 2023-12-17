@@ -14,38 +14,77 @@ class Hand {
     this.y = y + this.r;
   }
 
+  // Create a hand of n cards
   addCards(n) {
+    this.getCardPositions(n).forEach(({ x, y, rotation }, index) => {
+      const card = this.game.add.sprite(x, y, 'card');
+      // Rotate around the bottom of the card
+      card.setOrigin(0.5, 1);
+      card.rotation = rotation;
+
+      card.depth = index;
+      card.setInteractive({ draggable: true });
+      this.cards.push(card);
+    });
+  }
+
+  bringToFront(card) {
+    // Move all cards on top of this one level down
+    this.moveCardsDown(card.depth)
+
+    // Move this card to the top
+    card.depth = this.cards.length - 1;
+  }
+
+  getCardPositions(n) {
+    const positions = [];
     for (let i = 0; i < n; i++) {
       // Index of card relative to the middle card
       const p = i - (n - 1) / 2;
       const angle = Phaser.Math.DegToRad(p * 12);
       const x = this.x + Math.sin(angle) * this.r * 1.5;
       const y = this.y - Math.cos(angle) * this.r;
-
-      const card = this.game.add.sprite(x, y, 'card');
-
-      // Rotate around the bottom of the card
-      card.setOrigin(0.5, 1);
-      card.rotation = angle;
-
-      card.depth = i;
-      card.setInteractive({ draggable: true });
-      this.cards.push(card);
+      positions.push({ x, y, rotation: angle });
     }
+    return positions;
   }
 
-  bringToFront(card) {
-    const n = this.cards.length;
-    const currentDepth = card.depth;
-
-    // Move all cards on top of this one level down
-    for (let i = 0; i < n; i++) {
-      if (this.cards[i].depth > currentDepth) {
+  // Move all cards above the targetDepth down
+  moveCardsDown(targetDepth = 0) {
+    for (let i = 0; i < this.cards.length; i++) {
+      if (this.cards[i].depth > targetDepth) {
         this.cards[i].depth--;
       }
     }
+  }
 
-    // Move this card to the top
-    card.depth = n - 1;
+  // Remove the given card from the hand and reorganise the rest of the cards in the hand
+  removeCard(card) {
+    const index = this.cards.indexOf(card);
+    if (index === -1) {
+      console.error('card not found');
+      console.error(card);
+      return;
+    }
+
+    // Remove card from hand and from sprites
+    this.cards.splice(index, 1);
+    card.destroy();
+
+    // Move any cards on top of this one down to keep depth in a sensible range
+    this.moveCardsDown(card.depth);
+
+    // Move cards
+    const positions = this.getCardPositions(this.cards.length);
+    positions.forEach(({ x, y, rotation }, index) => {
+      this.game.tweens.add({
+        targets: this.cards[index],
+        x,
+        y,
+        rotation,
+        duration: 150,
+        ease: 'Sine.easeOut',
+      });
+    });
   }
 }

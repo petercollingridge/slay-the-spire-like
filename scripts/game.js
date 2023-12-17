@@ -44,6 +44,7 @@ function dragEnd(pointer, target) {
   target.clearTint();
   if (target.y < this.dropY) {
     // Use card
+    this.hand.removeCard(target);
   } else {
     // Return card to hand
     this.tweens.add({
@@ -52,7 +53,7 @@ function dragEnd(pointer, target) {
       y: target.startY,
       duration: 150,
       ease: 'Quad.easeIn',
-  });
+    });
   }
 }
 
