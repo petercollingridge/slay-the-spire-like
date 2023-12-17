@@ -2,7 +2,7 @@ const WIDTH = 1000;
 const HEIGHT = 500;
 
 const BLUE_TINT = 0x0066bb;
-const YELLOW_TINT = 0xffee00;
+const YELLOW_TINT = 0xffff88;
 
 class Game extends Phaser.Scene {
   preload() {
