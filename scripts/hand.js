@@ -14,16 +14,12 @@ class Hand {
     this.y = y + this.r;
   }
 
-  // Create a hand of n cards
-  addCards(n) {
+  // Draw <n> cards from <deck> into hand
+  // Determine the location and rotation of each card
+  addCards(deck, n) {
     this.getCardPositions(n).forEach(({ x, y, rotation }, index) => {
-      const card = this.game.add.sprite(x, y, 'card');
-      // Rotate around the bottom of the card
-      card.setOrigin(0.5, 1);
-      card.rotation = rotation;
-
-      card.depth = index;
-      card.setInteractive({ draggable: true });
+      const card = deck[index];
+      card.createSprite(x, y, rotation, index);
       this.cards.push(card);
     });
   }
@@ -36,6 +32,7 @@ class Hand {
     card.depth = this.cards.length - 1;
   }
 
+  // Get an array of <n> positions (x, y, rotation) for <n> cards fanned out in the hand
   getCardPositions(n) {
     const positions = [];
     for (let i = 0; i < n; i++) {
@@ -74,7 +71,7 @@ class Hand {
     // Move any cards on top of this one down to keep depth in a sensible range
     this.moveCardsDown(card.depth);
 
-    // Move cards
+    // Move remaining cards in the hand to fill the space
     const positions = this.getCardPositions(this.cards.length);
     positions.forEach(({ x, y, rotation }, index) => {
       this.game.tweens.add({
