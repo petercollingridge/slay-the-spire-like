@@ -1,0 +1,5 @@
+<svg width="96" height="120" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0.5" y="0.5" width="95" height="119" rx="5" ry="5" stroke="#111" fill="#ddd" stroke-opacity="0.5" />
+  <rect x="7.5" y="7.5" width="81" height="105" rx="4" ry="4" stroke="#b33" stroke-width="2" fill="#fff" />
+  <text x="48" y="24" fill="#223" style="text-anchor:middle;font-family:Arial">Attack 1</text>
+</svg>
