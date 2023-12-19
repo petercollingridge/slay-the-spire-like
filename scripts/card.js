@@ -1,77 +1,90 @@
-const CARD_DATA = {
-  'attack-1': {
+const CARD_DATA = [
+  {
+    name: 'Gentle prod',
+    img: 'attack',
     effect: 'DAMAGE 1',
   },
-  'attack-2': {
+  {
+    name: 'Strike',
+    img: 'attack',
     effect: 'DAMAGE 2',
   },
-  'attack-3': {
+  {
+    name: 'Mighty slash',
+    img: 'attack',
     effect: 'DAMAGE 3',
   },
-};
+];
 
 class Card {
   constructor(game, id) {
+    const data = CARD_DATA[id];
+
     this.game = game;
-    this.img = `card-${id}`;
-    this.effect = CARD_DATA[id];
+    this.effect = data.effect;
+
+    // Create a sprite and text
+    this.cardImg = game.add.sprite(0, 0, 'card');
+    const image = game.add.sprite(0, 5, data.img);
+    const text = game.add.text(0, -44, data.name, {
+      fill: '#202030',
+      fontFamily: 'Arial',
+      fontSize: '11px',
+    }).setOrigin(0.5);
+
+    this.container = game.add.container(60, HEIGHT - 80, [this.cardImg, image, text]);
+    this.container.parent = this;
+
+    this.container.setSize(this.cardImg.width, this.cardImg.height);
+    this.container.setInteractive();
+    game.input.setDraggable(this.container);
+    this.container.setVisible(false);
   };
 
-  createSprite(x, y, rotation, depth) {
-    const sprite = this.game.add.sprite(x, y, this.img);
+  show() {
+    this.container.setVisible(true);
+  }
 
-    this.sprite = sprite;
-    sprite.parent = this;
+  hide() {
+    this.container.setVisible(false);
+  }
 
-    // Rotate around the bottom of the card
-    sprite.setOrigin(0.5, 1);
-    sprite.rotation = rotation;
-
-    sprite.depth = depth;
-    sprite.setInteractive({ draggable: true });
-    return sprite;
+  moveTo(x, y, rotation = 0) {
+    this.game.tweens.add({
+      targets: this.container,
+      x,
+      y,
+      rotation,
+      duration: 150,
+      ease: 'Sine.easeOut',
+    });
   }
 
   dragStart() {
-    this.sprite.setTint(YELLOW_TINT);
+    this.cardImg.setTint(YELLOW_TINT);
     this.game.hand.bringToFront(this);
     // Save card's current position so we can return it if the card is cancelled
-    this.startX = this.sprite.x;
-    this.startY = this.sprite.y;
+    this.startX = this.container.x;
+    this.startY = this.container.y;
   }
 
   drag() {
-    const tint = this.sprite.y < this.game.dropY ? BLUE_TINT : YELLOW_TINT;
-    this.sprite.setTint(tint);
+    const tint = this.container.y < this.game.dropY ? BLUE_TINT : YELLOW_TINT;
+    this.cardImg.setTint(tint);
   }
 
   dragEnd() {
-    this.sprite.clearTint();
-    if (this.sprite.y < this.game.dropY) {
+    this.cardImg.clearTint();
+    if (this.container.y < this.game.dropY) {
       // Use card
       this.game.hand.removeCard(this);
     } else {
       // Return card to hand
-      this.animateTo(this.startX, this.startY);
+      this.game.hand.reorderHand();
     }
-  }
-
-  animateTo(x, y) {
-    this.game.tweens.add({
-      targets: this,
-      x,
-      y,
-      duration: 150,
-      ease: 'Quad.easeIn',
-    });
   }
 }
 
-const startingDeck = [
-  'attack-1',
-  'attack-1',
-  'attack-1',
-  'attack-2',
-  'attack-2',
-  'attack-3',
-];
+function createCards(game, cards) {
+  return cards.map((id) => new Card(game, id));
+}

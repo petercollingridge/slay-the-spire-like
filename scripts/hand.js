@@ -9,7 +9,7 @@ class Hand {
     this.cards = [];
 
     // Radius of circle formed by cards, but we only every show an arc
-    this.r = 200;
+    this.r = 260;
     this.x = x;
     this.y = y + this.r;
   }
@@ -21,6 +21,20 @@ class Hand {
       const card = deck[index];
       card.createSprite(x, y, rotation, index);
       this.cards.push(card);
+    });
+  }
+
+  addCard(card) {
+    this.cards.push(card);
+    card.show();
+    this.reorderHand();
+  }
+
+  // Animate cards to move into nice positions
+  reorderHand() {
+    const positions = this.getCardPositions(this.cards.length);
+    positions.forEach(({ x, y, rotation }, index) => {
+      this.cards[index].moveTo(x, y, rotation);
     });
   }
 
@@ -66,22 +80,11 @@ class Hand {
 
     // Remove card from hand and from sprites
     this.cards.splice(index, 1);
-    card.destroy();
+    card.hide();
 
     // Move any cards on top of this one down to keep depth in a sensible range
     this.moveCardsDown(card.depth);
 
-    // Move remaining cards in the hand to fill the space
-    const positions = this.getCardPositions(this.cards.length);
-    positions.forEach(({ x, y, rotation }, index) => {
-      this.game.tweens.add({
-        targets: this.cards[index],
-        x,
-        y,
-        rotation,
-        duration: 150,
-        ease: 'Sine.easeOut',
-      });
-    });
+    this.reorderHand();
   }
 }
