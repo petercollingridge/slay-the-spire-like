@@ -10,14 +10,14 @@ const CARD_DATA = [
     effect: { damage: 2 },
   },
   {
-    name: 'Ultimate smash',
-    img: 'attack',
-    effect: { damage: 5 },
-  },
-  {
     name: 'Mighty slash',
     img: 'attack',
     effect: { damage: 3 },
+  },
+  {
+    name: 'Ultimate smash',
+    img: 'attack-2',
+    effect: { damage: 5 },
   },
   {
     name: 'Prepare',

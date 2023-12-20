@@ -4,7 +4,7 @@ class Deck {
     this.cards = cardsIds.map((id) => new Card(game, id))
 
     game.add.sprite(x, y, 'card');
-    game.add.text(x, y - 36, name, { fontSize: '13px', fill: '#000' }).setOrigin(0.5);
+    game.add.text(x, y - 36, name, { fontSize: '13px', fill: '#000', align: 'center' }).setOrigin(0.5);
     this.cardCount = game.add.text(x, y, this.cards.length, { fontSize: '24px', fill: '#000' }).setOrigin(0.5);
   }
 

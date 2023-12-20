@@ -1,5 +1,5 @@
 class Button {
-  constructor(game, x, y, txt) {
+  constructor(game, x, y, txt, onClick) {
     const button = game.add.container(x, y);
 
     // Create the background for the button
@@ -22,16 +22,24 @@ class Button {
     button.setInteractive();
 
     // Set up event listeners for the button
-    button.on('pointerover', function () {
-        buttonBackground.setTint(0xaaccff); // Change color on hover
+    button.on('pointerover', () => {
+        buttonBackground.setTint(0xaaccff);
     });
 
-    button.on('pointerout', function () {
-        buttonBackground.clearTint(); // Clear color on hover out
+    button.on('pointerout', () => {
+        buttonBackground.clearTint();
     });
 
-    button.on('pointerdown', function () {
-        console.log('Button clicked!');
+    let pressed = false;
+    button.on('pointerdown', () => {
+      pressed = true;
+    });
+
+    button.on('pointerup', () => {
+      if (pressed && onClick) {
+        onClick();
+      }
+      pressed = false;
     });
   }
 }
