@@ -14,6 +14,11 @@ const CARD_DATA = [
     img: 'attack',
     effect: { damage: 3 },
   },
+  {
+    name: 'Prepare',
+    img: 'draw-card',
+    effect: { draw: 2 },
+  },
 ];
 
 class Card {
@@ -85,13 +90,11 @@ class Card {
 
   play() {
     if (this.effect.damage) {
-      this.game.enemyHealth = Math.max(0, this.game.enemyHealth - this.effect.damage);
-      this.game.enemyHealthTxt.setText(`${this.game.enemyHealth} / 20`);
+      this.game.enemy.dealDamage(this.effect.damage);
+    }
+    if (this.effect.draw) {
+      this.game.drawCards(this.effect.draw);
     }
     this.game.hand.removeCard(this);
   }
-}
-
-function createCards(game, cards) {
-  return cards.map((id) => new Card(game, id));
 }
