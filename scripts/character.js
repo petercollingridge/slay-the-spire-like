@@ -1,3 +1,8 @@
+const PLAYER_DATA = {
+  img: 'player',
+  health: 40,
+};
+
 const ENEMY_DATA = {
   yeti: {
     img: 'enemy-1',
@@ -6,15 +11,8 @@ const ENEMY_DATA = {
   },
 };
 
-class Enemy {
-  constructor(game, name, x, y) {
-    const data = ENEMY_DATA[name];
-
-    if (!data) {
-      console.error('No such enemy:', name);
-      return;
-    }
-
+class Character {
+  constructor(game, data, x, y) {
     this.game = game;
     this.img = game.add.image(x, y, data.img);
     const txtY = y + this.img.height / 2
