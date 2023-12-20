@@ -4,6 +4,7 @@ class Game extends Phaser.Scene {
     this.load.image('enemy-1', 'assets/sasquatch.svg');
     this.load.image('card', 'assets/cards/card-base.svg');
     this.load.image('attack', 'assets/cards/attack.svg');
+    this.load.image('draw-card', 'assets/cards/draw.svg');
   }
 
   create() {
@@ -12,46 +13,32 @@ class Game extends Phaser.Scene {
     this.add.image(WIDTH / 2, HEIGHT / 2, 'background');
 
     // Enemy
-    const enemyX = 850;
-    const enemyY = HEIGHT / 2 + 40;
-    const enemyImg = this.add.image(enemyX, enemyY, 'enemy-1');
-    this.enemyHealth = 20;
-    this.enemyHealthTxt = this.add.text(
-      enemyX,
-      enemyY + enemyImg.height / 2,
-      `${this.enemyHealth} / 20`,
-      { fontSize: '16px', fill: '#000' }
-    ).setOrigin(0.5, 0);
+    this.enemy = new Enemy(this, 'yeti', 850, HEIGHT / 2 + 40);
 
     this.input.on('dragstart', dragStart.bind(this));
     this.input.on('drag', drag.bind(this));
     this.input.on('dragend', dragEnd.bind(this));
 
-    this.deck = createCards(this, [0, 0, 0, 1, 1, 2]);
-    this.shuffleDeck();
+    // Deck
+    this.deck = new Deck(this, [0, 0, 0, 1, 1, 2, 3, 3, 3, 3]);
+    this.deck.shuffle();
 
+    // Hand
     this.hand = new Hand(this, WIDTH / 2, HEIGHT - 60);
     this.drawCards(4);
   }
 
   drawCard() {
-    if (this.deck.length === 0) {
-      console.log('No cards left');
-      return
+    const card = this.deck.draw();
+    if (card) {
+      this.hand.addCard(card);
     }
-
-    const card = this.deck.pop();
-    this.hand.addCard(card);
   }
 
   drawCards(n) {
     for (let i = 0; i < n; i++) {
       this.drawCard();
     }
-  }
-
-  shuffleDeck() {
-    Phaser.Utils.Array.Shuffle(this.deck);
   }
 }
 
