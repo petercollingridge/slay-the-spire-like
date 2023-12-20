@@ -1,15 +1,16 @@
 class Deck {
-  constructor(game, cardsIds) {
+  constructor(game, name, x, y, cardsIds) {
     this.game = game;
     this.cards = cardsIds.map((id) => new Card(game, id))
 
-    const x = 60;
-    const y = HEIGHT - 72;
-    const txtY = y - 36;
-
     game.add.sprite(x, y, 'card');
-    game.add.text(x, txtY, 'Draw pile', { fontSize: '13px', fill: '#000' }).setOrigin(0.5);
+    game.add.text(x, y - 36, name, { fontSize: '13px', fill: '#000' }).setOrigin(0.5);
     this.cardCount = game.add.text(x, y, this.cards.length, { fontSize: '24px', fill: '#000' }).setOrigin(0.5);
+  }
+
+  addCard(card) {
+    this.cards.push(card);
+    this.updateCount();
   }
 
   draw() {
@@ -17,9 +18,13 @@ class Deck {
       console.log('No cards left');
     } else {
       const card = this.cards.pop();
-      this.cardCount.setText(this.cards.length);
+      this.updateCount();
       return card;
     }
+  }
+
+  updateCount() {
+    this.cardCount.setText(this.cards.length);
   }
 
   shuffle() {

@@ -26,6 +26,8 @@ const CARD_DATA = [
   },
 ];
 
+const startingDeck = [0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 4, 4, 4, 4, 4];
+
 class Card {
   constructor(game, id) {
     const data = CARD_DATA[id];
@@ -65,7 +67,7 @@ class Card {
       x,
       y,
       rotation,
-      duration: 150,
+      duration: 200,
       ease: 'Sine.easeOut',
     });
   }
@@ -101,5 +103,6 @@ class Card {
       this.game.drawCards(this.effect.draw);
     }
     this.game.hand.removeCard(this);
+    this.game.discard.addCard(this);
   }
 }
