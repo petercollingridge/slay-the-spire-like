@@ -27,16 +27,16 @@ const CARD_DATA = [
   {
     name: 'Heal',
     img: 'heart',
-    effect: { heal: 3 },
+    effect: { heal: 8 },
   },
   {
     name: 'Shield',
     img: 'shield',
-    effect: { shield: 2 },
+    effect: { shield: 6 },
   },
 ];
 
-const startingDeck = [0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 4, 4, 4, 5, 5, 6, 6];
+const startingDeck = [0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 4, 4, 4, 5, 6, 6, 6];
 
 class Card {
   constructor(game, id) {
