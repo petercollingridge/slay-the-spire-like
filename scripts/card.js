@@ -29,9 +29,14 @@ const CARD_DATA = [
     img: 'heart',
     effect: { heal: 3 },
   },
+  {
+    name: 'Shield',
+    img: 'shield',
+    effect: { shield: 2 },
+  },
 ];
 
-const startingDeck = [0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 4, 4, 4, 5, 5, 5];
+const startingDeck = [0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 4, 4, 4, 5, 5, 6, 6];
 
 class Card {
   constructor(game, id) {
@@ -115,6 +120,9 @@ class Card {
     }
     if (this.effect.heal) {
       this.game.player.heal(this.effect.heal);
+    }
+    if (this.effect.shield) {
+      this.game.player.shield(this.effect.shield);
     }
     this.game.spendMana(1);
     this.game.hand.removeCard(this);
