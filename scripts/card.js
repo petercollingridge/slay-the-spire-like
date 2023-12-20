@@ -2,17 +2,17 @@ const CARD_DATA = [
   {
     name: 'Gentle prod',
     img: 'attack',
-    effect: 'DAMAGE 1',
+    effect: { damage: 1 },
   },
   {
     name: 'Strike',
     img: 'attack',
-    effect: 'DAMAGE 2',
+    effect: { damage: 2 },
   },
   {
     name: 'Mighty slash',
     img: 'attack',
-    effect: 'DAMAGE 3',
+    effect: { damage: 3 },
   },
 ];
 
@@ -76,12 +76,19 @@ class Card {
   dragEnd() {
     this.cardImg.clearTint();
     if (this.container.y < this.game.dropY) {
-      // Use card
-      this.game.hand.removeCard(this);
+      this.play();
     } else {
       // Return card to hand
       this.game.hand.reorderHand();
     }
+  }
+
+  play() {
+    if (this.effect.damage) {
+      this.game.enemyHealth = Math.max(0, this.game.enemyHealth - this.effect.damage);
+      this.game.enemyHealthTxt.setText(`${this.game.enemyHealth} / 20`);
+    }
+    this.game.hand.removeCard(this);
   }
 }
 

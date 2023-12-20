@@ -10,7 +10,18 @@ class Game extends Phaser.Scene {
     // Dropzone, above which dropped cards are played
     this.dropY = HEIGHT - 160;
     this.add.image(WIDTH / 2, HEIGHT / 2, 'background');
-    this.add.image(850, HEIGHT / 2 + 40, 'enemy-1');
+
+    // Enemy
+    const enemyX = 850;
+    const enemyY = HEIGHT / 2 + 40;
+    const enemyImg = this.add.image(enemyX, enemyY, 'enemy-1');
+    this.enemyHealth = 20;
+    this.enemyHealthTxt = this.add.text(
+      enemyX,
+      enemyY + enemyImg.height / 2,
+      `${this.enemyHealth} / 20`,
+      { fontSize: '16px', fill: '#000' }
+    ).setOrigin(0.5, 0);
 
     this.input.on('dragstart', dragStart.bind(this));
     this.input.on('drag', drag.bind(this));
@@ -56,10 +67,6 @@ function drag(pointer, target, dragX, dragY) {
 
 function dragEnd(pointer, target) {
   target.parent.dragEnd();
-}
-
-function playCard(card) {
-  this.hand.removeCard(card);
 }
 
 const config = {
