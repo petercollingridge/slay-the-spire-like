@@ -30,15 +30,23 @@ class Game extends Phaser.Scene {
       this.enemyTurn.bind(this)
     );
 
+    // Display mana/cards spent this turn
+    this.manaCount = this.add.text(WIDTH / 2, HEIGHT - 200, '', {
+      fill: '#111',
+      fontFamily: 'Arial',
+      fontSize: '20px',
+    }).setOrigin(0.5);
+    this.setManaSpent(0)
+
     // Deck
     this.deck = new Deck(this, 'Draw pile', 60, HEIGHT - 72, startingDeck);
     this.deck.shuffle();
 
-    this.discard = new Deck(this, 'Discard\npile', WIDTH - 60, HEIGHT - 72, []);
+    this.discard = new Deck(this, 'Discard\npile', WIDTH - 60, HEIGHT - 72);
 
     // Hand
     this.hand = new Hand(this, WIDTH / 2, HEIGHT - 110);
-    this.drawCards(5);
+    this.drawCards(HAND_SIZE);
 
     this.input.on('dragstart', dragStart.bind(this));
     this.input.on('drag', drag.bind(this));
@@ -69,13 +77,23 @@ class Game extends Phaser.Scene {
     this.discard.addCard(card);
   }
 
+  setManaSpent(mana) {
+    this.manaSpent = mana;
+    this.manaCount.setText(`${this.manaSpent} / ${MAX_MANA}`);
+  }
+
+  spendMana(mana) {
+    this.setManaSpent(this.manaSpent + mana);
+  }
+
   enemyTurn() {
     this.player.dealDamage(this.enemy.attack);
     this.playerTurn();
   }
 
   playerTurn() {
-    this.drawCardsTo(5);
+    this.setManaSpent(0)
+    this.drawCardsTo(HAND_SIZE);
   }
 }
 

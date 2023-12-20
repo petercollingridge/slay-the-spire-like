@@ -72,27 +72,33 @@ class Card {
       x,
       y,
       rotation,
-      duration: 200,
+      duration: 240,
       ease: 'Sine.easeOut',
     });
   }
 
   dragStart() {
-    this.cardImg.setTint(YELLOW_TINT);
     this.game.hand.bringToFront(this);
+    this.canPlay = this.game.manaSpent < MAX_MANA;
     // Save card's current position so we can return it if the card is cancelled
     this.startX = this.container.x;
     this.startY = this.container.y;
   }
 
   drag() {
-    const tint = this.container.y < this.game.dropY ? BLUE_TINT : YELLOW_TINT;
-    this.cardImg.setTint(tint);
+    if (!this.canPlay) {
+      this.cardImg.setTint(RED_TINT);
+    } else if (this.container.y < this.game.dropY) {
+      this.cardImg.setTint(BLUE_TINT);
+    } else {
+      this.cardImg.setTint(YELLOW_TINT);
+    }
   }
 
   dragEnd() {
     this.cardImg.clearTint();
-    if (this.container.y < this.game.dropY) {
+    if (this.container.y < this.game.dropY &&
+      this.game.manaSpent < MAX_MANA) {
       this.play();
     } else {
       // Return card to hand
@@ -110,6 +116,7 @@ class Card {
     if (this.effect.heal) {
       this.game.player.heal(this.effect.heal);
     }
+    this.game.spendMana(1);
     this.game.hand.removeCard(this);
     this.game.discard.addCard(this);
   }

@@ -1,5 +1,5 @@
 class Deck {
-  constructor(game, name, x, y, cardsIds) {
+  constructor(game, name, x, y, cardsIds = []) {
     this.game = game;
     this.cards = cardsIds.map((id) => new Card(game, id))
 
