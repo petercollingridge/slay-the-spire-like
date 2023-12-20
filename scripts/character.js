@@ -25,9 +25,12 @@ class Character {
 
   dealDamage(n) {
     const newHealth = Math.max(0, this.health - n);
-    if (newHealth !== this.health) {
-      this.setHealth(newHealth);
-    }
+    this.setHealth(newHealth);
+  }
+
+  heal(n) {
+    const newHealth = Math.min(this.maxHealth, this.health + n);
+    this.setHealth(newHealth);
   }
 
   setHealth(n) {
