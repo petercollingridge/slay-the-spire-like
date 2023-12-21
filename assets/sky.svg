@@ -1,0 +1,10 @@
+<svg width="1000" height="300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="red-black-sky" x1="0" x2="0.2" y1="0" y2="1">
+      <stop offset="0%" stop-color="black" />
+      <stop offset="100%" stop-color="red"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1000" height="300" fill="url(#red-black-sky)" />
+</svg>

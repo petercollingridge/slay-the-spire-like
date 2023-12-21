@@ -1,7 +1,9 @@
 class Game extends Phaser.Scene {
   preload() {
-    this.load.image('background', 'assets/background.svg');
+    this.load.image('sky', 'assets/sky.svg');
+    this.load.image('floor', 'assets/floor.svg');
     this.load.image('button', 'assets/button.svg');
+    this.load.atlas('flares', 'assets/flares.png', 'assets/flares.json');
 
     this.load.image('enemy-1', 'assets/characters/sasquatch.svg');
     this.load.image('enemy-2', 'assets/characters/minotaur.svg');
@@ -18,7 +20,21 @@ class Game extends Phaser.Scene {
   create() {
     // Dropzone, above which dropped cards are played
     this.dropY = HEIGHT - 160;
-    this.add.image(WIDTH / 2, HEIGHT / 2, 'background');
+    this.add.image(WIDTH / 2, 150, 'sky');
+
+    const flame = this.add.particles(600, 260, 'flares', {
+      frame: 'white',
+      color: [ 0xfacc22, 0xf89800, 0xf83600, 0x9f0404 ],
+      colorEase: 'quad.out',
+      lifespan: 1500,
+      angle: { min: -100, max: -80 },
+      scale: { start: 0.60, end: 0, ease: 'sine.out' },
+      speed: { min: 100, max: 200 },
+      advance: 2000,
+      blendMode: 'ADD'
+    });
+
+    this.add.image(WIDTH / 2, 400, 'floor');
 
     // Draw Player and Enemy characters
     this.player = new Character(this, PLAYER_DATA, 200, HEIGHT / 2 - 20);
