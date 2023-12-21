@@ -53,10 +53,34 @@ class Game extends Phaser.Scene {
     this.input.on('dragend', dragEnd.bind(this));
   }
 
+  characterDies() {
+    if (this.player.dead) {
+      this.gameOver();
+    } else if (this.enemy.dead) {
+      
+    }
+  }
+
+  gameOver() {
+    this.add.text(WIDTH / 2, HEIGHT / 2, 'GAME OVER', {
+      fill: '#600',
+      fontFamily: 'Impact',
+      fontSize: '80px',
+    }).setOrigin(0.5);
+
+    this.hand.disable();
+    this.nextTurnBtn.disable();
+  }
+
   drawCard() {
     const card = this.deck.draw();
     if (card) {
       this.hand.addCard(card);
+    } else if (this.discard.cards.length) {
+      // Shuffle discard pile into the deck
+      this.deck.cards = this.discard.empty();
+      this.deck.shuffle();
+      this.drawCard();
     }
   }
 
@@ -92,8 +116,10 @@ class Game extends Phaser.Scene {
   }
 
   playerTurn() {
-    this.setManaSpent(0)
-    this.drawCardsTo(HAND_SIZE);
+    if (!this.player.dead) {      
+      this.setManaSpent(0)
+      this.drawCardsTo(HAND_SIZE);
+    }
   }
 }
 

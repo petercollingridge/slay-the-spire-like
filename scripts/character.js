@@ -7,7 +7,7 @@ const ENEMY_DATA = {
   yeti: {
     img: 'enemy-1',
     health: 20,
-    attack: 4,
+    attack: 5,
   },
 };
 
@@ -39,6 +39,12 @@ class Character {
     }
   }
 
+  die() {
+    this.dead = true;
+    this.img.setTint(0xff0000);
+    this.game.characterDies();
+  }
+
   heal(n) {
     const newHealth = Math.min(this.maxHealth, this.health + n);
     this.setHealth(newHealth);
@@ -52,6 +58,9 @@ class Character {
   setHealth(n) {
     this.health = n;
     this.healthTxt.setText(`${this.health} / ${this.maxHealth}`);
+    if (this.health <= 0) {
+      this.die();
+    }
   }
 }
 

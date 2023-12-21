@@ -23,6 +23,13 @@ class Deck {
     }
   }
 
+  empty() {
+    const cards = this.cards;
+    this.cards = [];
+    this.updateCount();
+    return cards;
+  }
+
   updateCount() {
     this.cardCount.setText(this.cards.length);
   }

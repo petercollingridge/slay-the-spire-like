@@ -69,6 +69,14 @@ class Hand {
     }
   }
 
+  disable() {
+    this.cards.forEach((card) => card.disable());
+  }
+
+  hide() {
+    this.cards.forEach((card) => card.hide());
+  }
+
   // Remove the given card from the hand and reorganise the rest of the cards in the hand
   removeCard(card) {
     const index = this.cards.indexOf(card);

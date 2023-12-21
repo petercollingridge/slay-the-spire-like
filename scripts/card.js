@@ -27,12 +27,12 @@ const CARD_DATA = [
   {
     name: 'Heal',
     img: 'heart',
-    effect: { heal: 8 },
+    effect: { heal: 5 },
   },
   {
     name: 'Shield',
     img: 'shield',
-    effect: { shield: 6 },
+    effect: { shield: 3 },
   },
 ];
 
@@ -82,6 +82,10 @@ class Card {
     });
   }
 
+  disable() {
+    this.container.disableInteractive();
+  }
+
   dragStart() {
     this.game.hand.bringToFront(this);
     this.canPlay = this.game.manaSpent < MAX_MANA;
@@ -112,6 +116,10 @@ class Card {
   }
 
   play() {
+    this.game.spendMana(1);
+    this.game.hand.removeCard(this);
+    this.game.discard.addCard(this);
+
     if (this.effect.damage) {
       this.game.enemy.dealDamage(this.effect.damage);
     }
@@ -124,8 +132,5 @@ class Card {
     if (this.effect.shield) {
       this.game.player.shield(this.effect.shield);
     }
-    this.game.spendMana(1);
-    this.game.hand.removeCard(this);
-    this.game.discard.addCard(this);
   }
 }
