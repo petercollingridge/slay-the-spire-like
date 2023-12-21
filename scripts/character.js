@@ -8,6 +8,7 @@ const ENEMY_DATA = {
     img: 'enemy-2',
     health: 30,
     attack: 8,
+    shield: 12,
   },
   yeti: {
     img: 'enemy-1',
@@ -33,14 +34,14 @@ class Character {
     this.shieldIcon = new Icon(game, iconX, iconY, 'shield', this.shieldStrength);
   }
 
-  dealDamage(n) {
-    if (n > this.shieldStrength) {
-      n -= this.shieldStrength;
-      this.shieldIcon.setValue(0);
-      const newHealth = Math.max(0, this.health - n);
+  dealDamage(damage) {
+    if (damage > this.shieldStrength) {
+      damage -= this.shieldStrength;
+      this.shield(-this.shieldStrength);
+      const newHealth = Math.max(0, this.health - damage);
       this.setHealth(newHealth);
     } else {
-      this.shield(-n);
+      this.shield(-damage);
     }
   }
 
@@ -81,7 +82,7 @@ class Enemy extends Character {
 
     this.attack = data.attack;
 
-    const iconX = x - this.img.width / 2 + 60;
+    const iconX = x - this.img.width / 2 + 80;
     const iconY = y + this.img.height / 2 + 10;
     const icon = new Icon(game, iconX, iconY, 'attack', this.attack);
   }

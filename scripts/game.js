@@ -96,7 +96,7 @@ class Game extends Phaser.Scene {
       this.hand.addCard(card);
     } else if (this.discard.cards.length) {
       // Shuffle discard pile into the deck
-      this.deck.cards = this.discard.empty();
+      this.deck.addCards(this.discard.empty());
       this.deck.shuffle();
       this.drawCard();
     }

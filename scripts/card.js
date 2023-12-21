@@ -82,6 +82,12 @@ class Card {
     });
   }
 
+  setPosition(x, y, rotation = 0) {
+    this.container.x = x;
+    this.container.y = y;
+    this.container.rotation = rotation;
+  }
+
   disable() {
     this.container.disableInteractive();
   }

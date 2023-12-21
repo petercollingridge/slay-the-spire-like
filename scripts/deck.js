@@ -1,6 +1,8 @@
 class Deck {
   constructor(game, name, x, y, cardsIds = []) {
     this.game = game;
+    this.x = x;
+    this.y = y;
     this.cards = cardsIds.map((id) => new Card(game, id))
 
     game.add.sprite(x, y, 'card');
@@ -10,7 +12,12 @@ class Deck {
 
   addCard(card) {
     this.cards.push(card);
+    card.setPosition(this.x, this.y);
     this.updateCount();
+  }
+
+  addCards(cards) {
+    cards.forEach((card) => this.addCard(card));
   }
 
   draw() {
