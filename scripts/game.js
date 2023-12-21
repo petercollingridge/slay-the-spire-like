@@ -2,8 +2,10 @@ class Game extends Phaser.Scene {
   preload() {
     this.load.image('background', 'assets/background.svg');
     this.load.image('button', 'assets/button.svg');
-    this.load.image('enemy-1', 'assets/sasquatch.svg');
-    this.load.image('player', 'assets/player.svg');
+
+    this.load.image('enemy-1', 'assets/characters/sasquatch.svg');
+    this.load.image('enemy-2', 'assets/characters/minotaur.svg');
+    this.load.image('player', 'assets/characters/player.svg');
 
     this.load.image('card', 'assets/cards/card-base.svg');
     this.load.image('attack', 'assets/cards/attack.svg');
@@ -20,7 +22,7 @@ class Game extends Phaser.Scene {
 
     // Draw Player and Enemy characters
     this.player = new Character(this, PLAYER_DATA, 200, HEIGHT / 2 - 20);
-    this.enemy = new Enemy(this, 'yeti', 825, HEIGHT / 2 - 20);
+    this.enemy = new Enemy(this, 'minotaur', 825, HEIGHT / 2 - 20);
 
     this.nextTurnBtn = new Button(
       this,
@@ -48,16 +50,16 @@ class Game extends Phaser.Scene {
     this.hand = new Hand(this, WIDTH / 2, HEIGHT - 110);
     this.drawCards(HAND_SIZE);
 
-    this.input.on('dragstart', dragStart.bind(this));
-    this.input.on('drag', drag.bind(this));
-    this.input.on('dragend', dragEnd.bind(this));
+    this.input.on('dragstart', dragStart, this);
+    this.input.on('drag', drag, this);
+    this.input.on('dragend', dragEnd, this);
   }
 
   characterDies() {
     if (this.player.dead) {
       this.gameOver();
     } else if (this.enemy.dead) {
-      
+
     }
   }
 

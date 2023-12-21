@@ -4,6 +4,11 @@ const PLAYER_DATA = {
 };
 
 const ENEMY_DATA = {
+  minotaur: {
+    img: 'enemy-2',
+    health: 30,
+    attack: 8,
+  },
   yeti: {
     img: 'enemy-1',
     health: 20,
