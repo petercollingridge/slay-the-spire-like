@@ -1,9 +1,15 @@
 class Deck {
-  constructor(game, name, x, y, cardsIds = []) {
+  constructor(game, name, x, y, cardsCounts = {}) {
     this.game = game;
     this.x = x;
     this.y = y;
-    this.cards = cardsIds.map((id) => new Card(game, id))
+    this.cards = [];
+    
+    Object.entries(cardsCounts).forEach(([name, count]) => {
+      for (let i = 0; i < count; i++) {
+        this.cards.push(new Card(game, name));
+      }
+    });
 
     game.add.sprite(x, y, 'card');
     game.add.text(x, y - 36, name, { fontSize: '13px', fill: '#000', align: 'center' }).setOrigin(0.5);

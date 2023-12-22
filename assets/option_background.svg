@@ -1,0 +1,12 @@
+<svg width="1000" height="500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="red-black-sky">
+      <stop offset="10%" stop-color="red"/>
+      <stop offset="100%" stop-color="black" />
+    </radialGradient>
+  </defs>
+
+  <rect x="0" y="-250" width="1000" height="1000" fill="url(#red-black-sky)" />
+
+  <rect x="200" y="100" width="600" height="300" fill="#111" rx="20" ry="20" />
+</svg>

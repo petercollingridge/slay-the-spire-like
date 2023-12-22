@@ -1,46 +1,52 @@
-const CARD_DATA = [
-  {
-    name: 'Gentle prod',
-    img: 'attack',
-    effect: { damage: 1 },
+const CARD_DATA = {
+  'Gentle prod': {
+    img: 'sword-1',
+    effect: { damage: 1 }
   },
-  {
-    name: 'Strike',
-    img: 'attack',
+  'Strike': {
+    img: 'sword-2',
     effect: { damage: 2 },
   },
-  {
-    name: 'Mighty slash',
-    img: 'attack',
-    effect: { damage: 3 },
+  'Mighty slash': {
+    img: 'sword-2',
+    effect: { damage: 4 },
   },
-  {
-    name: 'Ultimate smash',
-    img: 'attack-2',
-    effect: { damage: 5 },
+  'Ultimate smash': {
+    img: 'sword-3',
+    effect: { damage: 8 },
   },
-  {
-    name: 'Prepare',
+  'Poison blade': {
+    img: 'sword-poison',
+    effect: { damage: 2, poison: 1 },
+  },
+  'Prepare': {
     img: 'draw-card',
     effect: { draw: 2 },
   },
-  {
-    name: 'Heal',
+  'Heal': {
     img: 'heart',
-    effect: { heal: 5 },
+    effect: { heal: 8 },
   },
-  {
-    name: 'Shield',
+  'Shield': {
     img: 'shield',
-    effect: { shield: 3 },
-  },
-];
+    effect: { shield: 4 },
+  }
+};
 
-const startingDeck = [0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 4, 4, 4, 5, 6, 6, 6];
+const startingDeck = {
+  'Gentle prod': 2,
+  'Strike': 3,
+  'Mighty slash': 3,
+  'Ultimate smash': 2,
+  'Poison blade': 1,
+  'Prepare': 3,
+  'Heal': 2,
+  'Shield': 4
+};
 
 class Card {
-  constructor(game, id) {
-    const data = CARD_DATA[id];
+  constructor(game, name) {
+    const data = CARD_DATA[name];
 
     this.game = game;
     this.effect = data.effect;
@@ -48,7 +54,7 @@ class Card {
     // Create a sprite and text
     this.cardImg = game.add.sprite(0, 0, 'card');
     const image = game.add.sprite(0, 5, data.img);
-    const text = game.add.text(0, -44, data.name, {
+    const text = game.add.text(0, -44, name, {
       fill: '#202030',
       fontFamily: 'Arial',
       fontSize: '11px',
@@ -134,6 +140,9 @@ class Card {
     }
     if (this.effect.heal) {
       this.game.player.heal(this.effect.heal);
+    }
+    if (this.effect.poison) {
+      this.game.enemy.poison(this.effect.poison);
     }
     if (this.effect.shield) {
       this.game.player.shield(this.effect.shield);
