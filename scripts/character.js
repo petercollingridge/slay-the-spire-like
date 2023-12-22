@@ -32,6 +32,8 @@ class Character {
     const iconX = x - this.img.width / 2 + 20;
     const iconY = y + this.img.height / 2 + 10;
     this.shieldIcon = new Icon(game, iconX, iconY, 'shield', this.shieldStrength);
+
+    this.poisonAmount = 0;
   }
 
   dealDamage(damage) {
@@ -57,7 +59,7 @@ class Character {
   }
 
   poison(n) {
-    this.poison = (this.poison || 0) += n;
+    this.poisonAmount += n;
   }
 
   shield(n) {
@@ -88,12 +90,12 @@ class Enemy extends Character {
 
     const iconX = x - this.img.width / 2 + 80;
     const iconY = y + this.img.height / 2 + 10;
-    const icon = new Icon(game, iconX, iconY, 'sword', this.attack);
+    const icon = new Icon(game, iconX, iconY, 'sword-1', this.attack);
   }
 
   turn(player) {
-    if (this.poison) {
-      this.dealDamage(this.poison);
+    if (this.poisonAmount) {
+      this.dealDamage(this.poisonAmount);
     }
 
     if (this.health > 0) {
