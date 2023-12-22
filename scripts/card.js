@@ -8,12 +8,12 @@ const CARD_DATA = {
     effect: { damage: 2 },
   },
   'Mighty slash': {
-    img: 'sword-2',
-    effect: { damage: 4 },
+    img: 'sword-3',
+    effect: { damage: 3 },
   },
   'Ultimate smash': {
-    img: 'sword-3',
-    effect: { damage: 8 },
+    img: 'sword-4',
+    effect: { damage: 5 },
   },
   'Poison blade': {
     img: 'sword-poison',
@@ -21,7 +21,7 @@ const CARD_DATA = {
   },
   'Prepare': {
     img: 'draw-card',
-    effect: { draw: 2 },
+    effect: { draw: 3 },
   },
   'Heal': {
     img: 'heart',

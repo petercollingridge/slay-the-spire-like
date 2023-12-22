@@ -29,11 +29,12 @@ class Character {
     this.setHealth(data.health);
 
     this.shieldStrength = data.shield || 0;
-    const iconX = x - this.img.width / 2 + 20;
+    const iconX = x - this.img.width / 2 + 10;
     const iconY = y + this.img.height / 2 + 10;
     this.shieldIcon = new Icon(game, iconX, iconY, 'shield', this.shieldStrength);
 
     this.poisonAmount = 0;
+    this.poisonIcon = new Icon(game, iconX + 90, iconY, 'skull', this.poisonAmount);
   }
 
   dealDamage(damage) {
@@ -59,7 +60,10 @@ class Character {
   }
 
   poison(n) {
-    this.poisonAmount += n;
+    if (!this.shieldStrength) {
+      this.poisonAmount += n;
+      this.poisonIcon.setValue(this.poisonAmount);
+    }
   }
 
   shield(n) {
@@ -88,7 +92,7 @@ class Enemy extends Character {
 
     this.attack = data.attack;
 
-    const iconX = x - this.img.width / 2 + 80;
+    const iconX = x - this.img.width / 2 + 60;
     const iconY = y + this.img.height / 2 + 10;
     const icon = new Icon(game, iconX, iconY, 'sword-1', this.attack);
   }
