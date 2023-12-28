@@ -53,7 +53,7 @@ class Card {
 
     // Create a sprite and text
     this.cardImg = game.add.sprite(0, 0, 'card');
-    const image = game.add.sprite(0, 5, data.img);
+    const image = game.add.sprite(0, 10, data.img);
     const text = game.add.text(0, -44, name, {
       fill: '#202030',
       fontFamily: 'Arial',

@@ -19,7 +19,7 @@ class Button {
 
     // Make the button interactive
     this.container.setSize(this.background.width, this.background.height);
-    this.container.setInteractive();
+    this.container.setInteractive({ useHandCursor: true });
 
     // Set up event listeners for the button
     this.container.on('pointerover', () => {
@@ -41,6 +41,11 @@ class Button {
       }
       pressed = false;
     });
+  }
+
+  enable() {
+    this.background.clearTint();
+    this.container.setInteractive({ useHandCursor: true });
   }
 
   disable() {

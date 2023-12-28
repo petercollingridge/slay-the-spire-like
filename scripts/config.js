@@ -7,3 +7,9 @@ const YELLOW_TINT = 0xffff88;
 
 const HAND_SIZE = 5;
 const MAX_MANA = 3;
+
+const OPTION_STYLE = {
+  fill: '#f8f8f8',
+  fontFamily: 'Arial',
+  fontSize: '20px',
+};
