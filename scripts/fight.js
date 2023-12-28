@@ -1,4 +1,12 @@
 class Fight extends Phaser.Scene {
+  constructor() {
+    super("Fight");
+  }
+
+  init(data) {
+    this.enemyType = data.enemy;
+  }
+
   preload() {
     this.load.image('sky', 'assets/sky.svg');
     this.load.image('floor', 'assets/floor.svg');
@@ -42,7 +50,7 @@ class Fight extends Phaser.Scene {
 
     // Draw Player and Enemy characters
     this.player = new Character(this, PLAYER_DATA, 200, HEIGHT / 2 - 20);
-    this.enemy = new Enemy(this, 'minotaur', 825, HEIGHT / 2 - 20);
+    this.enemy = new Enemy(this, this.enemyType, 825, HEIGHT / 2 - 20);
 
     this.nextTurnBtn = new Button(
       this,
