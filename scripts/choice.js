@@ -9,6 +9,7 @@ class Choice extends Phaser.Scene {
     this.load.image('button', 'assets/button.svg');
     this.load.image('enemy-1', 'assets/characters/sasquatch.svg');
     this.load.image('enemy-2', 'assets/characters/minotaur.svg');
+    this.load.image('enemy-3', 'assets/characters/spikey.svg');
   }
 
   create() {
@@ -27,7 +28,7 @@ class Choice extends Phaser.Scene {
 
     this.button.disable();
 
-    const choices = ['minotaur', 'yeti'];
+    const choices = ['minotaur', 'yeti', 'spikey'];
     const dx = 150;
     let x = (WIDTH - dx * (choices.length - 1)) / 2;
     const optionY = y - 10;

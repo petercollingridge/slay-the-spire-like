@@ -16,6 +16,7 @@ class Fight extends Phaser.Scene {
 
     this.load.image('enemy-1', 'assets/characters/sasquatch.svg');
     this.load.image('enemy-2', 'assets/characters/minotaur.svg');
+    this.load.image('enemy-3', 'assets/characters/spikey.svg');
     this.load.image('player', 'assets/characters/player.svg');
 
     this.load.image('card', 'assets/cards/card-base.svg');

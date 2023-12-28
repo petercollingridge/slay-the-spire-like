@@ -10,6 +10,11 @@ const ENEMY_DATA = {
     attack: 8,
     shield: 12,
   },
+  spikey: {
+    img: 'enemy-3',
+    health: 24,
+    attack: 12,
+  },
   yeti: {
     img: 'enemy-1',
     health: 20,
