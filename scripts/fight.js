@@ -15,16 +15,6 @@ class Fight extends Phaser.Scene {
     this.load.image('skull', 'assets/cards/skull.svg');
 
     this.load.image('player', 'assets/characters/player.svg');
-
-    this.load.image('card', 'assets/cards/card-base.svg');
-    this.load.image('sword-1', 'assets/cards/sword-1.svg');
-    this.load.image('sword-2', 'assets/cards/sword-2.svg');
-    this.load.image('sword-3', 'assets/cards/sword-3.svg');
-    this.load.image('sword-4', 'assets/cards/sword-4.svg');
-    this.load.image('sword-poison', 'assets/cards/sword-poison.svg');
-    this.load.image('heart', 'assets/cards/heart.svg');
-    this.load.image('shield', 'assets/cards/shield.svg');
-    this.load.image('draw-card', 'assets/cards/draw.svg');
   }
 
   create() {
@@ -134,12 +124,18 @@ class Fight extends Phaser.Scene {
   }
 
   enemyTurn() {
-    this.enemy.turn(this.player);
-    this.playerTurn();
+    if (this.enemy.dead) {
+      const bonusCards = getCardsToWin();
+      console.log(bonusCards)
+      this.scene.start('CardChoice', { choices: bonusCards });
+    } else {
+      this.enemy.turn(this.player);
+      this.playerTurn();
+    }
   }
 
   playerTurn() {
-    if (!this.player.dead) {      
+    if (!this.player.dead) {
       this.setManaSpent(0)
       // this.drawCard();
       this.drawCardsTo(HAND_SIZE);

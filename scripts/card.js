@@ -1,14 +1,3 @@
-const startingDeck = {
-  'Gentle prod': 2,
-  'Strike': 3,
-  'Mighty slash': 3,
-  'Ultimate smash': 2,
-  'Poison blade': 1,
-  'Prepare': 3,
-  'Heal': 2,
-  'Shield': 4
-};
-
 class Card {
   constructor(game, name) {
     const data = CARD_DATA[name];

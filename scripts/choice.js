@@ -1,20 +1,10 @@
 class Choice extends Phaser.Scene {
-  constructor() {
-    super("Choice");
+  constructor(name) {
+    super(name);
   }
 
   init(data) {
     this.choices = data.choices;
-    this.title = data.title;
-    this.choiceData = data.type === 'enemy' ? ENEMY_DATA : CARD_DATA;
-  }
-
-  preload() {
-    this.load.image('rect', 'assets/characters/choice_outline.svg');
-    this.load.image('button', 'assets/button.svg');
-    this.load.image('enemy-1', 'assets/characters/sasquatch.svg');
-    this.load.image('enemy-2', 'assets/characters/minotaur.svg');
-    this.load.image('enemy-3', 'assets/characters/spikey.svg');
   }
 
   create() {
@@ -52,8 +42,30 @@ class Choice extends Phaser.Scene {
       return box;
     });
   }
+}
+
+class EnemyChoice extends Choice {
+  constructor() {
+    super("EnemyChoice");
+    this.choiceData = ENEMY_DATA;
+    this.title = 'Choose an enemy to battle';
+  }
 
   makeSelection() {
     this.scene.start('Fight', { enemy: this.selectedChoice });
+  }
+}
+
+class CardChoice extends Choice {
+  constructor() {
+    super("CardChoice");
+    this.choiceData = CARD_DATA;
+    this.title = 'Choose a new card for your deck';
+  }
+
+  makeSelection() {
+    // Add chosen card to player's deck
+    startingDeck[this.selectedChoice] = (startingDeck[this.selectedChoice] || 0) + 1;
+    this.scene.start('EnemyChoice', { choices: ['minotaur', 'spikey', 'yeti'] });
   }
 }

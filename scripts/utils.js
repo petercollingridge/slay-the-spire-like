@@ -1,7 +1,4 @@
-function clearTint() {
-  this.clearTint();
-}
-
-function highlightTint() {
-  this.setTint(YELLOW_TINT);
+function getCardsToWin() {
+  const cards = Phaser.Utils.Array.Shuffle(Object.keys(CARD_DATA).slice()).slice(0, 3);
+  return cards;
 }

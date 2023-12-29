@@ -67,12 +67,22 @@ const ENEMY_DATA = {
   },
   spikey: {
     img: 'enemy-3',
-    health: 24,
-    attack: 12,
+    health: 2,
+    attack: 6,
   },
   yeti: {
     img: 'enemy-1',
     health: 20,
     attack: 5,
   },
+};
+
+const startingDeck = {
+  'Gentle prod': 2,
+  'Strike': 2,
+  'Mighty slash': 2,
+  'Ultimate smash': 1,
+  'Prepare': 2,
+  'Heal': 1,
+  'Shield': 2
 };
