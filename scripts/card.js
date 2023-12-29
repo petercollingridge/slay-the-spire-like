@@ -8,13 +8,21 @@ class Card {
     // Create a sprite and text
     this.cardImg = game.add.sprite(0, 0, 'card');
     const image = game.add.sprite(0, -20, data.img);
-    const text = game.add.text(0, 18 - this.cardImg.height / 2, name, {
+
+    const cardName = game.add.text(0, 18 - this.cardImg.height / 2, name, {
       fill: '#202030',
       fontFamily: 'Arial',
       fontSize: '12px',
     }).setOrigin(0.5);
 
-    this.container = game.add.container(60, HEIGHT - 80, [this.cardImg, image, text]);
+    const text = game.add.text(12 - this.cardImg.width / 2, 18, data.text || '', {
+      fill: '#202030',
+      fontFamily: 'Arial',
+      fontSize: '11px',
+      wordWrap: { width: this.cardImg.width - 24 }
+    });
+
+    this.container = game.add.container(60, HEIGHT - 80, [this.cardImg, image, cardName, text]);
     this.container.parent = this;
 
     this.container.setSize(this.cardImg.width, this.cardImg.height);
