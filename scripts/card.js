@@ -7,11 +7,11 @@ class Card {
 
     // Create a sprite and text
     this.cardImg = game.add.sprite(0, 0, 'card');
-    const image = game.add.sprite(0, 10, data.img);
-    const text = game.add.text(0, -44, name, {
+    const image = game.add.sprite(0, -20, data.img);
+    const text = game.add.text(0, 18 - this.cardImg.height / 2, name, {
       fill: '#202030',
       fontFamily: 'Arial',
-      fontSize: '11px',
+      fontSize: '12px',
     }).setOrigin(0.5);
 
     this.container = game.add.container(60, HEIGHT - 80, [this.cardImg, image, text]);
@@ -21,6 +21,11 @@ class Card {
     this.container.setInteractive();
     game.input.setDraggable(this.container);
     this.container.setVisible(false);
+
+    this.container.on('pointerdown', () => {
+      this.cardImg.setTint(YELLOW_TINT);
+      game.hand.bringToFront(this.container);
+    });
   };
 
   show() {
@@ -53,7 +58,6 @@ class Card {
   }
 
   dragStart() {
-    this.game.hand.bringToFront(this);
     this.canPlay = this.game.manaSpent < this.game.maxMana;
     // Save card's current position so we can return it if the card is cancelled
     this.startX = this.container.x;

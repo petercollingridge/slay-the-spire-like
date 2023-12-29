@@ -49,20 +49,21 @@ class Fight extends Phaser.Scene {
     );
 
     // Display mana/cards spent this turn
-    this.manaCount = this.add.text(MIDX, HEIGHT - 200, '', {
+    this.manaCount = this.add.text(MIDX, HEIGHT - 230, '', {
       fill: '#111',
       fontFamily: 'Arial',
       fontSize: '20px',
     }).setOrigin(0.5);
 
     // Deck
-    this.deck = new Deck(this, 'Draw pile', 60, HEIGHT - 72, startingDeck);
+    const deckHeight = HEIGHT - 100;
+    this.deck = new Deck(this, 'Draw pile', 60, deckHeight, startingDeck);
     this.deck.shuffle();
 
-    this.discard = new Deck(this, 'Discard\npile', WIDTH - 60, HEIGHT - 72);
+    this.discard = new Deck(this, 'Discard\npile', WIDTH - 60, deckHeight);
 
     // Hand
-    this.hand = new Hand(this, MIDX, HEIGHT - 110);
+    this.hand = new Hand(this, MIDX, HEIGHT - 130);
 
     this.input.on('dragstart', this.dragStart);
     this.input.on('drag', this.drag);
@@ -75,7 +76,8 @@ class Fight extends Phaser.Scene {
     if (this.player.dead) {
       this.gameOver();
     } else if (this.enemy.dead) {
-
+      const bonusCards = getCardsToWin();
+      this.scene.start('CardChoice', { choices: bonusCards });
     }
   }
 
@@ -124,13 +126,8 @@ class Fight extends Phaser.Scene {
   }
 
   enemyTurn() {
-    if (this.enemy.dead) {
-      const bonusCards = getCardsToWin();
-      this.scene.start('CardChoice', { choices: bonusCards });
-    } else {
-      this.enemy.turn(this.player);
-      this.playerTurn();
-    }
+    this.enemy.turn(this.player);
+    this.playerTurn();
   }
 
   playerTurn() {

@@ -9,7 +9,7 @@ class Hand {
     this.cards = [];
 
     // Radius of circle formed by cards, but we only every show an arc
-    this.r = 260;
+    this.r = 320;
     this.x = x;
     this.y = y + this.r;
   }
@@ -63,8 +63,8 @@ class Hand {
   // Move all cards above the targetDepth down
   moveCardsDown(targetDepth = 0) {
     for (let i = 0; i < this.cards.length; i++) {
-      if (this.cards[i].depth > targetDepth) {
-        this.cards[i].depth--;
+      if (this.cards[i].container.depth > targetDepth) {
+        this.cards[i].container.depth--;
       }
     }
   }

@@ -27,9 +27,7 @@ class Deck {
   }
 
   draw() {
-    if (this.cards.length === 0) {
-      console.log('No cards left');
-    } else {
+    if (this.cards.length > 0) {
       const card = this.cards.pop();
       this.updateCount();
       return card;
