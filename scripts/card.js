@@ -91,7 +91,8 @@ class Card {
     this.game.discard.addCard(this);
 
     if (this.effect.damage) {
-      this.game.enemy.dealDamage(this.effect.damage);
+      const damage = getCardValue(this.effect.damage, this.game);
+      this.game.enemy.dealDamage(damage);
     }
     if (this.effect.draw) {
       this.game.drawCards(this.effect.draw);

@@ -19,6 +19,12 @@ const CARD_DATA = {
     img: 'sword-poison',
     effect: { damage: 2, poison: 1 },
   },
+  'Arcane sword': {
+    img: 'sword-magic',
+    effect: {
+      damage: (game) => game.hand.cards.length
+    },
+  },
   'Drain life': {
     img: 'fangs',
     effect: { damage: 2, heal: 2 },

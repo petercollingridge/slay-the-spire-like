@@ -5,7 +5,7 @@ const MIDX = WIDTH / 2;
 const MIDY = HEIGHT / 2;
 
 const RED_TINT = 0xcc2200;
-const BLUE_TINT = 0x0066bb;
+const BLUE_TINT = 0x2288dd;
 const YELLOW_TINT = 0xffff88;
 
 const HAND_SIZE = 5;
