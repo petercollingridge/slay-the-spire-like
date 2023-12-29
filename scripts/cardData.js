@@ -2,22 +2,22 @@ const CARD_DATA = {
   'Gentle prod': {
     img: 'sword-1',
     effect: { damage: 1 },
-    text: 'Deal 1 damage',
+    text: 'Deal 1 damage.',
   },
   'Strike': {
     img: 'sword-2',
     effect: { damage: 2 },
-    text: 'Deal 2 damage',
+    text: 'Deal 2 damage.',
   },
   'Mighty slash': {
     img: 'sword-3',
     effect: { damage: 3 },
-    text: 'Deal 3 damage',
+    text: 'Deal 3 damage.',
   },
   'Ultimate smash': {
     img: 'sword-4',
     effect: { damage: 5 },
-    text: 'Deal 5 damage',
+    text: 'Deal 5 damage.',
   },
   'Poison blade': {
     img: 'sword-poison',
