@@ -30,7 +30,7 @@ class Fight extends Phaser.Scene {
   create() {
     // Dropzone, above which dropped cards are played
     this.dropY = HEIGHT - 160;
-    this.add.image(WIDTH / 2, 150, 'sky');
+    this.add.image(MIDX, 150, 'sky');
 
     const flame = this.add.particles(600, 260, 'flares', {
       frame: 'white',
@@ -44,7 +44,7 @@ class Fight extends Phaser.Scene {
       blendMode: 'ADD'
     });
 
-    this.add.image(WIDTH / 2, 400, 'floor');
+    this.add.image(MIDX, 400, 'floor');
 
     // Draw Player and Enemy characters
     this.player = new Character(this, PLAYER_DATA, 200, HEIGHT / 2 - 20);
@@ -52,14 +52,14 @@ class Fight extends Phaser.Scene {
 
     this.nextTurnBtn = new Button(
       this,
-      WIDTH / 2,
+      MIDX,
       HEIGHT - 24,
       'End turn',
       this.enemyTurn.bind(this)
     );
 
     // Display mana/cards spent this turn
-    this.manaCount = this.add.text(WIDTH / 2, HEIGHT - 200, '', {
+    this.manaCount = this.add.text(MIDX, HEIGHT - 200, '', {
       fill: '#111',
       fontFamily: 'Arial',
       fontSize: '20px',
@@ -73,7 +73,7 @@ class Fight extends Phaser.Scene {
     this.discard = new Deck(this, 'Discard\npile', WIDTH - 60, HEIGHT - 72);
 
     // Hand
-    this.hand = new Hand(this, WIDTH / 2, HEIGHT - 110);
+    this.hand = new Hand(this, MIDX, HEIGHT - 110);
     this.drawCards(HAND_SIZE);
 
     this.input.on('dragstart', this.dragStart);
@@ -90,12 +90,7 @@ class Fight extends Phaser.Scene {
   }
 
   gameOver() {
-    this.add.text(WIDTH / 2, HEIGHT / 2, 'GAME OVER', {
-      fill: '#600',
-      fontFamily: 'Impact',
-      fontSize: '80px',
-    }).setOrigin(0.5);
-
+    this.add.text(MIDX, MIDY, 'GAME OVER', IMPACT_STYLE).setOrigin(0.5);
     this.hand.disable();
     this.nextTurnBtn.disable();
   }

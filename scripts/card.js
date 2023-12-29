@@ -1,38 +1,3 @@
-const CARD_DATA = {
-  'Gentle prod': {
-    img: 'sword-1',
-    effect: { damage: 1 }
-  },
-  'Strike': {
-    img: 'sword-2',
-    effect: { damage: 2 },
-  },
-  'Mighty slash': {
-    img: 'sword-3',
-    effect: { damage: 3 },
-  },
-  'Ultimate smash': {
-    img: 'sword-4',
-    effect: { damage: 5 },
-  },
-  'Poison blade': {
-    img: 'sword-poison',
-    effect: { damage: 2, poison: 1 },
-  },
-  'Prepare': {
-    img: 'draw-card',
-    effect: { draw: 3 },
-  },
-  'Heal': {
-    img: 'heart',
-    effect: { heal: 8 },
-  },
-  'Shield': {
-    img: 'shield',
-    effect: { shield: 4 },
-  }
-};
-
 const startingDeck = {
   'Gentle prod': 2,
   'Strike': 3,

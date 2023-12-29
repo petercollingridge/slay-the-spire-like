@@ -3,8 +3,13 @@ class Choice extends Phaser.Scene {
     super("Choice");
   }
 
+  init(data) {
+    this.choices = data.choices;
+    this.title = data.title;
+    this.choiceData = data.type === 'enemy' ? ENEMY_DATA : CARD_DATA;
+  }
+
   preload() {
-    this.load.image('background', 'assets/option_background.svg');
     this.load.image('rect', 'assets/characters/choice_outline.svg');
     this.load.image('button', 'assets/button.svg');
     this.load.image('enemy-1', 'assets/characters/sasquatch.svg');
@@ -13,29 +18,26 @@ class Choice extends Phaser.Scene {
   }
 
   create() {
-    const mx = WIDTH / 2;
-    const y = HEIGHT / 2;
-    this.add.image(mx, y, 'background');
-    this.add.text(mx, y - 110, 'Choose an enemy to battle', OPTION_STYLE).setOrigin(0.5);
+    this.add.image(MIDX, MIDY, 'background');
+    this.add.text(MIDX, MIDY - 110, this.title, OPTION_STYLE).setOrigin(0.5);
 
     this.button = new Button(
       this,
-      mx,
-      y + 100,
+      MIDX,
+      MIDY + 100,
       'Select',
       this.makeSelection.bind(this)
     );
 
     this.button.disable();
 
-    const choices = ['minotaur', 'yeti', 'spikey'];
     const dx = 150;
-    let x = (WIDTH - dx * (choices.length - 1)) / 2;
-    const optionY = y - 10;
+    let x = (WIDTH - dx * (this.choices.length - 1)) / 2;
+    const optionY = MIDY - 10;
 
-    const choiceBoxes = choices.map((choice) => {
+    const choiceBoxes = this.choices.map((choice) => {
       const box = this.add.image(x, optionY, 'rect');
-      const img = ENEMY_DATA[choice].img;
+      const img = this.choiceData[choice].img;
       this.add.image(x, optionY, img);
 
       box.setInteractive({ useHandCursor: true });

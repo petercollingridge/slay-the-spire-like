@@ -3,25 +3,6 @@ const PLAYER_DATA = {
   health: 40,
 };
 
-const ENEMY_DATA = {
-  minotaur: {
-    img: 'enemy-2',
-    health: 30,
-    attack: 8,
-    shield: 12,
-  },
-  spikey: {
-    img: 'enemy-3',
-    health: 24,
-    attack: 12,
-  },
-  yeti: {
-    img: 'enemy-1',
-    health: 20,
-    attack: 5,
-  },
-};
-
 class Character {
   constructor(game, data, x, y) {
     this.game = game;
