@@ -45,6 +45,10 @@ class Character {
     this.setHealth(newHealth);
   }
 
+  manaBonus(n) {
+    this.bonusMana = (this.bonusMana || 0) + n;
+  }
+
   poison(n) {
     if (!this.shieldStrength) {
       this.poisonAmount += n;

@@ -44,6 +44,10 @@ const CARD_DATA = {
     img: 'sword-poison',
     effect: { damage: 2, poison: 1 },
   },
+  'Drain life': {
+    img: 'fangs',
+    effect: { damage: 2, heal: 2 },
+  },
   'Prepare': {
     img: 'draw-card',
     effect: { draw: 3 },
@@ -55,6 +59,14 @@ const CARD_DATA = {
   'Shield': {
     img: 'shield',
     effect: { shield: 4 },
+  },
+  'Magic shield': {
+    img: 'magic-shield',
+    effect: { shield: 8 },
+  },
+  'Store magic': {
+    img: 'potion',
+    effect: { store: 1 },
   }
 };
 
@@ -67,7 +79,7 @@ const ENEMY_DATA = {
   },
   spikey: {
     img: 'enemy-3',
-    health: 2,
+    health: 24,
     attack: 6,
   },
   yeti: {
@@ -84,5 +96,5 @@ const startingDeck = {
   'Ultimate smash': 1,
   'Prepare': 2,
   'Heal': 1,
-  'Shield': 2
+  'Shield': 2,
 };

@@ -21,6 +21,9 @@ class StartScene extends Phaser.Scene {
     this.load.image('heart', 'assets/cards/heart.svg');
     this.load.image('shield', 'assets/cards/shield.svg');
     this.load.image('draw-card', 'assets/cards/draw.svg');
+    this.load.image('potion', 'assets/cards/potion.svg');
+    this.load.image('fangs', 'assets/cards/fangs.svg');
+    this.load.image('magic-shield', 'assets/cards/magic-shield.svg');
   }
 
   create() {

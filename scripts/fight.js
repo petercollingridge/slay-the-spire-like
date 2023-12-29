@@ -54,7 +54,6 @@ class Fight extends Phaser.Scene {
       fontFamily: 'Arial',
       fontSize: '20px',
     }).setOrigin(0.5);
-    this.setManaSpent(0)
 
     // Deck
     this.deck = new Deck(this, 'Draw pile', 60, HEIGHT - 72, startingDeck);
@@ -64,11 +63,12 @@ class Fight extends Phaser.Scene {
 
     // Hand
     this.hand = new Hand(this, MIDX, HEIGHT - 110);
-    this.drawCards(HAND_SIZE);
 
     this.input.on('dragstart', this.dragStart);
     this.input.on('drag', this.drag);
     this.input.on('dragend', this.dragEnd);
+
+    this.playerTurn();
   }
 
   characterDies() {
@@ -114,9 +114,9 @@ class Fight extends Phaser.Scene {
     this.discard.addCard(card);
   }
 
-  setManaSpent(mana) {
+  setManaSpent(mana, maxMana = this.maxMana) {
     this.manaSpent = mana;
-    this.manaCount.setText(`${this.manaSpent} / ${MAX_MANA}`);
+    this.manaCount.setText(`${mana} / ${maxMana}`);
   }
 
   spendMana(mana) {
@@ -126,7 +126,6 @@ class Fight extends Phaser.Scene {
   enemyTurn() {
     if (this.enemy.dead) {
       const bonusCards = getCardsToWin();
-      console.log(bonusCards)
       this.scene.start('CardChoice', { choices: bonusCards });
     } else {
       this.enemy.turn(this.player);
@@ -136,7 +135,9 @@ class Fight extends Phaser.Scene {
 
   playerTurn() {
     if (!this.player.dead) {
-      this.setManaSpent(0)
+      this.maxMana = MAX_MANA + (this.player.bonusMana || 0);
+      this.player.bonusMana = 0;
+      this.setManaSpent(0, this.maxMana);
       // this.drawCard();
       this.drawCardsTo(HAND_SIZE);
     }

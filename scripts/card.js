@@ -54,7 +54,7 @@ class Card {
 
   dragStart() {
     this.game.hand.bringToFront(this);
-    this.canPlay = this.game.manaSpent < MAX_MANA;
+    this.canPlay = this.game.manaSpent < this.game.maxMana;
     // Save card's current position so we can return it if the card is cancelled
     this.startX = this.container.x;
     this.startY = this.container.y;
@@ -73,7 +73,7 @@ class Card {
   dragEnd() {
     this.cardImg.clearTint();
     if (this.container.y < this.game.dropY &&
-      this.game.manaSpent < MAX_MANA) {
+      this.game.manaSpent < this.game.maxMana) {
       this.play();
     } else {
       // Return card to hand
@@ -100,6 +100,9 @@ class Card {
     }
     if (this.effect.shield) {
       this.game.player.shield(this.effect.shield);
+    }
+    if (this.effect.store) {
+      this.game.player.manaBonus(this.effect.store);
     }
   }
 }
