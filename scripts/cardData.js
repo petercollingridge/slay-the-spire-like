@@ -31,6 +31,13 @@ const CARD_DATA = {
     },
     text: 'Deal 1 damage for each card in hand.'
   },
+  'Scythe': {
+    img: 'scythe',
+    effect: {
+      damage: (game) => game.discard.cards.length
+    },
+    text: 'Deal 1 damage for each card in the discard pile.'
+  },
   'Drain life': {
     img: 'fangs',
     effect: { damage: 2, heal: 2 },
@@ -52,7 +59,7 @@ const CARD_DATA = {
     text: 'Shield 4.',
   },
   'Magic shield': {
-    img: 'magic-shield',
+    img: 'shield-magic',
     effect: {
       shield: (game) => game.hand.cards.length
     },

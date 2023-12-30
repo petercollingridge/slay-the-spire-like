@@ -26,18 +26,18 @@ const IMPACT_STYLE = {
 const ENEMY_DATA = {
   minotaur: {
     img: 'enemy-2',
-    health: 30,
+    health: 32,
     attack: 8,
-    shield: 12,
+    shield: 16,
   },
   spikey: {
     img: 'enemy-3',
     health: 24,
-    attack: 6,
+    attack: 12,
   },
   yeti: {
     img: 'enemy-1',
-    health: 20,
+    health: 40,
     attack: 5,
   },
 };

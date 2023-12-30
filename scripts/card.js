@@ -96,7 +96,6 @@ class Card {
   play() {
     this.game.spendMana(1);
     this.game.hand.removeCard(this);
-    this.game.discard.addCard(this);
 
     if (this.effect.damage) {
       const damage = getCardValue(this.effect.damage, this.game);
@@ -112,10 +111,14 @@ class Card {
       this.game.enemy.poison(this.effect.poison);
     }
     if (this.effect.shield) {
-      this.game.player.shield(this.effect.shield);
+      const shield = getCardValue(this.effect.shield, this.game);
+      this.game.player.shield(shield);
     }
     if (this.effect.store) {
       this.game.player.manaBonus(this.effect.store);
     }
+
+    // Add card to discard pile after it's effect is resolved
+    this.game.discard.addCard(this);
   }
 }
