@@ -26,22 +26,34 @@ const CARD_DATA = {
   },
   'Toxin bloom': {
     img: 'poison-mushroom',
-    effect: { poison: (game) => game.enemy.poisonAmount },
+    effect: { poison: (card) => card.game.enemy.poisonAmount },
     text: 'Double the poison on an enemy.',
   },
   'Arcane sword': {
     img: 'sword-magic',
     effect: {
-      damage: (game) => game.hand.cards.length
+      damage: (card) => card.game.hand.cards.length
     },
     text: 'Deal 1 damage for each card in hand.'
   },
   'Scythe': {
     img: 'scythe',
     effect: {
-      damage: (game) => game.discard.cards.length
+      damage: (card) => card.game.discard.cards.length
     },
     text: 'Deal 1 damage for each card in the discard pile.'
+  },
+  'Blade vortex': {
+    img: 'sword-spinning',
+    effect: {
+      damage: (card) => card.castCount * 2
+    },
+    text: 'Deal 2 damage for each time this card has been cast.'
+  },
+  'Quick shot': {
+    img: 'arrow-1',
+    effect: { damage: 2, draw: 1 },
+    text: 'Deal 2 damage and draw a card.'
   },
   'Drain life': {
     img: 'fangs',

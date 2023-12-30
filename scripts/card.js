@@ -4,6 +4,7 @@ class Card {
 
     this.game = game;
     this.effect = data.effect;
+    this.castCount = 0;
 
     // Create a sprite and text
     this.cardImg = game.add.sprite(0, 0, 'card');
@@ -95,30 +96,31 @@ class Card {
 
   play() {
     this.game.spendMana(1);
+    this.castCount++;
     this.game.hand.removeCard(this);
 
     if (this.effect.damage) {
-      const value = getCardValue(this.effect.damage, this.game);
+      const value = getCardValue(this.effect.damage, this);
       this.game.enemy.dealDamage(value);
     }
     if (this.effect.draw) {
-      const value = getCardValue(this.effect.draw, this.game);
+      const value = getCardValue(this.effect.draw, this);
       this.game.drawCards(value);
     }
     if (this.effect.heal) {
-      const value = getCardValue(this.effect.heal, this.game);
+      const value = getCardValue(this.effect.heal, this);
       this.game.player.heal(value);
     }
     if (this.effect.poison) {
-      const value = getCardValue(this.effect.poison, this.game);
+      const value = getCardValue(this.effect.poison, this);
       this.game.enemy.poison(value);
     }
     if (this.effect.shield) {
-      const value = getCardValue(this.effect.shield, this.game);
+      const value = getCardValue(this.effect.shield, this);
       this.game.player.shield(value);
     }
     if (this.effect.store) {
-      const value = getCardValue(this.effect.store, this.game);
+      const value = getCardValue(this.effect.store, this);
       this.game.player.manaBonus(value);
     }
 

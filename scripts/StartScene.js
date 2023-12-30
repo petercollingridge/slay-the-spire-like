@@ -14,12 +14,14 @@ class StartScene extends Phaser.Scene {
     this.load.image('enemy-4', 'assets/characters/poison-demon.svg');
 
     this.load.image('card', 'assets/cards/card-base.svg');
+    this.load.image('arrow-1', 'assets/cards/arrow-1.svg');
     this.load.image('sword-1', 'assets/cards/sword-1.svg');
     this.load.image('sword-2', 'assets/cards/sword-2.svg');
     this.load.image('sword-3', 'assets/cards/sword-3.svg');
     this.load.image('sword-4', 'assets/cards/sword-4.svg');
     this.load.image('sword-magic', 'assets/cards/sword-magic.svg');
     this.load.image('sword-poison', 'assets/cards/sword-poison.svg');
+    this.load.image('sword-spinning', 'assets/cards/sword-spinning.svg');
     this.load.image('heart', 'assets/cards/heart.svg');
     this.load.image('draw-card', 'assets/cards/draw.svg');
     this.load.image('potion', 'assets/cards/potion.svg');
