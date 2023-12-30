@@ -68,6 +68,12 @@ class Character {
       this.die();
     }
   }
+
+  startTurn() {
+    if (this.poisonAmount) {
+      this.dealDamage(this.poisonAmount);
+    }
+  }
 }
 
 class Enemy extends Character {
@@ -81,6 +87,7 @@ class Enemy extends Character {
     super(game, data, x, y);
 
     this.attack = data.attack;
+    this.poisonAttack = data.poisonAttack;
 
     const iconX = x - this.img.width / 2 + 60;
     const iconY = y + this.img.height / 2 + 10;
@@ -88,12 +95,14 @@ class Enemy extends Character {
   }
 
   turn(player) {
-    if (this.poisonAmount) {
-      this.dealDamage(this.poisonAmount);
-    }
+    this.startTurn();
 
     if (this.health > 0) {
       player.dealDamage(this.attack);
+
+      if (this.poisonAttack && Math.random() < this.poisonAttack.chance) {
+        player.poison(this.poisonAttack.amount);
+      }
     }
   }
 }

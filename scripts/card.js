@@ -98,24 +98,28 @@ class Card {
     this.game.hand.removeCard(this);
 
     if (this.effect.damage) {
-      const damage = getCardValue(this.effect.damage, this.game);
-      this.game.enemy.dealDamage(damage);
+      const value = getCardValue(this.effect.damage, this.game);
+      this.game.enemy.dealDamage(value);
     }
     if (this.effect.draw) {
-      this.game.drawCards(this.effect.draw);
+      const value = getCardValue(this.effect.draw, this.game);
+      this.game.drawCards(value);
     }
     if (this.effect.heal) {
-      this.game.player.heal(this.effect.heal);
+      const value = getCardValue(this.effect.heal, this.game);
+      this.game.player.heal(value);
     }
     if (this.effect.poison) {
-      this.game.enemy.poison(this.effect.poison);
+      const value = getCardValue(this.effect.poison, this.game);
+      this.game.enemy.poison(value);
     }
     if (this.effect.shield) {
-      const shield = getCardValue(this.effect.shield, this.game);
-      this.game.player.shield(shield);
+      const value = getCardValue(this.effect.shield, this.game);
+      this.game.player.shield(value);
     }
     if (this.effect.store) {
-      this.game.player.manaBonus(this.effect.store);
+      const value = getCardValue(this.effect.store, this.game);
+      this.game.player.manaBonus(value);
     }
 
     // Add card to discard pile after it's effect is resolved

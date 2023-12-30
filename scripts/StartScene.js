@@ -23,6 +23,7 @@ class StartScene extends Phaser.Scene {
     this.load.image('heart', 'assets/cards/heart.svg');
     this.load.image('draw-card', 'assets/cards/draw.svg');
     this.load.image('potion', 'assets/cards/potion.svg');
+    this.load.image('poison-mushroom', 'assets/cards/poison-mushroom.svg');
     this.load.image('fangs', 'assets/cards/fangs.svg');
     this.load.image('shield', 'assets/cards/shield.svg');
     this.load.image('shield-magic', 'assets/cards/shield-magic.svg');
@@ -35,7 +36,7 @@ class StartScene extends Phaser.Scene {
 
     background.setInteractive();
     background.on('pointerup', () => {
-      this.scene.start('EnemyChoice', { choices: ['minotaur', 'spikey', 'yeti'] });
+      this.scene.start('EnemyChoice', { choices: getMonstersToFight(3) });
     });
   }
 }

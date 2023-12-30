@@ -24,6 +24,11 @@ const CARD_DATA = {
     effect: { damage: 2, poison: 1 },
     text: 'Deal 2 damage and inflict 1 poison.',
   },
+  'Toxin bloom': {
+    img: 'poison-mushroom',
+    effect: { poison: (game) => game.enemy.poisonAmount },
+    text: 'Double the poison on an enemy.',
+  },
   'Arcane sword': {
     img: 'sword-magic',
     effect: {

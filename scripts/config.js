@@ -34,6 +34,10 @@ const ENEMY_DATA = {
     img: 'enemy-4',
     health: 32,
     attack: 4,
+    poisonAttack: {
+      chance: 0.5,
+      amount: 2,
+    },
   },
   spikey: {
     img: 'enemy-3',

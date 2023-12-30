@@ -130,11 +130,12 @@ class Fight extends Phaser.Scene {
   }
 
   playerTurn() {
+    this.player.startTurn();
+
     if (!this.player.dead) {
       this.maxMana = MAX_MANA + (this.player.bonusMana || 0);
       this.player.bonusMana = 0;
       this.setManaSpent(0, this.maxMana);
-      // this.drawCard();
       this.drawCardsTo(HAND_SIZE);
     }
   }
