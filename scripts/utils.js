@@ -1,6 +1,14 @@
-function getCardsToWin() {
-  const cards = Phaser.Utils.Array.Shuffle(Object.keys(CARD_DATA).slice()).slice(0, 3);
-  return cards;
+function getRandN(arr, n) {
+  return Phaser.Utils.Array.Shuffle(arr).slice(0, n);
+}
+
+function getCardsToWin(n) {
+  return getRandN(Object.keys(CARD_DATA).slice(), n);
+}
+
+function getMonstersToFight(n) {
+  const allMonsters = ['minotaur', 'spikey', 'yeti', 'poisonDemon'];
+  return getRandN(allMonsters, n);
 }
 
 function getCardValue(valueOrFunction, game) {

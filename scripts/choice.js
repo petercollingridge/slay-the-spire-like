@@ -66,6 +66,6 @@ class CardChoice extends Choice {
   makeSelection() {
     // Add chosen card to player's deck
     startingDeck[this.selectedChoice] = (startingDeck[this.selectedChoice] || 0) + 1;
-    this.scene.start('EnemyChoice', { choices: ['minotaur', 'spikey', 'yeti'] });
+    this.scene.start('EnemyChoice', { choices: getMonstersToFight(3) });
   }
 }

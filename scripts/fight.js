@@ -76,8 +76,7 @@ class Fight extends Phaser.Scene {
     if (this.player.dead) {
       this.gameOver();
     } else if (this.enemy.dead) {
-      const bonusCards = getCardsToWin();
-      this.scene.start('CardChoice', { choices: bonusCards });
+      this.scene.start('CardChoice', { choices: getCardsToWin(3) });
     }
   }
 

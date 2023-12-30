@@ -30,6 +30,11 @@ const ENEMY_DATA = {
     attack: 8,
     shield: 16,
   },
+  poisonDemon: {
+    img: 'enemy-4',
+    health: 32,
+    attack: 4,
+  },
   spikey: {
     img: 'enemy-3',
     health: 24,
@@ -37,7 +42,7 @@ const ENEMY_DATA = {
   },
   yeti: {
     img: 'enemy-1',
-    health: 40,
+    health: 50,
     attack: 5,
   },
 };
