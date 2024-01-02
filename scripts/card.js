@@ -74,22 +74,28 @@ class Card {
   }
 
   drag() {
-    if (!this.canPlay) {
-      this.cardImg.setTint(RED_TINT);
-    } else if (this.container.y < this.game.dropY) {
-      this.cardImg.setTint(BLUE_TINT);
-    } else {
-      this.cardImg.setTint(YELLOW_TINT);
-    }
+  }
+
+  dragEnter(zone) {
+    const tint = this.canPlay ? BLUE_TINT : RED_TINT;
+    this.cardImg.setTint(tint);
+  }
+
+  dragLeave() {
+    this.cardImg.setTint(YELLOW_TINT);
   }
 
   dragEnd() {
+    // Return card to hand
     this.cardImg.clearTint();
-    if (this.container.y < this.game.dropY &&
-      this.game.manaSpent < this.game.maxMana) {
+    this.game.hand.reorderHand();
+  }
+
+  drop(zone) {
+    this.cardImg.clearTint();
+    if (this.canPlay) {
       this.play();
     } else {
-      // Return card to hand
       this.game.hand.reorderHand();
     }
   }

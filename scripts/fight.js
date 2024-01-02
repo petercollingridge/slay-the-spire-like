@@ -18,9 +18,9 @@ class Fight extends Phaser.Scene {
   }
 
   create() {
-    // Dropzone, above which dropped cards are played
-    this.dropY = HEIGHT - 160;
     this.add.image(MIDX, 150, 'sky');
+    // Dropzone, above which dropped cards are played
+    const castZone = this.add.zone(MIDX, 140, WIDTH, 280).setRectangleDropZone(WIDTH, 280);
 
     const flame = this.add.particles(600, 260, 'flares', {
       frame: 'white',
@@ -65,9 +65,14 @@ class Fight extends Phaser.Scene {
     // Hand
     this.hand = new Hand(this, MIDX, HEIGHT - 130);
 
-    this.input.on('dragstart', this.dragStart);
-    this.input.on('drag', this.drag);
-    this.input.on('dragend', this.dragEnd);
+    this.input.on('dragstart', this.dragStart, this);
+    this.input.on('dragenter', this.dragEnter, this);
+    this.input.on('dragleave', this.dragLeave, this);
+    this.input.on('drag', this.drag, this);
+    this.input.on('dragend', this.dragEnd, this);
+    this.input.on('drop', this.drop, this);
+
+    this.graphics = this.add.graphics();
 
     this.playerTurn();
   }
@@ -149,8 +154,20 @@ class Fight extends Phaser.Scene {
     target.y = dragY;
     target.parent.drag();
   }
+
+  dragEnter(pointer, target, dropZone) {
+    target.parent.dragEnter(dropZone);
+  }
+
+  dragLeave(pointer, target) {
+    target.parent.dragLeave();
+  }
   
   dragEnd(pointer, target) {
     target.parent.dragEnd();
+  }
+
+  drop(pointer, target, dropZone) {
+    target.parent.drop(dropZone);
   }
 }
