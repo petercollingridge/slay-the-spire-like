@@ -27,6 +27,7 @@ const CARD_DATA = {
   'Toxic bloom': {
     img: 'poison-mushroom',
     effect: { poison: (card) => card.game.enemy.poisonAmount },
+    oneUse: true,
     text: 'Double the poison on an enemy.',
   },
   'Fever': {
@@ -49,7 +50,7 @@ const CARD_DATA = {
     effect: {
       damage: (card) => card.game.discard.cards.length
     },
-    text: 'Deal 1 damage for each card in the discard pile.'
+    text: 'Deal 1 damage for each card in the discard pile.',
   },
   'Blade vortex': {
     img: 'sword-spinning',

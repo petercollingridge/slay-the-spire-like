@@ -4,6 +4,7 @@ class Card {
 
     this.game = game;
     this.effect = data.effect;
+    this.oneUse = data.oneUse;
     this.castCount = 0;
 
     // Create a sprite and text
@@ -130,7 +131,9 @@ class Card {
       this.game.player.manaBonus(value);
     }
 
-    // Add card to discard pile after it's effect is resolved
-    this.game.discard.addCard(this);
+    // Add card to discard pile after it's effect is resolved, unless it's one use only
+    if (!this.oneUse) {
+      this.game.discard.addCard(this);
+    }
   }
 }
