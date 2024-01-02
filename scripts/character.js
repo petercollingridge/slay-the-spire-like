@@ -1,12 +1,10 @@
-const PLAYER_DATA = {
-  img: 'player',
-  health: 40,
-};
-
 class Character {
   constructor(game, data, x, y) {
     this.game = game;
+    this.x = x;
+    this.y = y;
     this.img = game.add.image(x, y, data.img);
+
     const txtY = y - this.img.height / 2 + 5;
     const txtStyle = { fontSize: '16px', fill: '#000' };
 
@@ -21,6 +19,10 @@ class Character {
 
     this.poisonAmount = 0;
     this.poisonIcon = new Icon(game, iconX + 90, iconY, 'skull', this.poisonAmount);
+  }
+
+  getDropZone(game) {
+    return game.add.zone(this.x, this.y, this.img.width, this.img.height).setRectangleDropZone(this.img.width * 1.5, this.img.height * 1.5);
   }
 
   dealDamage(damage) {

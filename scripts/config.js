@@ -23,16 +23,21 @@ const IMPACT_STYLE = {
   fontSize: '80px',
 };
 
+const PLAYER_DATA = {
+  img: 'player',
+  health: 60,
+};
+
 const ENEMY_DATA = {
   minotaur: {
     img: 'enemy-2',
-    health: 32,
+    health: 64,
     attack: 8,
     shield: 16,
   },
   poisonDemon: {
     img: 'enemy-4',
-    health: 32,
+    health: 64,
     attack: 4,
     poisonAttack: {
       chance: 0.5,
@@ -41,12 +46,12 @@ const ENEMY_DATA = {
   },
   spikey: {
     img: 'enemy-3',
-    health: 24,
+    health: 48,
     attack: 12,
   },
   yeti: {
     img: 'enemy-1',
-    health: 50,
+    health: 120,
     attack: 5,
   },
 };

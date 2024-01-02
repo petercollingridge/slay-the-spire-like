@@ -19,8 +19,6 @@ class Fight extends Phaser.Scene {
 
   create() {
     this.add.image(MIDX, 150, 'sky');
-    // Dropzone, above which dropped cards are played
-    const castZone = this.add.zone(MIDX, 140, WIDTH, 280).setRectangleDropZone(WIDTH, 280);
 
     const flame = this.add.particles(600, 260, 'flares', {
       frame: 'white',
@@ -39,6 +37,9 @@ class Fight extends Phaser.Scene {
     // Draw Player and Enemy characters
     this.player = new Character(this, PLAYER_DATA, 200, HEIGHT / 2 - 20);
     this.enemy = new Enemy(this, this.enemyType, 825, HEIGHT / 2 - 20);
+
+    // Add area for cards to be played
+    const enemyZone = this.enemy.getDropZone(this);
 
     this.nextTurnBtn = new Button(
       this,
