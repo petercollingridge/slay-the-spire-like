@@ -51,7 +51,7 @@ class Character {
 
   poison(n) {
     if (!this.shieldStrength) {
-      this.poisonAmount += n;
+      this.poisonAmount = Math.max(0, this.poisonAmount + n);
       this.poisonIcon.setValue(this.poisonAmount);
     }
   }

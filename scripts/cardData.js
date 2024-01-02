@@ -24,10 +24,18 @@ const CARD_DATA = {
     effect: { damage: 2, poison: 1 },
     text: 'Deal 2 damage and inflict 1 poison.',
   },
-  'Toxin bloom': {
+  'Toxic bloom': {
     img: 'poison-mushroom',
     effect: { poison: (card) => card.game.enemy.poisonAmount },
     text: 'Double the poison on an enemy.',
+  },
+  'Fever': {
+    img: 'sickness',
+    effect: {
+      damage: (card) => 3 * card.game.enemy.poisonAmount,
+      poison: -1
+    },
+    text: 'Deal 3 damage for every poison. Remove 1 poison.',
   },
   'Arcane sword': {
     img: 'sword-magic',
@@ -89,9 +97,19 @@ const CARD_DATA = {
   }
 };
 
+// const startingDeck = {
+//   'Gentle prod': 3,
+//   'Strike': 2,
+//   'Mighty slash': 2,
+//   'Prepare': 1,
+//   'Heal': 1,
+//   'Shield': 1,
+// };
+
 const startingDeck = {
-  'Gentle prod': 3,
-  'Strike': 2,
+  'Poison blade': 3,
+  'Toxic bloom': 1,
+  'Fever': 1,
   'Mighty slash': 2,
   'Prepare': 1,
   'Heal': 1,
