@@ -16,6 +16,10 @@ class Deck {
     this.cardCount = game.add.text(x, y, this.cards.length, { fontSize: '24px', fill: '#000' }).setOrigin(0.5);
   }
 
+  size() {
+    return this.cards.length;
+  }
+
   addCard(card) {
     this.cards.push(card);
     card.setPosition(this.x, this.y);

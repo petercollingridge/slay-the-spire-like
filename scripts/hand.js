@@ -95,4 +95,8 @@ class Hand {
 
     this.reorderHand();
   }
+
+  size() {
+    return this.cards.length;
+  }
 }

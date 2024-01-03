@@ -52,4 +52,12 @@ class Button {
     this.background.setTint(0x707070);
     this.container.disableInteractive();
   }
+
+  hide() {
+    this.container.visible = false;
+  }
+
+  show() {
+    this.container.visible = true;
+  }
 }

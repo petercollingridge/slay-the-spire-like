@@ -75,8 +75,7 @@ class Card {
     this.startY = this.container.y;
   }
 
-  drag() {
-  }
+  drag() {}
 
   dragEnter(zone) {
     if (!this.canPlay) {

@@ -36,7 +36,7 @@ class Fight extends Phaser.Scene {
 
     // Draw Player and Enemy characters
     this.player = new Character(this, PLAYER_DATA, 200, HEIGHT / 2 - 20);
-    this.enemy = new Enemy(this, this.enemyType, 825, HEIGHT / 2 - 20);
+    this.enemy = new Enemy(this, this.enemyType, 810, HEIGHT / 2 - 10);
 
     // Add area for cards to be played
     const enemyZone = this.enemy.getDropZone(this, 'enemy');
@@ -47,22 +47,20 @@ class Fight extends Phaser.Scene {
       MIDX,
       HEIGHT - 24,
       'End turn',
-      this.enemyTurn.bind(this)
+      this.endTurn.bind(this)
     );
 
     // Display mana/cards spent this turn
-    this.manaCount = this.add.text(MIDX, HEIGHT - 230, '', {
-      fill: '#111',
-      fontFamily: 'Arial',
-      fontSize: '20px',
-    }).setOrigin(0.5);
+    this.manaCount = this.add.text(MIDX, HEIGHT - 230, '', FIGHT_STYLE).setOrigin(0.5);
+
+    this.discardMsg = this.add.text(MIDX, HEIGHT - 24, '', FIGHT_STYLE).setOrigin(0.5);
 
     // Deck
-    const deckHeight = HEIGHT - 100;
-    this.deck = new Deck(this, 'Draw pile', 60, deckHeight, startingDeck);
+    const deckHeight = HEIGHT - 95;
+    this.deck = new Deck(this, 'Draw pile', 65, deckHeight, startingDeck);
     this.deck.shuffle();
 
-    this.discard = new Deck(this, 'Discard\npile', WIDTH - 60, deckHeight);
+    this.discard = new Deck(this, 'Discard\npile', WIDTH - 65, deckHeight);
 
     // Hand
     this.hand = new Hand(this, MIDX, HEIGHT - 130);
@@ -131,19 +129,37 @@ class Fight extends Phaser.Scene {
     this.setManaSpent(this.manaSpent + mana);
   }
 
-  enemyTurn() {
-    this.enemy.turn(this.player);
-    this.playerTurn();
-  }
-
   playerTurn() {
+    this.nextTurnBtn.show();
     this.player.startTurn();
 
     if (!this.player.dead) {
-      this.maxMana = MAX_MANA + (this.player.bonusMana || 0);
+      this.maxMana = BASE_MANA + (this.player.bonusMana || 0);
       this.player.bonusMana = 0;
       this.setManaSpent(0, this.maxMana);
-      this.drawCardsTo(HAND_SIZE);
+      this.drawCardsTo(START_HAND_SIZE);
+    }
+  }
+
+  endTurn() {
+    this.discardPhase();
+    if (!this.discarding) {
+      this.enemy.turn(this.player);
+      this.playerTurn();
+    }
+  }
+
+  discardPhase() {
+    // Discard to four cards
+    if (this.hand.size() > END_HAND_SIZE) {
+      this.nextTurnBtn.hide();
+      this.discarding = true;
+      const n = this.hand.size() - END_HAND_SIZE;
+      const txt = n === 1 ? 'a card' : `${n} cards`;
+      this.discardMsg.setText('Discard ' + txt);
+    } else {
+      this.discarding = false;
+      this.discardMsg.visible = false;
     }
   }
 
