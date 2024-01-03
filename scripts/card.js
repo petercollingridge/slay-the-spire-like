@@ -4,6 +4,7 @@ class Card {
 
     this.game = game;
     this.effect = data.effect;
+    this.target = data.target;
     this.oneUse = data.oneUse;
     this.castCount = 0;
 
@@ -78,8 +79,13 @@ class Card {
   }
 
   dragEnter(zone) {
-    const tint = this.canPlay ? BLUE_TINT : RED_TINT;
-    this.cardImg.setTint(tint);
+    if (!this.canPlay) {
+      this.cardImg.setTint(RED_TINT);
+    } else if (zone.name === 'player') {
+      this.cardImg.setTint(this.target === 'self' ? BLUE_TINT : RED_TINT);
+    } else {
+      this.cardImg.setTint(this.target === 'enemy' ? BLUE_TINT : RED_TINT);
+    }
   }
 
   dragLeave() {

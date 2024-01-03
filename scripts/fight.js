@@ -39,7 +39,8 @@ class Fight extends Phaser.Scene {
     this.enemy = new Enemy(this, this.enemyType, 825, HEIGHT / 2 - 20);
 
     // Add area for cards to be played
-    const enemyZone = this.enemy.getDropZone(this);
+    const enemyZone = this.enemy.getDropZone(this, 'enemy');
+    const playerZone = this.player.getDropZone(this, 'player');
 
     this.nextTurnBtn = new Button(
       this,

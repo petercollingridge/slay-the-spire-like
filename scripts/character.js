@@ -21,8 +21,11 @@ class Character {
     this.poisonIcon = new Icon(game, iconX + 90, iconY, 'skull', this.poisonAmount);
   }
 
-  getDropZone(game) {
-    return game.add.zone(this.x, this.y, this.img.width, this.img.height).setRectangleDropZone(this.img.width * 1.5, this.img.height * 1.5);
+  getDropZone(game, name) {
+    return game.add
+      .zone(this.x, this.y, this.img.width, this.img.height)
+      .setRectangleDropZone(this.img.width * 1.5, this.img.height * 1.5)
+      .setName(name);
   }
 
   dealDamage(damage) {

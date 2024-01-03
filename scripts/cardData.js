@@ -1,100 +1,117 @@
 const CARD_DATA = {
   'Gentle prod': {
     img: 'sword-1',
-    effect: { damage: 1 },
     text: 'Deal 1 damage.',
+    effect: { damage: 1 },
+    target: 'enemy',
   },
   'Strike': {
     img: 'sword-2',
-    effect: { damage: 2 },
     text: 'Deal 2 damage.',
+    effect: { damage: 2 },
+    target: 'enemy',
   },
   'Mighty slash': {
     img: 'sword-3',
-    effect: { damage: 3 },
     text: 'Deal 3 damage.',
+    effect: { damage: 3 },
+    target: 'enemy',
   },
   'Ultimate smash': {
     img: 'sword-4',
-    effect: { damage: 5 },
     text: 'Deal 5 damage.',
+    effect: { damage: 5 },
+    target: 'enemy',
   },
   'Poison blade': {
     img: 'sword-poison',
-    effect: { damage: 2, poison: 1 },
     text: 'Deal 2 damage and inflict 1 poison.',
+    effect: { damage: 2, poison: 1 },
+    target: 'enemy',
   },
   'Toxic bloom': {
     img: 'poison-mushroom',
-    effect: { poison: (card) => card.game.enemy.poisonAmount },
-    oneUse: true,
     text: 'Double the poison on an enemy.',
+    effect: { poison: (card) => card.game.enemy.poisonAmount },
+    target: 'enemy',
+    oneUse: true,
   },
   'Fever': {
     img: 'sickness',
+    text: 'Deal 3 damage for every poison. Remove 1 poison.',
     effect: {
       damage: (card) => 3 * card.game.enemy.poisonAmount,
       poison: -1
     },
-    text: 'Deal 3 damage for every poison. Remove 1 poison.',
+    target: 'enemy',
   },
   'Arcane sword': {
     img: 'sword-magic',
+    text: 'Deal 1 damage for each card in hand.',
     effect: {
       damage: (card) => card.game.hand.cards.length
     },
-    text: 'Deal 1 damage for each card in hand.'
+    target: 'enemy',
   },
   'Scythe': {
     img: 'scythe',
+    text: 'Deal 1 damage for each card in the discard pile.',
     effect: {
       damage: (card) => card.game.discard.cards.length
     },
-    text: 'Deal 1 damage for each card in the discard pile.',
+    target: 'enemy',
   },
   'Blade vortex': {
     img: 'sword-spinning',
+    text: 'Deal 2 damage for each time this card has been cast.',
     effect: {
       damage: (card) => card.castCount * 2
     },
-    text: 'Deal 2 damage for each time this card has been cast.'
+    target: 'enemy',
   },
   'Quick shot': {
     img: 'arrow-1',
+    text: 'Deal 2 damage and draw a card.',
     effect: { damage: 2, draw: 1 },
-    text: 'Deal 2 damage and draw a card.'
+    target: 'enemy',
   },
   'Drain life': {
     img: 'fangs',
-    effect: { damage: 2, heal: 2 },
     text: 'Deal 2 damage and heal 2.',
+    effect: { damage: 2, heal: 2 },
+    target: 'enemy',
   },
   'Prepare': {
     img: 'draw-card',
-    effect: { draw: 3 },
     text: 'Draw 3 cards.',
+    effect: { draw: 3 },
+    target: 'self',
   },
   'Heal': {
     img: 'heart',
-    effect: { heal: 8 },
     text: 'Heal 8.',
+    effect: { heal: 8 },
+    target: 'self',
   },
   'Shield': {
     img: 'shield',
-    effect: { shield: 4 },
     text: 'Shield 4.',
+    effect: { shield: 4 },
+    target: 'self',
   },
   'Magic shield': {
     img: 'shield-magic',
+    text: 'Shield 2 for each card in hand.',
     effect: {
-      shield: (game) => game.hand.cards.length
+      shield: (game) => 2 * game.hand.cards.length
     },
-    text: 'Shield 1 for each card in hand.'
+    target: 'self',
   },
   'Store magic': {
     img: 'potion',
+    text: 'Gain 1 mana next turn.',
     effect: { store: 1 },
-    text: 'Gain 1 mana next turn.'
+    target: 'self',
   }
 };
 
