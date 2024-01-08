@@ -52,10 +52,6 @@ class Character {
     this.setHealth(newHealth);
   }
 
-  manaBonus(n) {
-    this.bonusMana = (this.bonusMana || 0) + n;
-  }
-
   poison(n) {
     if (!this.shieldStrength) {
       this.poisonAmount = Math.max(0, this.poisonAmount + n);
@@ -89,6 +85,19 @@ class Character {
   removeHighlight() {
     console.log('removeHighlight character');
   }
+
+  dragEnter(card) {
+    const tint = this.isValidDrop(card) ? BLUE_TINT : RED_TINT;
+    card.highlight(tint);
+  }
+
+  drop(card) {
+    if (this.isValidDrop(card)) {
+      card.play();
+    } else {
+      this.game.hand.reorderHand();
+    }
+  }
 }
 
 class Enemy extends Character {
@@ -121,6 +130,10 @@ class Enemy extends Character {
       }
     }
   }
+
+  isValidDrop(card) {
+    return card.canPlay && card.target === 'enemy';
+  }
 }
 
 class Player extends Character {
@@ -128,5 +141,13 @@ class Player extends Character {
     super(game, PLAYER_DATA, x, y);
     this.type = 'player';
     this.getDropZone();
+  }
+
+  manaBonus(n) {
+    this.bonusMana = (this.bonusMana || 0) + n;
+  }
+
+  isValidDrop(card) {
+    return card.canPlay && card.target === 'self';
   }
 }

@@ -92,24 +92,18 @@ class Card {
     zone.parent.highlight(tint);
   }
 
-  dragLeave(zone) {
-    this.cardImg.setTint(YELLOW_TINT);
-    zone.parent.removeHighlight();
-  }
-
   dragEnd() {
     // Return card to hand
-    this.cardImg.clearTint();
+    this.removeHighlight();
     this.game.hand.reorderHand();
   }
 
-  drop(zone) {
+  highlight(tint) {
+    this.cardImg.setTint(tint);
+  }
+
+  removeHighlight() {
     this.cardImg.clearTint();
-    if (this.canPlay) {
-      this.play();
-    } else {
-      this.game.hand.reorderHand();
-    }
   }
 
   play() {

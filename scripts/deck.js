@@ -1,6 +1,7 @@
 class Deck {
   constructor(game, name, x, y, cardsCounts = {}) {
     this.game = game;
+    this.name = name;
     this.x = x;
     this.y = y;
     this.cards = [];
@@ -69,5 +70,23 @@ class Deck {
 
   shuffle() {
     Phaser.Utils.Array.Shuffle(this.cards);
+  }
+
+  dragEnter(card) {
+    const tint = this.isValidDrop(card) ? BLUE_TINT : RED_TINT;
+    this.highlight(tint);
+  }
+
+  drop(card) {
+    if (this.isValidDrop(card)) {
+      this.addCard(card);
+    } else {
+      this.game.hand.reorderHand();
+    }
+  }
+
+  // By default it will be invalid to drop a card into a deck
+  isValidDrop(card) {
+    return false;
   }
 }

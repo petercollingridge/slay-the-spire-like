@@ -18,6 +18,7 @@ class Fight extends Phaser.Scene {
   }
 
   create() {
+    const fight = this;
     this.add.image(MIDX, 150, 'sky');
 
     const flame = this.add.particles(600, 260, 'flares', {
@@ -57,6 +58,7 @@ class Fight extends Phaser.Scene {
     this.deck.shuffle();
 
     this.discard = new Deck(this, 'Discard pile', WIDTH - 65, deckHeight);
+    this.discard.isValidDrop = () => fight.discarding;
 
     // Hand
     this.hand = new Hand(this, MIDX, HEIGHT - 130);
@@ -170,11 +172,12 @@ class Fight extends Phaser.Scene {
   }
 
   dragEnter(pointer, target, dropZone) {
-    target.parent.dragEnter(dropZone);
+    dropZone.parent.dragEnter(target.parent);
   }
 
   dragLeave(pointer, target, dropZone) {
-    target.parent.dragLeave(dropZone);
+    target.parent.cardImg.setTint(YELLOW_TINT);
+    dropZone.parent.removeHighlight();
   }
   
   dragEnd(pointer, target) {
@@ -182,6 +185,7 @@ class Fight extends Phaser.Scene {
   }
 
   drop(pointer, target, dropZone) {
-    target.parent.drop(dropZone);
+    target.parent.removeHighlight();
+    dropZone.parent.drop(target.parent);
   }
 }
