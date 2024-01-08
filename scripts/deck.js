@@ -81,7 +81,10 @@ class Deck {
     if (this.isValidDrop(card)) {
       this.game.hand.removeCard(card);
       this.addCard(card);
+      // TODO: this works for discarding a card at the end of the turn, but needs to be more generic
+      this.game.endTurn()
     } else {
+      this.removeHighlight();
       this.game.hand.reorderHand();
     }
   }
