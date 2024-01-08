@@ -11,17 +11,19 @@ class Deck {
       }
     });
 
-    game.add.sprite(x, y, 'card');
+    this.img = game.add.sprite(x, y, 'card');
     game.add.text(x, y - 36, name, {
       fontSize: '13px', fill: '#000', align: 'center', wordWrap: { width: CARD_WIDTH - 24 }
     }).setOrigin(0.5);
     this.cardCount = game.add.text(x, y, this.cards.length, { fontSize: '24px', fill: '#000' }).setOrigin(0.5);
 
-    // Create dropzone for dragging and dropping cards into this deck
-    game.add
+    // Create dropZone for dragging and dropping cards into this deck
+    const dropZone = game.add
       .zone(this.x, this.y, CARD_WIDTH, CARD_HEIGHT)
       .setRectangleDropZone(CARD_WIDTH, CARD_HEIGHT)
       .setName(name);
+
+    dropZone.parent = this;
   }
 
   size() {
@@ -51,6 +53,14 @@ class Deck {
     this.cards = [];
     this.updateCount();
     return cards;
+  }
+
+  highlight(colour) {
+    this.img.setTint(colour);
+  }
+
+  removeHighlight() {
+    this.img.clearTint();
   }
 
   updateCount() {

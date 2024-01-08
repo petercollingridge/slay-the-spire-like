@@ -22,10 +22,14 @@ class Character {
   }
 
   getDropZone(game, name) {
-    return game.add
+    const dropZone = game.add
       .zone(this.x, this.y, this.img.width, this.img.height)
       .setRectangleDropZone(this.img.width * 1.5, this.img.height * 1.5)
       .setName(name);
+
+    dropZone.parent = this;
+
+    return dropZone;
   }
 
   dealDamage(damage) {
@@ -78,6 +82,14 @@ class Character {
     if (this.poisonAmount) {
       this.dealDamage(this.poisonAmount);
     }
+  }
+
+  highlight() {
+    console.log('highlight character');
+  }
+
+  removeHighlight() {
+    console.log('removeHighlight character');
   }
 }
 

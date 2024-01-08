@@ -89,10 +89,12 @@ class Card {
 
     const tint = validDrop ? BLUE_TINT : RED_TINT;
     this.cardImg.setTint(tint);
+    zone.parent.highlight(tint);
   }
 
-  dragLeave() {
+  dragLeave(zone) {
     this.cardImg.setTint(YELLOW_TINT);
+    zone.parent.removeHighlight();
   }
 
   dragEnd() {
