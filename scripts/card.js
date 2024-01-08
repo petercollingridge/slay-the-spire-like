@@ -78,13 +78,17 @@ class Card {
   drag() {}
 
   dragEnter(zone) {
+    let validDrop;
     if (!this.canPlay) {
-      this.cardImg.setTint(RED_TINT);
+      validDrop = false;
     } else if (zone.name === 'player') {
-      this.cardImg.setTint(this.target === 'self' ? BLUE_TINT : RED_TINT);
+      validDrop = this.target === 'self';
     } else {
-      this.cardImg.setTint(this.target === 'enemy' ? BLUE_TINT : RED_TINT);
+      validDrop = this.target === 'enemy';
     }
+
+    const tint = validDrop ? BLUE_TINT : RED_TINT;
+    this.cardImg.setTint(tint);
   }
 
   dragLeave() {

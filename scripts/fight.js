@@ -60,7 +60,7 @@ class Fight extends Phaser.Scene {
     this.deck = new Deck(this, 'Draw pile', 65, deckHeight, startingDeck);
     this.deck.shuffle();
 
-    this.discard = new Deck(this, 'Discard\npile', WIDTH - 65, deckHeight);
+    this.discard = new Deck(this, 'Discard pile', WIDTH - 65, deckHeight);
 
     // Hand
     this.hand = new Hand(this, MIDX, HEIGHT - 130);

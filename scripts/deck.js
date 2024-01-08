@@ -12,8 +12,16 @@ class Deck {
     });
 
     game.add.sprite(x, y, 'card');
-    game.add.text(x, y - 36, name, { fontSize: '13px', fill: '#000', align: 'center' }).setOrigin(0.5);
+    game.add.text(x, y - 36, name, {
+      fontSize: '13px', fill: '#000', align: 'center', wordWrap: { width: CARD_WIDTH - 24 }
+    }).setOrigin(0.5);
     this.cardCount = game.add.text(x, y, this.cards.length, { fontSize: '24px', fill: '#000' }).setOrigin(0.5);
+
+    // Create dropzone for dragging and dropping cards into this deck
+    game.add
+      .zone(this.x, this.y, CARD_WIDTH, CARD_HEIGHT)
+      .setRectangleDropZone(CARD_WIDTH, CARD_HEIGHT)
+      .setName(name);
   }
 
   size() {

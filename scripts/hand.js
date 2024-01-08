@@ -1,8 +1,4 @@
 // Object dealing with cards in the player's hand
-
-const CARD_WIDTH = 96;
-const CARD_HEIGHT = 120;
-
 class Hand {
   constructor(game, x, y) {
     this.game = game;

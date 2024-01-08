@@ -1,6 +1,9 @@
 const WIDTH = 1000;
 const HEIGHT = 500;
 
+const CARD_WIDTH = 108;
+const CARD_HEIGHT = 164;
+
 const MIDX = WIDTH / 2;
 const MIDY = HEIGHT / 2;
 
