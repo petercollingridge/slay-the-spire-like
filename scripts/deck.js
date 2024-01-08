@@ -79,6 +79,7 @@ class Deck {
 
   drop(card) {
     if (this.isValidDrop(card)) {
+      this.game.hand.removeCard(card);
       this.addCard(card);
     } else {
       this.game.hand.reorderHand();

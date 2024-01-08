@@ -75,23 +75,6 @@ class Card {
     this.startY = this.container.y;
   }
 
-  drag() {}
-
-  dragEnter(zone) {
-    let validDrop;
-    if (!this.canPlay) {
-      validDrop = false;
-    } else if (zone.name === 'player') {
-      validDrop = this.target === 'self';
-    } else {
-      validDrop = this.target === 'enemy';
-    }
-
-    const tint = validDrop ? BLUE_TINT : RED_TINT;
-    this.cardImg.setTint(tint);
-    zone.parent.highlight(tint);
-  }
-
   dragEnd() {
     // Return card to hand
     this.removeHighlight();

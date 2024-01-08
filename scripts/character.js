@@ -110,6 +110,7 @@ class Enemy extends Character {
     
     super(game, data, x, y);
     this.type = 'enemy';
+    this.getDropZone();
 
     this.attack = data.attack;
     this.poisonAttack = data.poisonAttack;

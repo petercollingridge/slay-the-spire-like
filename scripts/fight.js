@@ -168,7 +168,6 @@ class Fight extends Phaser.Scene {
   drag(pointer, target, dragX, dragY) {
     target.x = dragX;
     target.y = dragY;
-    target.parent.drag();
   }
 
   dragEnter(pointer, target, dropZone) {
