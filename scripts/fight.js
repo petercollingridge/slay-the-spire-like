@@ -35,12 +35,8 @@ class Fight extends Phaser.Scene {
     this.add.image(MIDX, 400, 'floor');
 
     // Draw Player and Enemy characters
-    this.player = new Character(this, PLAYER_DATA, 200, HEIGHT / 2 - 20);
+    this.player = new Player(this, 200, HEIGHT / 2 - 20);
     this.enemy = new Enemy(this, this.enemyType, 810, HEIGHT / 2 - 10);
-
-    // Add area for cards to be played
-    this.enemy.getDropZone(this, 'enemy');
-    this.player.getDropZone(this, 'player');
 
     this.nextTurnBtn = new Button(
       this,

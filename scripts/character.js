@@ -21,15 +21,13 @@ class Character {
     this.poisonIcon = new Icon(game, iconX + 90, iconY, 'skull', this.poisonAmount);
   }
 
-  getDropZone(game, name) {
-    const dropZone = game.add
+  getDropZone() {
+    const dropZone = this.game.add
       .zone(this.x, this.y, this.img.width, this.img.height)
       .setRectangleDropZone(this.img.width * 1.5, this.img.height * 1.5)
-      .setName(name);
+      .setName(this.type);
 
     dropZone.parent = this;
-
-    return dropZone;
   }
 
   dealDamage(damage) {
@@ -100,8 +98,9 @@ class Enemy extends Character {
     if (!data) {
       console.error(`No data for enemy: ${name}`);
     }
-
+    
     super(game, data, x, y);
+    this.type = 'enemy';
 
     this.attack = data.attack;
     this.poisonAttack = data.poisonAttack;
@@ -121,5 +120,13 @@ class Enemy extends Character {
         player.poison(this.poisonAttack.amount);
       }
     }
+  }
+}
+
+class Player extends Character {
+  constructor(game, x, y) {
+    super(game, PLAYER_DATA, x, y);
+    this.type = 'player';
+    this.getDropZone();
   }
 }
