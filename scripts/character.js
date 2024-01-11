@@ -33,12 +33,68 @@ class Character {
   dealDamage(damage) {
     if (damage > this.shieldStrength) {
       damage -= this.shieldStrength;
+      this.showShieldBlock(this.shieldStrength);
       this.shield(-this.shieldStrength);
+
       const newHealth = Math.max(0, this.health - damage);
       this.setHealth(newHealth);
+      this.showDamage(damage);
     } else {
       this.shield(-damage);
+      this.showShieldBlock(damage);
     }
+  }
+
+  showDamage(damage) {
+    if (!damage) { return; }
+
+    const text = this.game.add.text(this.x, this.y, damage, {
+      font: '40px Impact',
+      fill: '#ffffff'
+    });
+
+    this.game.tweens.add({
+      targets: text,
+      x: '+=0',
+      y: '-=300',
+      alpha: 0,
+      ease: 'cubic.out',
+      duration: 1500,
+      onComplete: function () {
+        text.destroy();
+      }
+    });
+  }
+
+  showShieldBlock(damage) {
+    if (!damage) { return; }
+
+    const x = this.x - this.img.width / 2;
+    const y = this.y - 20;
+
+    const text = this.game.add.text(x, y, damage, {
+      font: '40px Impact',
+      fill: '#ffffff'
+    });
+
+    this.game.tweens.add({
+      targets: text,
+      x: `+=${this.direction * 120 }`,
+      alpha: 0,
+      duration: 1000,
+      ease: 'linear',
+      onComplete: function () {
+        text.destroy();
+      }
+    });
+
+    this.game.tweens.add({
+      targets: text,
+      y: `+=${this.img.height / 2}`,
+      ease: 'Bounce',
+      duration: 1000,
+      yoyo: true
+    });
   }
 
   die() {
@@ -112,6 +168,7 @@ class Enemy extends Character {
     this.type = 'enemy';
     this.getDropZone();
 
+    this.direction = -1;
     this.attack = data.attack;
     this.poisonAttack = data.poisonAttack;
 
@@ -142,6 +199,7 @@ class Player extends Character {
     super(game, PLAYER_DATA, x, y);
     this.type = 'player';
     this.getDropZone();
+    this.direction = 1;
   }
 
   manaBonus(n) {
