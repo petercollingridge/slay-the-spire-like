@@ -115,6 +115,11 @@ const CARD_DATA = {
   }
 };
 
+// Add names as attributes to card for easier look up
+Object.entries(CARD_DATA).forEach(([name, data]) => {
+  data.name = name;
+});
+
 // const startingDeck = {
 //   'Gentle prod': 3,
 //   'Strike': 2,

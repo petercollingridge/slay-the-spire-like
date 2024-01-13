@@ -111,24 +111,24 @@ class Card {
   }
 }
 
-function getCardSprite(game, data, x, y) {
-  const cardImg = game.add.sprite(0, 0, 'card');
-  const image = game.add.sprite(0, -20, data.img);
+function getCardSprite(scene, data, x, y) {
+  const cardImg = scene.add.sprite(0, 0, 'card');
+  const image = scene.add.sprite(0, -20, data.img);
 
-  const cardName = game.add.text(0, 18 - cardImg.height / 2, data.name, {
+  const cardName = scene.add.text(0, 18 - cardImg.height / 2, data.name, {
     fill: '#202030',
     fontFamily: 'Arial',
     fontSize: '12px',
   }).setOrigin(0.5);
 
-  const text = game.add.text(12 - cardImg.width / 2, 18, data.text || '', {
+  const text = scene.add.text(12 - cardImg.width / 2, 18, data.text || '', {
     fill: '#202030',
     fontFamily: 'Arial',
     fontSize: '11px',
     wordWrap: { width: cardImg.width - 24 }
   });
 
-  const container = game.add.container(x, y, [cardImg, image, cardName, text]);
+  const container = scene.add.container(x, y, [cardImg, image, cardName, text]);
   container.setSize(cardImg.width, cardImg.height);
   return container
 }

@@ -103,6 +103,10 @@ class CardChoice extends Choice {
     this.title = 'Choose a new card for your deck';
   }
 
+  getSprite(data, x, y) {
+    return getCardSprite(this, data, x, y);
+  }
+
   makeSelection() {
     // Add chosen card to player's deck
     startingDeck[this.selectedChoice] = (startingDeck[this.selectedChoice] || 0) + 1;
