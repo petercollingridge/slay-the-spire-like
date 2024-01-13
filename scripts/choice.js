@@ -9,38 +9,45 @@ class Choice extends Phaser.Scene {
 
   create() {
     this.add.image(MIDX, MIDY, 'background');
-    this.add.text(MIDX, MIDY - 110, this.title, OPTION_STYLE).setOrigin(0.5);
+    this.add.text(MIDX, MIDY - 144, this.title, OPTION_STYLE).setOrigin(0.5);
 
     this.button = new Button(
       this,
       MIDX,
-      MIDY + 100,
+      MIDY + 140,
       'Select',
       this.makeSelection.bind(this)
     );
 
     this.button.disable();
 
-    const dx = 150;
+    const dx = 180;
     let x = (WIDTH - dx * (this.choices.length - 1)) / 2;
-    const optionY = MIDY - 10;
+    const optionY = MIDY - 5;
 
-    const choiceBoxes = this.choices.map((choice) => {
-      const box = this.add.image(x, optionY, 'rect');
-      const img = this.choiceData[choice].img;
-      this.add.image(x, optionY, img);
+    const choiceImages = this.choices.map((choice) => {
+      const data = this.choiceData[choice];
+      const card = this.getSprite(data, x, optionY);
 
-      box.setInteractive({ useHandCursor: true });
-      box.on('pointerup', () => {
-        choiceBoxes.forEach((box) => box.clearTint());
-        box.setTint(YELLOW_TINT);
+      card.setInteractive({ useHandCursor: true });
+      card.on('pointerup', () => {
+        choiceImages.forEach((box) => box.clearTint());
+        card.setTint(YELLOW_TINT);
         this.selectedChoice = choice;
         this.button.enable();
       });
 
       x += dx;
-      return box;
+      return card;
     });
+  }
+
+  addText(x, y, txt) {
+    this.add.text(x, y, txt, {
+      fill: '#202030',
+      fontFamily: 'Arial',
+      fontSize: '13px',
+    }).setOrigin(0);
   }
 }
 
@@ -49,6 +56,39 @@ class EnemyChoice extends Choice {
     super("EnemyChoice");
     this.choiceData = ENEMY_DATA;
     this.title = 'Choose an enemy to battle';
+  }
+
+  getSprite(data, x, y) {
+    const cardImg = this.add.sprite(x, y, 'card-large');
+    const image = this.add.sprite(x, y - 20, data.img);
+  
+    // Card name
+    this.add.text(x, y - cardImg.height / 2 + 25, data.name, {
+      fill: '#202030',
+      fontFamily: 'Arial',
+      fontSize: '16px',
+    }).setOrigin(0.5);
+  
+    const textX = x - image.width / 2 + 2;
+    let textY = y + 44;
+    const dy = 18;
+
+    this.addText(textX, textY, `Health: ${data.health}`);
+    textY += dy;
+    this.addText(textX, textY, `Attack: ${data.attack}`);
+    textY += dy;
+
+    if (data.shield) {
+      this.addText(textX, textY, `Shield: ${data.shield}`);
+      textY += dy;
+    }
+    if (data.poisonAttack) {
+      const poison = data.poisonAttack;
+      this.addText(textX, textY, `Poison: ${poison.amount} (${poison.chance * 100}%)`);
+      textY += dy;
+    }
+  
+    return cardImg
   }
 
   makeSelection() {

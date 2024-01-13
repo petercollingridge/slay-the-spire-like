@@ -41,12 +41,14 @@ const PLAYER_DATA = {
 const ENEMY_DATA = {
   minotaur: {
     img: 'enemy-2',
+    name: 'Minotaur',
     health: 64,
     attack: 8,
     shield: 16,
   },
   poisonDemon: {
     img: 'enemy-4',
+    name: 'Poison demon',
     health: 64,
     attack: 4,
     poisonAttack: {
@@ -56,11 +58,13 @@ const ENEMY_DATA = {
   },
   spikey: {
     img: 'enemy-3',
+    name: 'Spike',
     health: 48,
     attack: 12,
   },
   yeti: {
     img: 'enemy-1',
+    name: 'Yeti',
     health: 120,
     attack: 5,
   },

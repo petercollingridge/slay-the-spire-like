@@ -9,26 +9,11 @@ class Card {
     this.castCount = 0;
 
     // Create a sprite and text
-    this.cardImg = game.add.sprite(0, 0, 'card');
-    const image = game.add.sprite(0, -20, data.img);
-
-    const cardName = game.add.text(0, 18 - this.cardImg.height / 2, name, {
-      fill: '#202030',
-      fontFamily: 'Arial',
-      fontSize: '12px',
-    }).setOrigin(0.5);
-
-    const text = game.add.text(12 - this.cardImg.width / 2, 18, data.text || '', {
-      fill: '#202030',
-      fontFamily: 'Arial',
-      fontSize: '11px',
-      wordWrap: { width: this.cardImg.width - 24 }
-    });
-
-    this.container = game.add.container(60, HEIGHT - 80, [this.cardImg, image, cardName, text]);
+    this.container = getCardSprite(game, data, 60, HEIGHT - 80);
     this.container.parent = this;
+    this.cardImg = this.container.list[0];
 
-    this.container.setSize(this.cardImg.width, this.cardImg.height);
+    // Make card draggable
     this.container.setInteractive();
     game.input.setDraggable(this.container);
     this.container.setVisible(false);
@@ -124,4 +109,26 @@ class Card {
       this.game.discard.addCard(this);
     }
   }
+}
+
+function getCardSprite(game, data, x, y) {
+  const cardImg = game.add.sprite(0, 0, 'card');
+  const image = game.add.sprite(0, -20, data.img);
+
+  const cardName = game.add.text(0, 18 - cardImg.height / 2, data.name, {
+    fill: '#202030',
+    fontFamily: 'Arial',
+    fontSize: '12px',
+  }).setOrigin(0.5);
+
+  const text = game.add.text(12 - cardImg.width / 2, 18, data.text || '', {
+    fill: '#202030',
+    fontFamily: 'Arial',
+    fontSize: '11px',
+    wordWrap: { width: cardImg.width - 24 }
+  });
+
+  const container = game.add.container(x, y, [cardImg, image, cardName, text]);
+  container.setSize(cardImg.width, cardImg.height);
+  return container
 }

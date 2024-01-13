@@ -7,6 +7,5 @@
   </defs>
 
   <rect x="0" y="-250" width="1000" height="1000" fill="url(#red-black-sky)" />
-
-  <rect x="200" y="100" width="600" height="300" fill="#111" rx="20" ry="20" />
+  <rect x="200" y="80" width="600" height="340" fill="#111" rx="20" ry="20" />
 </svg>

@@ -4,16 +4,17 @@ class StartScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('background', 'assets/option_background.svg');
-    this.load.image('rect', 'assets/characters/choice_outline.svg');
+    this.load.image('background', 'assets/option-background.svg');
+    this.load.image('rect', 'assets/characters/choice-outline.svg');
     this.load.image('button', 'assets/button.svg');
+    this.load.image('card', 'assets/cards/card-base.svg');
+    this.load.image('card-large', 'assets/cards/card-base-large.svg');
     
     this.load.image('enemy-1', 'assets/characters/sasquatch.svg');
     this.load.image('enemy-2', 'assets/characters/minotaur.svg');
     this.load.image('enemy-3', 'assets/characters/spikey.svg');
     this.load.image('enemy-4', 'assets/characters/poison-demon.svg');
 
-    this.load.image('card', 'assets/cards/card-base.svg');
     this.load.image('arrow-1', 'assets/cards/arrow-1.svg');
     this.load.image('sword-1', 'assets/cards/sword-1.svg');
     this.load.image('sword-2', 'assets/cards/sword-2.svg');
