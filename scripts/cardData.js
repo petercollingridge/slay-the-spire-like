@@ -1,26 +1,26 @@
 const CARD_DATA = {
-  'Gentle prod': {
+  'Gentle jab': {
     img: 'sword-1',
-    text: 'Deal 1 damage.',
-    effect: { damage: 1 },
-    target: 'enemy',
-  },
-  'Strike': {
-    img: 'sword-2',
     text: 'Deal 2 damage.',
     effect: { damage: 2 },
     target: 'enemy',
   },
-  'Mighty slash': {
-    img: 'sword-3',
+  'Strike': {
+    img: 'sword-2',
     text: 'Deal 3 damage.',
     effect: { damage: 3 },
     target: 'enemy',
   },
-  'Ultimate smash': {
-    img: 'sword-4',
+  'Mighty slash': {
+    img: 'sword-3',
     text: 'Deal 5 damage.',
     effect: { damage: 5 },
+    target: 'enemy',
+  },
+  'Ultimate smash': {
+    img: 'sword-4',
+    text: 'Deal 8 damage.',
+    effect: { damage: 8 },
     target: 'enemy',
   },
   'Poison blade': {
@@ -63,16 +63,16 @@ const CARD_DATA = {
   },
   'Blade vortex': {
     img: 'sword-spinning',
-    text: 'Deal 2 damage for each time this card has been cast.',
+    text: 'Deal 3 damage for each time this card has been cast.',
     effect: {
-      damage: (card) => card.castCount * 2
+      damage: (card) => card.castCount * 3
     },
     target: 'enemy',
   },
   'Quick shot': {
     img: 'arrow-1',
-    text: 'Deal 2 damage and draw a card.',
-    effect: { damage: 2, draw: 1 },
+    text: 'Deal 2 damage and draw 2 cards.',
+    effect: { damage: 2, draw: 2 },
     target: 'enemy',
   },
   'Drain life': {
@@ -89,21 +89,27 @@ const CARD_DATA = {
   },
   'Heal': {
     img: 'heart',
-    text: 'Heal 8.',
-    effect: { heal: 8 },
+    text: 'Heal 10.',
+    effect: { heal: 10 },
     target: 'self',
   },
-  'Shield': {
+  'Basic shield': {
     img: 'shield',
     text: 'Shield 4.',
     effect: { shield: 4 },
     target: 'self',
   },
-  'Magic shield': {
+  'Tough shield': {
+    img: 'shield-2',
+    text: 'Shield 8.',
+    effect: { shield: 8 },
+    target: 'self',
+  },
+  'Arcane shield': {
     img: 'shield-magic',
-    text: 'Shield 2 for each card in hand.',
+    text: 'Shield 3 for each card in hand.',
     effect: {
-      shield: (game) => 2 * game.hand.cards.length
+      shield: (card) => 2 * card.game.hand.cards.length
     },
     target: 'self',
   },
@@ -121,12 +127,12 @@ Object.entries(CARD_DATA).forEach(([name, data]) => {
 });
 
 const startingDeck = {
-  'Gentle prod': 3,
+  'Gentle jab': 3,
   'Strike': 2,
   'Mighty slash': 2,
   'Prepare': 1,
   'Heal': 1,
-  'Shield': 1,
+  'Basic shield': 1,
 };
 
 // const startingDeck = {

@@ -27,6 +27,12 @@ const IMPACT_STYLE = {
   fontSize: '80px',
 };
 
+const CIRCLE_NUM_STYLE = {
+  fill: '#202030',
+  fontFamily: 'Arial',
+  fontSize: '13px',
+};
+
 const FIGHT_STYLE = {
   fill: '#111',
   fontFamily: 'Arial',
@@ -42,9 +48,12 @@ const ENEMY_DATA = {
   ghost: {
     img: 'enemy-5',
     name: 'Ghost',
-    health: 64,
-    attack: 8,
-    shield: 16,
+    health: 30,
+    actions: [
+      { damage: 6, heal: 2 },
+      { damage: 4, heal: 4 },
+      { heal: 8 },
+    ]
   },
   minotaur: {
     img: 'enemy-2',
@@ -61,7 +70,7 @@ const ENEMY_DATA = {
     name: 'Poison demon',
     health: 64,
     actions: [
-      { damage: 4 },
+      { damage: 6 },
       { damage: 2, poison: 1 },
       { poison: 2 },
     ],
@@ -71,9 +80,9 @@ const ENEMY_DATA = {
     name: 'Spike',
     health: 40,
     actions: [
-      { damage: 16 },
-      { damage: 12 },
-      { damage: 8 },
+      { damage: 15 },
+      { damage: 10 },
+      { damage: 5 },
     ]
   },
   yeti: {

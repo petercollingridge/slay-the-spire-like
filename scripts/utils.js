@@ -15,8 +15,7 @@ function getCardsToWin(n) {
 }
 
 function getMonstersToFight(n) {
-  const allMonsters = ['minotaur', 'spikey', 'yeti', 'poisonDemon'];
-  return getRandN(allMonsters, n);
+  return getRandN(Object.keys(ENEMY_DATA).slice(), n);
 }
 
 function getCardValue(valueOrFunction, game) {

@@ -12,9 +12,10 @@ class Character {
     this.healthTxt = game.add.text(x, txtY, '', txtStyle).setOrigin(0.5, 1);
     this.setHealth(data.health);
 
-    this.shieldStrength = data.shield || 0;
     const iconX = x - this.img.width / 2 + 10;
     const iconY = y + this.img.height / 2 + 10;
+
+    this.shieldStrength = 0;
     this.shieldIcon = new Icon(game, iconX, iconY, 'shield', this.shieldStrength);
 
     this.poisonAmount = 0;
@@ -51,6 +52,27 @@ class Character {
     const text = this.game.add.text(this.x, this.y, damage, {
       font: '40px Impact',
       fill: '#ffffff'
+    });
+
+    this.game.tweens.add({
+      targets: text,
+      x: '+=0',
+      y: '-=300',
+      alpha: 0,
+      ease: 'cubic.out',
+      duration: 1500,
+      onComplete: function () {
+        text.destroy();
+      }
+    });
+  }
+
+  showHeal(damage) {
+    if (!damage) { return; }
+
+    const text = this.game.add.text(this.x, this.y, damage, {
+      font: '40px Impact',
+      fill: '#0000dd'
     });
 
     this.game.tweens.add({
@@ -103,9 +125,10 @@ class Character {
     this.game.characterDies();
   }
 
-  heal(n) {
-    const newHealth = Math.min(this.maxHealth, this.health + n);
+  heal(amount) {
+    const newHealth = Math.min(this.maxHealth, this.health + amount);
     this.setHealth(newHealth);
+    this.showHeal(amount);
   }
 
   poison(n) {
@@ -181,12 +204,17 @@ class Enemy extends Character {
 
     if (this.health > 0) {
       const currentAction = getRand(this.actions);
-      const actions = ['damage', 'heal', 'poison', 'shield'];
+      console.log(currentAction)
 
-      actions.forEach((actionName) => {
-        const actionValue = currentAction[actionName];
-        if (actionValue) {
-          player[actionName](actionValue);
+      Object.entries(currentAction).forEach(([name, value]) => {
+        if (name === 'damage') {
+          player.damage(value);
+        } else if (name === 'heal') {
+          this.heal(value);
+        } else if (name === 'poison') {
+          player.poison(value);
+        } else if (name === 'shield') {
+          this.shield(value);
         }
       })
     }

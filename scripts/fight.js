@@ -152,6 +152,7 @@ class Fight extends Phaser.Scene {
     if (this.hand.size() > END_HAND_SIZE) {
       this.nextTurnBtn.hide();
       this.discarding = true;
+      this.discardMsg.visible = true;
       const n = this.hand.size() - END_HAND_SIZE;
       const txt = n === 1 ? 'a card' : `${n} cards`;
       this.discardMsg.setText('Discard ' + txt);
