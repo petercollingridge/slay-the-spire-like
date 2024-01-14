@@ -28,7 +28,7 @@ const IMPACT_STYLE = {
 };
 
 const CIRCLE_NUM_STYLE = {
-  fill: '#202030',
+  fill: '#fff',
   fontFamily: 'Arial',
   fontSize: '13px',
 };

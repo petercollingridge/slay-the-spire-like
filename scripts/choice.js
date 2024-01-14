@@ -78,19 +78,18 @@ class EnemyChoice extends Choice {
       fill: '#202030',
       fontFamily: 'Arial',
       fontSize: `${fontSize}px`,
-      wordWrap: { width: 40 }
     }).setOrigin(0.5);
   
     // Health
-    let textY = y - cardImg.height / 2 + 26;
-    this.add.text(x - image.width / 2 + 10, textY, data.health, CIRCLE_NUM_STYLE).setOrigin(0.5);
+    let textY = y - cardImg.height / 2 + 22;
+    this.add.text(x - image.width / 2 + 8, textY, data.health, CIRCLE_NUM_STYLE).setOrigin(0.5);
 
     // Level
-    this.add.text(x + image.width / 2 - 10, textY, data.level || 1, CIRCLE_NUM_STYLE).setOrigin(0.5);
+    this.add.text(x + image.width / 2 - 7, textY, data.level || 1, CIRCLE_NUM_STYLE).setOrigin(0.5);
 
     // Show enemy actions
-    const textX = x - image.width / 2 + 2;
-    textY = y + 48;
+    const textX = x - image.width / 2;
+    textY = y + 50;
     const dy = 16;
 
     data.actions.forEach((action) => {
