@@ -38,18 +38,18 @@ const CARD_DATA = {
   },
   'Fever': {
     img: 'sickness',
-    text: 'Deal 3 damage for every poison. Remove 1 poison.',
+    text: 'Deal 2 damage for every poison. Remove 1 poison.',
     effect: {
-      damage: (card) => 3 * card.game.enemy.poisonAmount,
+      damage: (card) => 2 * card.game.enemy.poisonAmount,
       poison: -1
     },
     target: 'enemy',
   },
   'Arcane sword': {
     img: 'sword-magic',
-    text: 'Deal 1 damage for each card in hand.',
+    text: 'Deal 2 damage for each card in hand.',
     effect: {
-      damage: (card) => card.game.hand.cards.length
+      damage: (card) => 2 * card.game.hand.cards.length
     },
     target: 'enemy',
   },

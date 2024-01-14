@@ -88,7 +88,7 @@ class EnemyChoice extends Choice {
       textY += dy;
     }
   
-    return cardImg
+    return cardImg;
   }
 
   makeSelection() {
@@ -104,7 +104,8 @@ class CardChoice extends Choice {
   }
 
   getSprite(data, x, y) {
-    return getCardSprite(this, data, x, y);
+    const card = getCardSprite(this, data, x, y);
+    return card.list[0];
   }
 
   makeSelection() {
