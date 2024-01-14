@@ -81,7 +81,7 @@ class Card {
 
     if (this.effect.damage) {
       const value = getCardValue(this.effect.damage, this);
-      this.game.enemy.dealDamage(value);
+      this.game.enemy.damage(value);
     }
     if (this.effect.draw) {
       const value = getCardValue(this.effect.draw, this);

@@ -46,7 +46,7 @@ class Choice extends Phaser.Scene {
     this.add.text(x, y, txt, {
       fill: '#202030',
       fontFamily: 'Arial',
-      fontSize: '13px',
+      fontSize: '12px',
     }).setOrigin(0);
   }
 }
@@ -70,23 +70,17 @@ class EnemyChoice extends Choice {
     }).setOrigin(0.5);
   
     const textX = x - image.width / 2 + 2;
-    let textY = y + 44;
-    const dy = 18;
+    let textY = y + 40;
+    const dy = 16;
 
     this.addText(textX, textY, `Health: ${data.health}`);
     textY += dy;
-    this.addText(textX, textY, `Attack: ${data.attack}`);
-    textY += dy;
 
-    if (data.shield) {
-      this.addText(textX, textY, `Shield: ${data.shield}`);
+    data.actions.forEach((action) => {
+      const str = Object.entries(action).map(([key, value]) => `${capitalise(key)}: ${value}`).join('; ')
+      this.addText(textX, textY, str);
       textY += dy;
-    }
-    if (data.poisonAttack) {
-      const poison = data.poisonAttack;
-      this.addText(textX, textY, `Poison: ${poison.amount} (${poison.chance * 100}%)`);
-      textY += dy;
-    }
+    })
   
     return cardImg;
   }

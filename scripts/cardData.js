@@ -120,21 +120,21 @@ Object.entries(CARD_DATA).forEach(([name, data]) => {
   data.name = name;
 });
 
-// const startingDeck = {
-//   'Gentle prod': 3,
-//   'Strike': 2,
-//   'Mighty slash': 2,
-//   'Prepare': 1,
-//   'Heal': 1,
-//   'Shield': 1,
-// };
-
 const startingDeck = {
-  'Poison blade': 3,
-  'Toxic bloom': 1,
-  'Fever': 1,
+  'Gentle prod': 3,
+  'Strike': 2,
   'Mighty slash': 2,
   'Prepare': 1,
   'Heal': 1,
   'Shield': 1,
 };
+
+// const startingDeck = {
+//   'Poison blade': 3,
+//   'Toxic bloom': 1,
+//   'Fever': 1,
+//   'Mighty slash': 2,
+//   'Prepare': 1,
+//   'Heal': 1,
+//   'Shield': 1,
+// };

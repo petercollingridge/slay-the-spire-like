@@ -30,7 +30,7 @@ class Character {
     dropZone.parent = this;
   }
 
-  dealDamage(damage) {
+  damage(damage) {
     if (damage > this.shieldStrength) {
       damage -= this.shieldStrength;
       this.showShieldBlock(this.shieldStrength);
@@ -130,7 +130,7 @@ class Character {
 
   startTurn() {
     if (this.poisonAmount) {
-      this.dealDamage(this.poisonAmount);
+      this.damage(this.poisonAmount);
     }
   }
 
@@ -169,23 +169,26 @@ class Enemy extends Character {
     this.getDropZone();
 
     this.direction = -1;
-    this.attack = data.attack;
-    this.poisonAttack = data.poisonAttack;
+    this.actions = data.actions;
 
     const iconX = x - this.img.width / 2 + 60;
     const iconY = y + this.img.height / 2 + 10;
-    const icon = new Icon(game, iconX, iconY, 'sword-1', this.attack);
+    // const icon = new Icon(game, iconX, iconY, 'sword-1', this.attack);
   }
 
   turn(player) {
     this.startTurn();
 
     if (this.health > 0) {
-      player.dealDamage(this.attack);
+      const currentAction = getRand(this.actions);
+      const actions = ['damage', 'heal', 'poison', 'shield'];
 
-      if (this.poisonAttack && Math.random() < this.poisonAttack.chance) {
-        player.poison(this.poisonAttack.amount);
-      }
+      actions.forEach((actionName) => {
+        const actionValue = currentAction[actionName];
+        if (actionValue) {
+          player[actionName](actionValue);
+        }
+      })
     }
   }
 

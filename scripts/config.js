@@ -39,33 +39,51 @@ const PLAYER_DATA = {
 };
 
 const ENEMY_DATA = {
-  minotaur: {
-    img: 'enemy-2',
-    name: 'Minotaur',
+  ghost: {
+    img: 'enemy-5',
+    name: 'Ghost',
     health: 64,
     attack: 8,
     shield: 16,
+  },
+  minotaur: {
+    img: 'enemy-2',
+    name: 'Minotaur',
+    health: 80,
+    actions: [
+      { damage: 8 },
+      { shield: 8 },
+      { damage: 4, shield: 4 },
+    ],
   },
   poisonDemon: {
     img: 'enemy-4',
     name: 'Poison demon',
     health: 64,
-    attack: 4,
-    poisonAttack: {
-      chance: 0.5,
-      amount: 2,
-    },
+    actions: [
+      { damage: 4 },
+      { damage: 2, poison: 1 },
+      { poison: 2 },
+    ],
   },
   spikey: {
     img: 'enemy-3',
     name: 'Spike',
-    health: 48,
-    attack: 12,
+    health: 40,
+    actions: [
+      { damage: 16 },
+      { damage: 12 },
+      { damage: 8 },
+    ]
   },
   yeti: {
     img: 'enemy-1',
     name: 'Yeti',
     health: 120,
-    attack: 5,
+    actions: [
+      { damage: 5 },
+      { shield: 2 },
+      { heal: 10 },
+    ]
   },
 };
