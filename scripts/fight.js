@@ -4,6 +4,7 @@ class Fight extends Phaser.Scene {
   }
 
   init(data) {
+    // TODO: Needs to include levelled up data
     this.enemyType = data.enemy;
   }
 
@@ -79,6 +80,14 @@ class Fight extends Phaser.Scene {
     if (this.player.dead) {
       this.gameOver();
     } else if (this.enemy.dead) {
+      const enemyData = ENEMY_DATA[this.enemyType];
+      if (enemyData.level > (enemyData.baseLevel || 1)) {
+        // Level up base level
+        enemyData.baseLevel = (enemyData.baseLevel || 1) + 1;
+        enemyData.defeated = 0;
+      } else {
+        enemyData.defeated = (enemyData.defeated || 0) + 1;
+      }
       this.scene.start('CardChoice', { choices: getCardsToWin(3) });
     }
   }

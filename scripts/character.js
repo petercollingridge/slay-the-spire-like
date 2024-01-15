@@ -204,7 +204,6 @@ class Enemy extends Character {
 
     if (this.health > 0) {
       const currentAction = getRand(this.actions);
-      console.log(currentAction)
 
       Object.entries(currentAction).forEach(([name, value]) => {
         if (name === 'damage') {

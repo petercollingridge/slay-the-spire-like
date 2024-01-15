@@ -126,21 +126,21 @@ Object.entries(CARD_DATA).forEach(([name, data]) => {
   data.name = name;
 });
 
+// const startingDeck = {
+//   'Gentle jab': 3,
+//   'Strike': 2,
+//   'Mighty slash': 2,
+//   'Prepare': 1,
+//   'Heal': 1,
+//   'Basic shield': 1,
+// };
+
 const startingDeck = {
-  'Gentle jab': 3,
-  'Strike': 2,
+  'Poison blade': 3,
+  'Toxic bloom': 1,
+  'Fever': 1,
   'Mighty slash': 2,
   'Prepare': 1,
   'Heal': 1,
   'Basic shield': 1,
 };
-
-// const startingDeck = {
-//   'Poison blade': 3,
-//   'Toxic bloom': 1,
-//   'Fever': 1,
-//   'Mighty slash': 2,
-//   'Prepare': 1,
-//   'Heal': 1,
-//   'Shield': 1,
-// };

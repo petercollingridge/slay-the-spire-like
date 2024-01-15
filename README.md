@@ -8,3 +8,5 @@ I'm using this as a way to learn [Phaser.js](https://phaser.io/).
 Run by viewing index.html in a browser or use a server, e.g. [http-server](https://www.npmjs.com/package/http-server).
 
 To run http-server, run `http-server .`
+
+To run a python server: `python3 -m http.server 8080`

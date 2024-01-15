@@ -73,16 +73,22 @@ class EnemyChoice extends Choice {
   
     // Card name
     const fontSize = Math.min(16, Math.ceil(144 / (data.name.length + 2)));
-    console.log(fontSize, data.name);
     this.add.text(x, y - cardImg.height / 2 + 26, data.name, {
       fill: '#202030',
       fontFamily: 'Arial',
       fontSize: `${fontSize}px`,
     }).setOrigin(0.5);
   
+    // Get level for this specific enemy
+    const pHigherLevel = (data.defeated || 0) / (1 + (data.defeated || 0));
+    data.level = (data.baseLevel || 1) + (Math.random() < pHigherLevel ? 1 : 0);
+
+    // Get data for enemy of this level
+    const enemyData = getEnemyData(data, data.level);
+
     // Health
     let textY = y - cardImg.height / 2 + 22;
-    this.add.text(x - image.width / 2 + 8, textY, data.health, CIRCLE_NUM_STYLE).setOrigin(0.5);
+    this.add.text(x - image.width / 2 + 8, textY, enemyData.health, CIRCLE_NUM_STYLE).setOrigin(0.5);
 
     // Level
     this.add.text(x + image.width / 2 - 7, textY, data.level || 1, CIRCLE_NUM_STYLE).setOrigin(0.5);
@@ -92,7 +98,7 @@ class EnemyChoice extends Choice {
     textY = y + 50;
     const dy = 16;
 
-    data.actions.forEach((action) => {
+    enemyData.actions.forEach((action) => {
       const str = Object.entries(action).map(([key, value]) => `${capitalise(key)}: ${value}`).join('; ')
       this.addText(textX, textY, str);
       textY += dy;
