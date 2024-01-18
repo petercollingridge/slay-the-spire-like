@@ -20,6 +20,8 @@ class Character {
 
     this.poisonAmount = 0;
     this.poisonIcon = new Icon(game, iconX + 90, iconY, 'skull', this.poisonAmount);
+
+    this.damageMultiplier = 1;
   }
 
   getDropZone() {
@@ -32,6 +34,7 @@ class Character {
   }
 
   damage(damage) {
+    damage *= this.damageMultiplier;
     if (damage > this.shieldStrength) {
       damage -= this.shieldStrength;
       this.showShieldBlock(this.shieldStrength);
@@ -44,6 +47,9 @@ class Character {
       this.shield(-damage);
       this.showShieldBlock(damage);
     }
+    // Reset damage multiplier
+    // TODO: do this nicely with events
+    this.damageMultiplier = 1;
   }
 
   showDamage(damage) {
@@ -180,12 +186,14 @@ class Character {
 }
 
 class Enemy extends Character {
-  constructor(game, name, x, y) {
-    const data = ENEMY_DATA[name];
+  constructor(game, name, level, x, y) {
+    const baseData = ENEMY_DATA[name];
 
-    if (!data) {
+    if (!baseData) {
       console.error(`No data for enemy: ${name}`);
     }
+
+    const data = getEnemyData(baseData, level);
     
     super(game, data, x, y);
     this.type = 'enemy';

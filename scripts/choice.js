@@ -29,11 +29,11 @@ class Choice extends Phaser.Scene {
       const data = this.choiceData[choice];
       const card = this.getSprite(data, x, optionY);
 
-      card.setInteractive({ useHandCursor: true });
-      card.on('pointerup', () => {
-        choiceImages.forEach((box) => box.clearTint());
-        card.setTint(YELLOW_TINT);
-        this.selectedChoice = choice;
+      card.img.setInteractive({ useHandCursor: true });
+      card.img.on('pointerup', () => {
+        choiceImages.forEach((box) => box.img.clearTint());
+        card.img.setTint(YELLOW_TINT);
+        this.selectedChoice = { name: choice, data: card.data };
         this.button.enable();
       });
 
@@ -85,6 +85,7 @@ class EnemyChoice extends Choice {
 
     // Get data for enemy of this level
     const enemyData = getEnemyData(data, data.level);
+    enemyData.test = true;
 
     // Health
     let textY = y - cardImg.height / 2 + 22;
@@ -104,11 +105,14 @@ class EnemyChoice extends Choice {
       textY += dy;
     })
   
-    return cardImg;
+    return { img: cardImg, data: enemyData };
   }
 
   makeSelection() {
-    this.scene.start('Fight', { enemy: this.selectedChoice });
+    this.scene.start('Fight', {
+      enemyType: this.selectedChoice.name,
+      enemyLevel: this.selectedChoice.data.level,
+    });
   }
 }
 
@@ -121,12 +125,13 @@ class CardChoice extends Choice {
 
   getSprite(data, x, y) {
     const card = getCardSprite(this, data, x, y);
-    return card.list[0];
+    return { img: card.list[0], data: data.name };
   }
 
   makeSelection() {
     // Add chosen card to player's deck
-    startingDeck[this.selectedChoice] = (startingDeck[this.selectedChoice] || 0) + 1;
+    const cardName = this.selectedChoice.name;
+    startingDeck[cardName] = (startingDeck[cardName] || 0) + 1;
     this.scene.start('EnemyChoice', { choices: getMonstersToFight(3) });
   }
 }

@@ -75,6 +75,18 @@ const CARD_DATA = {
     effect: { damage: 2, draw: 2 },
     target: 'enemy',
   },
+  'Double damage': {
+    img: 'arrow-2',
+    text: 'Double the amount of damage dealt to enemy this turn.',
+    effect: { 
+      special: (card) => {
+        const enemy = card.game.enemy;
+        enemy.damageMultiplier *= 2;
+      }
+     },
+    target: 'enemy',
+    oneUse: true,
+  },
   'Drain life': {
     img: 'fangs',
     text: 'Deal 2 damage and heal 2.',
@@ -126,21 +138,22 @@ Object.entries(CARD_DATA).forEach(([name, data]) => {
   data.name = name;
 });
 
+const startingDeck = {
+  'Gentle jab': 3,
+  'Strike': 2,
+  'Mighty slash': 2,
+  'Prepare': 1,
+  'Heal': 1,
+  'Basic shield': 1,
+  'Double damage': 1,
+};
+
 // const startingDeck = {
-//   'Gentle jab': 3,
-//   'Strike': 2,
+//   'Poison blade': 3,
+//   'Toxic bloom': 1,
+//   'Fever': 1,
 //   'Mighty slash': 2,
 //   'Prepare': 1,
 //   'Heal': 1,
 //   'Basic shield': 1,
 // };
-
-const startingDeck = {
-  'Poison blade': 3,
-  'Toxic bloom': 1,
-  'Fever': 1,
-  'Mighty slash': 2,
-  'Prepare': 1,
-  'Heal': 1,
-  'Basic shield': 1,
-};

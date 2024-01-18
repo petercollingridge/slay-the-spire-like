@@ -4,8 +4,8 @@ class Fight extends Phaser.Scene {
   }
 
   init(data) {
-    // TODO: Needs to include levelled up data
-    this.enemyType = data.enemy;
+    this.enemyType = data.enemyType;
+    this.enemyLevel = data.enemyLevel;
   }
 
   preload() {
@@ -38,7 +38,7 @@ class Fight extends Phaser.Scene {
 
     // Draw Player and Enemy characters
     this.player = new Player(this, 200, HEIGHT / 2 - 20);
-    this.enemy = new Enemy(this, this.enemyType, 810, HEIGHT / 2 - 10);
+    this.enemy = new Enemy(this, this.enemyType, this.enemyLevel, 810, HEIGHT / 2 - 10);
 
     this.nextTurnBtn = new Button(
       this,

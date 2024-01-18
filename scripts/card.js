@@ -99,6 +99,9 @@ class Card {
       const value = getCardValue(this.effect.shield, this);
       this.game.player.shield(value);
     }
+    if (this.effect.special) {
+      this.effect.special(this);
+    }
     if (this.effect.store) {
       const value = getCardValue(this.effect.store, this);
       this.game.player.manaBonus(value);
