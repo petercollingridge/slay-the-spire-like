@@ -9,11 +9,12 @@ const MIDY = HEIGHT / 2;
 
 const RED_TINT = 0xcc2200;
 const BLUE_TINT = 0x2288dd;
+const GREY_TINT = 0xa8a8a8;
 const YELLOW_TINT = 0xffff88;
 
 const START_HAND_SIZE = 5;
 const END_HAND_SIZE = 4;
-const BASE_MANA = 3;
+const BASE_MANA = 4;
 
 const OPTION_STYLE = {
   fill: '#f8f8f8',

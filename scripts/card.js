@@ -3,6 +3,7 @@ class Card {
     const data = CARD_DATA[name];
 
     this.game = game;
+    this.cost = data.cost;
     this.effect = data.effect;
     this.target = data.target;
     this.oneUse = data.oneUse;
@@ -62,20 +63,20 @@ class Card {
 
   dragEnd() {
     // Return card to hand
-    this.removeHighlight();
+    this.clearTint();
     this.game.hand.reorderHand();
   }
 
-  highlight(tint) {
+  setTint(tint) {
     this.cardImg.setTint(tint);
   }
 
-  removeHighlight() {
+  clearTint() {
     this.cardImg.clearTint();
   }
 
   play() {
-    this.game.spendMana(1);
+    this.game.spendMana(this.cost);
     this.castCount++;
     this.game.hand.removeCard(this);
 

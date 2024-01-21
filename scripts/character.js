@@ -76,7 +76,7 @@ class Character {
   showHeal(damage) {
     if (!damage) { return; }
 
-    const text = this.game.add.text(this.x, this.y, damage, {
+    const text = this.game.add.text(this.x + 20, this.y, damage, {
       font: '40px Impact',
       fill: '#0000dd'
     });
@@ -87,7 +87,7 @@ class Character {
       y: '-=300',
       alpha: 0,
       ease: 'cubic.out',
-      duration: 1500,
+      duration: 2000,
       onComplete: function () {
         text.destroy();
       }
@@ -173,7 +173,7 @@ class Character {
 
   dragEnter(card) {
     const tint = this.isValidDrop(card) ? BLUE_TINT : RED_TINT;
-    card.highlight(tint);
+    card.setTint(tint);
   }
 
   drop(card) {

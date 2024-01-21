@@ -92,6 +92,18 @@ class Hand {
     this.reorderHand();
   }
 
+  showPlayableCards(availableMana) {
+    console.log(availableMana);
+    this.cards.forEach((card) => {
+      console.log(card.cost, availableMana)
+      if (card.cost <= availableMana) {
+        card.clearTint();
+      } else {
+        card.setTint(GREY_TINT);
+      }
+    });
+  }
+
   size() {
     return this.cards.length;
   }

@@ -130,6 +130,7 @@ class Fight extends Phaser.Scene {
   setManaSpent(mana, maxMana = this.maxMana) {
     this.manaSpent = mana;
     this.manaCount.setText(`${mana} / ${maxMana}`);
+    this.hand.showPlayableCards(maxMana - mana);
   }
 
   spendMana(mana) {
@@ -186,7 +187,7 @@ class Fight extends Phaser.Scene {
 
   dragLeave(pointer, target, dropZone) {
     target.parent.cardImg.setTint(YELLOW_TINT);
-    dropZone.parent.removeHighlight();
+    dropZone.parent.clearTint();
   }
   
   dragEnd(pointer, target) {
@@ -194,7 +195,7 @@ class Fight extends Phaser.Scene {
   }
 
   drop(pointer, target, dropZone) {
-    target.parent.removeHighlight();
+    target.parent.clearTint();
     dropZone.parent.drop(target.parent);
   }
 }
