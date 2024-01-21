@@ -52,10 +52,16 @@ class Card {
 
   disable() {
     this.container.disableInteractive();
+    this.setTint(GREY_TINT);
+  }
+
+  enable() {
+    this.container.setInteractive();
+    this.clearTint();
   }
 
   dragStart() {
-    this.canPlay = this.game.manaSpent < this.game.maxMana;
+    this.canPlay = this.cost <= this.game.maxMana - this.game.manaSpent;
     // Save card's current position so we can return it if the card is cancelled
     this.startX = this.container.x;
     this.startY = this.container.y;
@@ -67,11 +73,19 @@ class Card {
     this.game.hand.reorderHand();
   }
 
+  setPlayability(availableMana) {
+    if (this.cost <= availableMana) {
+      this.enable()
+    } else {
+      this.disable();
+    }
+  }
+
   setTint(tint) {
     this.cardImg.setTint(tint);
   }
 
-  clearTint() {
+  clearTint() { 
     this.cardImg.clearTint();
   }
 

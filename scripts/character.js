@@ -167,13 +167,15 @@ class Character {
     console.log('highlight character');
   }
 
-  removeHighlight() {
+  clearTint() {
     console.log('removeHighlight character');
   }
 
   dragEnter(card) {
-    const tint = this.isValidDrop(card) ? BLUE_TINT : RED_TINT;
-    card.setTint(tint);
+    if (card.canPlay) {      
+      const tint = this.isValidDrop(card) ? BLUE_TINT : RED_TINT;
+      card.setTint(tint);
+    }
   }
 
   drop(card) {

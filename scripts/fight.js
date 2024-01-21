@@ -101,6 +101,7 @@ class Fight extends Phaser.Scene {
   drawCard() {
     const card = this.deck.draw();
     if (card) {
+      card.setPlayability(this.maxMana - this.manaSpent);
       this.hand.addCard(card);
     } else if (this.discard.cards.length) {
       // Shuffle discard pile into the deck
@@ -160,6 +161,7 @@ class Fight extends Phaser.Scene {
   discardPhase() {
     // Discard to four cards
     if (this.hand.size() > END_HAND_SIZE) {
+      this.hand.enable();
       this.nextTurnBtn.hide();
       this.discarding = true;
       this.discardMsg.visible = true;

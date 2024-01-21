@@ -69,6 +69,10 @@ class Hand {
     this.cards.forEach((card) => card.disable());
   }
 
+  enable() {
+    this.cards.forEach((card) => card.enable());
+  }
+
   hide() {
     this.cards.forEach((card) => card.hide());
   }
@@ -93,15 +97,7 @@ class Hand {
   }
 
   showPlayableCards(availableMana) {
-    console.log(availableMana);
-    this.cards.forEach((card) => {
-      console.log(card.cost, availableMana)
-      if (card.cost <= availableMana) {
-        card.clearTint();
-      } else {
-        card.setTint(GREY_TINT);
-      }
-    });
+    this.cards.forEach((card) => card.setPlayability(availableMana));
   }
 
   size() {

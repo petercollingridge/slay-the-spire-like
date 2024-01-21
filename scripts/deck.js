@@ -60,7 +60,7 @@ class Deck {
     this.img.setTint(colour);
   }
 
-  removeHighlight() {
+  clearTint() {
     this.img.clearTint();
   }
 
@@ -84,7 +84,7 @@ class Deck {
       // TODO: this works for discarding a card at the end of the turn, but needs to be more generic
       this.game.endTurn()
     } else {
-      this.removeHighlight();
+      this.clearTint();
       this.game.hand.reorderHand();
     }
   }
