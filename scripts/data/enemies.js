@@ -44,8 +44,8 @@ const ENEMY_DATA = {
     name: 'Yeti',
     health: 120,
     actions: [
-      { damage: 5 },
-      { shield: 2 },
+      { damage: 8 },
+      { damage: 2, shield: 4 },
       { heal: 10 },
     ]
   },
