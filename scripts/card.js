@@ -133,20 +133,27 @@ function getCardSprite(scene, data, x, y) {
   const cardImg = scene.add.sprite(0, 0, 'card');
   const image = scene.add.sprite(0, -20, data.img);
 
-  const cardName = scene.add.text(0, 18 - cardImg.height / 2, data.name, {
+  const headerY = 15 - cardImg.height / 2;
+  const cardName = scene.add.text(5, headerY, data.name, {
     fill: '#202030',
     fontFamily: 'Arial',
     fontSize: '12px',
   }).setOrigin(0.5);
 
-  const text = scene.add.text(12 - cardImg.width / 2, 18, data.text || '', {
+  const cost = scene.add.text(13 - cardImg.width / 2, headerY - 1, data.cost, {
+    fill: '#ffffff',
+    fontFamily: 'Arial',
+    fontSize: '12px',
+  }).setOrigin(0.5);
+
+  const text = scene.add.text(10 - cardImg.width / 2, 18, data.text || '', {
     fill: '#202030',
     fontFamily: 'Arial',
     fontSize: '11px',
-    wordWrap: { width: cardImg.width - 24 }
+    wordWrap: { width: cardImg.width - 20 }
   });
 
-  const container = scene.add.container(x, y, [cardImg, image, cardName, text]);
+  const container = scene.add.container(x, y, [cardImg, image, cost, cardName, text]);
   container.setSize(cardImg.width, cardImg.height);
   return container
 }
