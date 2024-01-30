@@ -10,6 +10,7 @@ class StartScene extends Phaser.Scene {
     this.load.image('card', 'assets/cards/card-2.svg');
     this.load.image('card-large', 'assets/cards/creature-card.svg');
     
+    this.load.image('highlight', 'assets/characters/highlight.svg');
     this.load.image('enemy-1', 'assets/characters/sasquatch.svg');
     this.load.image('enemy-2', 'assets/characters/minotaur.svg');
     this.load.image('enemy-3', 'assets/characters/spikey.svg');
@@ -22,6 +23,7 @@ class StartScene extends Phaser.Scene {
     this.load.image('sword-2', 'assets/cards/sword-2.svg');
     this.load.image('sword-3', 'assets/cards/sword-3.svg');
     this.load.image('sword-4', 'assets/cards/sword-4.svg');
+    this.load.image('sword-clash', 'assets/cards/sword-clash.svg');
     this.load.image('sword-magic', 'assets/cards/sword-magic.svg');
     this.load.image('sword-poison', 'assets/cards/sword-poison.svg');
     this.load.image('sword-spinning', 'assets/cards/sword-spinning.svg');

@@ -134,7 +134,7 @@ function getCardSprite(scene, data, x, y) {
   const image = scene.add.sprite(0, -20, data.img);
 
   const headerY = 15 - cardImg.height / 2;
-  const cardName = scene.add.text(5, headerY, data.name, {
+  const cardName = scene.add.text(7, headerY, data.name, {
     fill: '#202030',
     fontFamily: 'Arial',
     fontSize: '12px',

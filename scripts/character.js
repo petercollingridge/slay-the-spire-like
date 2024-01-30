@@ -3,6 +3,9 @@ class Character {
     this.game = game;
     this.x = x;
     this.y = y;
+
+    this.hightlightImg = game.add.image(x, y, 'highlight');
+    this.hightlightImg.setVisible(false);
     this.img = game.add.image(x, y, data.img);
 
     const txtY = y - this.img.height / 2 + 5;
@@ -164,17 +167,21 @@ class Character {
   }
 
   highlight() {
-    console.log('highlight character');
+    this.hightlightImg.setVisible(true);
+    console.log('highlight')
   }
 
   clearTint() {
-    console.log('removeHighlight character');
+    this.hightlightImg.setVisible(false);
   }
 
   dragEnter(card) {
     if (card.canPlay) {      
-      const tint = this.isValidDrop(card) ? BLUE_TINT : RED_TINT;
-      card.setTint(tint);
+      const valid = this.isValidDrop(card);
+      card.setTint(valid ? BLUE_TINT : RED_TINT);
+      if (valid) {
+        this.highlight();
+      }
     }
   }
 
@@ -184,6 +191,7 @@ class Character {
     } else {
       this.game.hand.reorderHand();
     }
+    this.clearTint();
   }
 }
 

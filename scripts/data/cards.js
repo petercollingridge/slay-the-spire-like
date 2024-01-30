@@ -27,6 +27,14 @@ const CARD_DATA = {
     effect: { damage: 8 },
     target: 'enemy',
   },
+  'Strengthen': {
+    img: 'sword-clash',
+    type: 'boon',
+    text: 'Your attacks deal +2 damage.',
+    cost: 2,
+    effect: { damage: 8 },
+    target: 'self',
+  },
   'Poison blade': {
     img: 'sword-poison',
     text: 'Deal 2 damage and inflict 1 poison.',
@@ -165,6 +173,7 @@ const startingDeck = {
   'Heal': 1,
   'Basic shield': 1,
   'Double damage': 1,
+  'Strengthen': 2,
 };
 
 // const startingDeck = {
