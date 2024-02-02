@@ -89,14 +89,14 @@ class Card {
     this.cardImg.clearTint();
   }
 
-  play() {
+  play(target) {
     this.game.spendMana(this.cost);
     this.castCount++;
     this.game.hand.removeCard(this);
 
     if (this.effect.damage) {
       const value = getCardValue(this.effect.damage, this);
-      this.game.enemy.damage(value);
+      target.damage(value);
     }
     if (this.effect.draw) {
       const value = getCardValue(this.effect.draw, this);
@@ -104,15 +104,15 @@ class Card {
     }
     if (this.effect.heal) {
       const value = getCardValue(this.effect.heal, this);
-      this.game.player.heal(value);
+      target.heal(value);
     }
     if (this.effect.poison) {
       const value = getCardValue(this.effect.poison, this);
-      this.game.enemy.poison(value);
+      target.poison(value);
     }
     if (this.effect.shield) {
       const value = getCardValue(this.effect.shield, this);
-      this.game.player.shield(value);
+      target.shield(value);
     }
     if (this.effect.special) {
       this.effect.special(this);

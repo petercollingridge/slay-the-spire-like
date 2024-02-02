@@ -187,7 +187,7 @@ class Character {
 
   drop(card) {
     if (this.isValidDrop(card)) {
-      card.play();
+      card.play(this);
     } else {
       this.game.hand.reorderHand();
     }
