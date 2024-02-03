@@ -24,7 +24,10 @@ class Character {
     this.poisonAmount = 0;
     this.poisonIcon = new Icon(game, iconX + 90, iconY, 'skull', this.poisonAmount);
 
-    this.damageMultiplier = 1;
+    this.damageMultiplier = 1
+    this.attackBonus = 0;
+
+    this.enchantments = [];
   }
 
   getDropZone() {
@@ -53,6 +56,49 @@ class Character {
     // Reset damage multiplier
     // TODO: do this nicely with events
     this.damageMultiplier = 1;
+  }
+
+  die() {
+    this.dead = true;
+    this.img.setTint(0xff0000);
+    this.game.characterDies();
+  }
+
+  enchant(card) {
+    this.enchantments.push(card);
+    card.effect.enchant(this);
+    card.energy = card.data.energy;
+  }
+
+  disenchant(card) {
+    this.enchantments = this.enchantments.filter((c) => c !== card);
+    card.effect.disenchant(this);
+  }
+
+  heal(amount) {
+    const newHealth = Math.min(this.maxHealth, this.health + amount);
+    this.setHealth(newHealth);
+    this.showHeal(amount);
+  }
+
+  poison(n) {
+    if (!this.shieldStrength) {
+      this.poisonAmount = Math.max(0, this.poisonAmount + n);
+      this.poisonIcon.setValue(this.poisonAmount);
+    }
+  }
+
+  shield(n) {
+    this.shieldStrength += n;
+    this.shieldIcon.setValue(this.shieldStrength);
+  }
+
+  setHealth(n) {
+    this.health = n;
+    this.healthTxt.setText(`${this.health} / ${this.maxHealth}`);
+    if (this.health <= 0) {
+      this.die();
+    }
   }
 
   showDamage(damage) {
@@ -128,39 +174,17 @@ class Character {
     });
   }
 
-  die() {
-    this.dead = true;
-    this.img.setTint(0xff0000);
-    this.game.characterDies();
-  }
-
-  heal(amount) {
-    const newHealth = Math.min(this.maxHealth, this.health + amount);
-    this.setHealth(newHealth);
-    this.showHeal(amount);
-  }
-
-  poison(n) {
-    if (!this.shieldStrength) {
-      this.poisonAmount = Math.max(0, this.poisonAmount + n);
-      this.poisonIcon.setValue(this.poisonAmount);
-    }
-  }
-
-  shield(n) {
-    this.shieldStrength += n;
-    this.shieldIcon.setValue(this.shieldStrength);
-  }
-
-  setHealth(n) {
-    this.health = n;
-    this.healthTxt.setText(`${this.health} / ${this.maxHealth}`);
-    if (this.health <= 0) {
-      this.die();
-    }
-  }
-
   startTurn() {
+    // Reduce the energy of each enchanment by 1
+    // and remove them if their energy reaches 0
+    this.enchantments.forEach((enchantment) => {
+      enchantment.energy--;
+      if (enchantment.energy <= 0) {
+        this.disenchant(enchantment);
+      }
+    })
+
+    // Take damage for each poison
     if (this.poisonAmount) {
       this.damage(this.poisonAmount);
     }
@@ -233,8 +257,10 @@ class Enemy extends Character {
         } else if (name === 'shield') {
           this.shield(value);
         } else if (name === 'curse') {
-          const card = new Card(this.game, 'Curse');
-          this.game.deck.addCard(card);
+          for (let i = 0; i < value; i++) {
+            const card = new Card(this.game, 'Curse');
+            this.game.deck.addCard(card);
+          }
           this.game.deck.shuffle();
         }
       })

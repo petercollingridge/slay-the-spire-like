@@ -2,11 +2,16 @@ class Card {
   constructor(game, name) {
     const data = CARD_DATA[name];
 
+    this.data = data;
     this.game = game;
+
+    // Copy some values from data to make look up easier
     this.cost = data.cost;
     this.effect = data.effect;
     this.target = data.target;
-    this.oneUse = data.oneUse;
+
+    // Keep track of how many times this card was cast during the game
+    // Used for some card effects
     this.castCount = 0;
 
     // Create a sprite and text
@@ -95,7 +100,8 @@ class Card {
     this.game.hand.removeCard(this);
 
     if (this.effect.damage) {
-      const value = getCardValue(this.effect.damage, this);
+      let value = getCardValue(this.effect.damage, this);
+      value += this.game.player.attackBonus;
       target.damage(value);
     }
     if (this.effect.draw) {
@@ -121,9 +127,12 @@ class Card {
       const value = getCardValue(this.effect.store, this);
       this.game.player.manaBonus(value);
     }
+    if (this.effect.enchant) {
+      target.enchant(this);
+    }
 
     // Add card to discard pile after it's effect is resolved, unless it's one use only
-    if (!this.oneUse) {
+    if (!this.data.oneUse) {
       this.game.discard.addCard(this);
     }
   }
