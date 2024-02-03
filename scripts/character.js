@@ -232,6 +232,10 @@ class Enemy extends Character {
           player.poison(value);
         } else if (name === 'shield') {
           this.shield(value);
+        } else if (name === 'curse') {
+          const card = new Card(this.game, 'Curse');
+          this.game.deck.addCard(card);
+          this.game.deck.shuffle();
         }
       })
     }

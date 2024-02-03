@@ -19,6 +19,7 @@ class StartScene extends Phaser.Scene {
 
     this.load.image('arrow-1', 'assets/cards/arrow-1.svg');
     this.load.image('arrow-2', 'assets/cards/arrow-2.svg');
+    this.load.image('curse', 'assets/cards/curse.svg');
     this.load.image('sword-1', 'assets/cards/sword-1.svg');
     this.load.image('sword-2', 'assets/cards/sword-2.svg');
     this.load.image('sword-3', 'assets/cards/sword-3.svg');

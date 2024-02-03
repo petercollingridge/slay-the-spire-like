@@ -27,14 +27,14 @@ const CARD_DATA = {
     effect: { damage: 8 },
     target: 'enemy',
   },
-  'Strengthen': {
-    img: 'sword-clash',
-    type: 'boon',
-    text: 'Your attacks deal +2 damage.',
-    cost: 2,
-    effect: { damage: 8 },
-    target: 'self',
-  },
+  // 'Strengthen': {
+  //   img: 'sword-clash',
+  //   type: 'boon',
+  //   text: 'Your attacks deal +2 damage.',
+  //   cost: 2,
+  //   effect: { damage: 8 },
+  //   target: 'self',
+  // },
   'Poison blade': {
     img: 'sword-poison',
     text: 'Deal 2 damage and inflict 1 poison.',
@@ -156,6 +156,13 @@ const CARD_DATA = {
     cost: 1,
     effect: { store: 1 },
     target: 'self',
+  },
+  'Curse': {
+    img: 'curse',
+    text: 'Take 3 damage.',
+    cost: 1,
+    effect: { damage: 3 },
+    target: 'self',
   }
 };
 
@@ -173,7 +180,7 @@ const startingDeck = {
   'Heal': 1,
   'Basic shield': 1,
   'Double damage': 1,
-  'Strengthen': 2,
+  // 'Strengthen': 2,
 };
 
 // const startingDeck = {

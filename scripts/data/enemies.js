@@ -6,7 +6,7 @@ const ENEMY_DATA = {
     actions: [
       { damage: 6, heal: 2 },
       { damage: 4, heal: 4 },
-      { heal: 8 },
+      { curse: 1 },
     ]
   },
   minotaur: {
