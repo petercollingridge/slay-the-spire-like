@@ -127,12 +127,11 @@ class Card {
       const value = getCardValue(this.effect.store, this);
       this.game.player.manaBonus(value);
     }
+
     if (this.effect.enchant) {
       target.enchant(this);
-    }
-
-    // Add card to discard pile after it's effect is resolved, unless it's one use only
-    if (!this.data.oneUse) {
+    } else if (!this.data.oneUse) {
+      // Add card to discard pile after it's effect is resolved, unless it's one use only
       this.game.discard.addCard(this);
     }
   }
@@ -143,17 +142,9 @@ function getCardSprite(scene, data, x, y) {
   const image = scene.add.sprite(0, -20, data.img);
 
   const headerY = 15 - cardImg.height / 2;
-  const cardName = scene.add.text(7, headerY, data.name, {
-    fill: '#202030',
-    fontFamily: 'Arial',
-    fontSize: '12px',
-  }).setOrigin(0.5);
+  const cardName = scene.add.text(7, headerY, data.name, CARD_NAME_STYLE).setOrigin(0.5);
 
-  const cost = scene.add.text(13 - cardImg.width / 2, headerY - 1, data.cost, {
-    fill: '#ffffff',
-    fontFamily: 'Arial',
-    fontSize: '12px',
-  }).setOrigin(0.5);
+  const cost = scene.add.text(13 - cardImg.width / 2, headerY - 1, data.cost, CIRCLE_NUM_STYLE).setOrigin(0.5);
 
   const text = scene.add.text(10 - cardImg.width / 2, 18, data.text || '', {
     fill: '#202030',

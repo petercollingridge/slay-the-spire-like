@@ -65,14 +65,18 @@ class Character {
   }
 
   enchant(card) {
-    this.enchantments.push(card);
     card.effect.enchant(this);
-    card.energy = card.data.energy;
+
+    // Create icon
+    const y = this.y + this.img.height / 2 - (this.enchantments.length + 0.5) * 28;
+    const enchantment = new Enchantment(this.game, this.x, y, card);
+    this.enchantments.push(enchantment);
   }
 
   disenchant(card) {
     this.enchantments = this.enchantments.filter((c) => c !== card);
     card.effect.disenchant(this);
+    this.game.discard.addCard(card);
   }
 
   heal(amount) {
@@ -175,10 +179,11 @@ class Character {
   }
 
   startTurn() {
-    // Reduce the energy of each enchanment by 1
+    // Reduce the energy of each enchantment by 1
     // and remove them if their energy reaches 0
     this.enchantments.forEach((enchantment) => {
-      enchantment.energy--;
+      console.log(enchantment)
+      enchantment.setValue(enchantment.energy - 1);
       if (enchantment.energy <= 0) {
         this.disenchant(enchantment);
       }

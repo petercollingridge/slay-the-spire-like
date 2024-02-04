@@ -40,6 +40,12 @@ const FIGHT_STYLE = {
   fontSize: '20px',
 };
 
+const CARD_NAME_STYLE = {
+  fill: '#202030',
+  fontFamily: 'Arial',
+  fontSize: '12px',
+};
+
 const PLAYER_DATA = {
   img: 'player',
   health: 60,

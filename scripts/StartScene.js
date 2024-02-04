@@ -7,7 +7,8 @@ class StartScene extends Phaser.Scene {
     this.load.image('background', 'assets/option-background.svg');
     this.load.image('rect', 'assets/characters/choice-outline.svg');
     this.load.image('button', 'assets/button.svg');
-    this.load.image('card', 'assets/cards/card-2.svg');
+    this.load.image('card', 'assets/cards/card-base.svg');
+    this.load.image('card-small', 'assets/cards/card-short.svg');
     this.load.image('card-large', 'assets/cards/creature-card.svg');
     
     this.load.image('highlight', 'assets/characters/highlight.svg');
