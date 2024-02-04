@@ -41,6 +41,14 @@ class Character {
 
   damage(damage) {
     damage *= this.damageMultiplier;
+
+    for (let i = 0; i < this.enchantments.length; i++) {
+      const enchanment = this.enchantments[i];
+      if (enchanment.card.data.type === 'shield') {
+
+      }
+    }
+
     if (damage > this.shieldStrength) {
       damage -= this.shieldStrength;
       this.showShieldBlock(this.shieldStrength);
@@ -53,6 +61,7 @@ class Character {
       this.shield(-damage);
       this.showShieldBlock(damage);
     }
+
     // Reset damage multiplier
     // TODO: do this nicely with events
     this.damageMultiplier = 1;
@@ -68,28 +77,12 @@ class Character {
     card.effect.enchant(this);
 
     // Create icon
-    const y = this.y + this.img.height / 2 - (this.enchantments.length + 0.5) * 28;
-    const enchantment = new Enchantment(this.game, this.x, y, card);
+    const enchantment = new Enchantment(this, card);
     this.enchantments.push(enchantment);
   }
 
   disenchant(enchantment) {
-    // Remove from list of enchanments
-    const index = this.enchantments.indexOf(enchantment);
-    this.enchantments.splice(index, 1);
-    enchantment.container.destroy();
-
-    // Move later enchanments down;
-    for (let i = index; i < this.enchantments.length; i++) {
-      const y = this.y + this.img.height / 2 - (index + 0.5) * 28;
-      this.enchantments[i].moveTo(y);
-    }
-
-    // Remove effect
-    enchantment.disenchant(this);
-
-    // Move card to discard pile
-    this.game.discard.addCard(enchantment.card);
+    enchantment.disenchant();
   }
 
   heal(amount) {
@@ -197,9 +190,6 @@ class Character {
     for (let i = this.enchantments.length - 1; i >= 0; i--)  {
       const enchantment = this.enchantments[i];
       enchantment.setValue(enchantment.energy - 1);
-      if (enchantment.energy <= 0) {
-        this.disenchant(enchantment);
-      }
     }
 
     // Take damage for each poison
@@ -276,9 +266,8 @@ class Enemy extends Character {
         } else if (name === 'curse') {
           for (let i = 0; i < value; i++) {
             const card = new Card(this.game, 'Curse');
-            this.game.deck.addCard(card);
+            this.game.discard.addCard(card);
           }
-          this.game.deck.shuffle();
         }
       })
     }

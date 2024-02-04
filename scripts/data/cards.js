@@ -33,7 +33,7 @@ const CARD_DATA = {
   },
   'Strengthen': {
     img: 'sword-clash',
-    text: 'Boon: 2. Your attacks deal +2 damage.',
+    text: 'Boon 2. Your attacks deal +2 damage.',
     cost: 2,
     energy: 2,
     effect: {
@@ -42,6 +42,37 @@ const CARD_DATA = {
     },
     target: 'self',
     rarity: 2,
+  },
+  'Basic shield': {
+    img: 'shield',
+    text: 'Boon 5. Damage reduces shield energy instead of health',
+    cost: 1,
+    energy: 5,
+    type: 'shield',
+    effect: {
+      enchant: () => {},
+      disenchant: () => {},
+    },
+    target: 'self',
+    rarity: 1,
+  },
+  'Tough shield': {
+    img: 'shield-2',
+    text: 'Shield 8.',
+    cost: 1,
+    effect: { shield: 8 },
+    target: 'self',
+    rarity: 2,
+  },
+  'Arcane shield': {
+    img: 'shield-magic',
+    text: 'Shield 3 for each card in hand.',
+    cost: 2,
+    effect: {
+      shield: (card) => 2 * card.game.hand.cards.length
+    },
+    target: 'self',
+    rarity: 3,
   },
   'Poison blade': {
     img: 'sword-poison',
@@ -145,32 +176,6 @@ const CARD_DATA = {
     effect: { heal: 8 },
     target: 'self',
     rarity: 1,
-  },
-  'Basic shield': {
-    img: 'shield',
-    text: 'Shield 4.',
-    cost: 1,
-    effect: { shield: 4 },
-    target: 'self',
-    rarity: 1,
-  },
-  'Tough shield': {
-    img: 'shield-2',
-    text: 'Shield 8.',
-    cost: 1,
-    effect: { shield: 8 },
-    target: 'self',
-    rarity: 2,
-  },
-  'Arcane shield': {
-    img: 'shield-magic',
-    text: 'Shield 3 for each card in hand.',
-    cost: 2,
-    effect: {
-      shield: (card) => 2 * card.game.hand.cards.length
-    },
-    target: 'self',
-    rarity: 3,
   },
   'Store magic': {
     img: 'potion',

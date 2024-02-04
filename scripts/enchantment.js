@@ -1,22 +1,46 @@
 class Enchantment {
-  constructor(scene, x, y, card) {
-    this.scene = scene;
+  constructor(target, card) {
+    this.target = target;
     this.card = card;
-    const { name, effect, energy } = card.data;
-    this.energy = energy;
-    this._disenchant = effect.disenchant;
+
+    const scene = target.game;
+    this.scene = scene;
+    this.energy = card.data.energy;
+    this._disenchant = card.data.effect.disenchant;
 
     const cardImg = scene.add.sprite(0, 0, 'card-small');
     const image = scene.add.sprite(cardImg.width / 2 - 13, 0, card.data.img).setScale(0.3);
     
-    const cardName = scene.add.text(0, 0, name, CARD_NAME_STYLE).setOrigin(0.5);
-    this.energyImg = scene.add.text(13 - cardImg.width / 2, 1, energy, CIRCLE_NUM_STYLE).setOrigin(0.5);
+    const cardName = scene.add.text(0, 0, card.data.name, CARD_NAME_STYLE).setOrigin(0.5);
+    this.energyImg = scene.add.text(13 - cardImg.width / 2, 1, this.energy, CIRCLE_NUM_STYLE).setOrigin(0.5);
 
+    const x = target.x;
+    const y = this._getY(target.enchantments.length);
     this.container = scene.add.container(x, y, [cardImg, image, this.energyImg, cardName]);
   }
 
-  disenchant(character) {
-    this._disenchant(character);
+  _getY(index) {
+    return this.target.y + this.target.img.height / 2 - (index + 0.5) * 28;
+  }
+
+  disenchant() {
+    // Remove from list of enchanments
+    const enchantmentsList = this.target.enchantments;
+    const index = enchantmentsList.indexOf(this);
+    enchantmentsList.splice(index, 1);
+    this.container.destroy();
+
+    // Move later enchanments down;
+    for (let i = index; i < enchantmentsList.length; i++) {
+      const y = this._getY(i);
+      enchantmentsList[i].moveTo(y);
+    }
+
+    // Remove effect
+    this._disenchant(this.target);
+
+    // Move card to discard pile
+    this.scene.discard.addCard(this.card);
   }
 
   moveTo(y) {
@@ -29,7 +53,11 @@ class Enchantment {
   }
 
   setValue(value) {
-    this.energy = value;
-    this.energyImg.setText(value);
+    if (value <= 0) {
+      this.disenchant();
+    } else {
+      this.energy = value;
+      this.energyImg.setText(value);
+    }
   }
 }
