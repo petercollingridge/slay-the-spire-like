@@ -43,6 +43,20 @@ const CARD_DATA = {
     target: 'self',
     rarity: 2,
   },
+  'Boon boost': {
+    img: 'orb-up',
+    text: 'Add 1 energy to each boon.',
+    cost: 1,
+    effect: { 
+      special: (_, target) => {
+        target.enchantments.forEach((enchantment) => {
+          enchantment.setValue(enchantment.energy + 1);
+        })
+      }
+    },
+    target: 'self',
+    rarity: 2,
+  },
   'Basic shield': {
     img: 'shield',
     text: 'Boon 5. Damage reduces shield energy instead of health',
@@ -60,7 +74,12 @@ const CARD_DATA = {
     img: 'shield-2',
     text: 'Shield 8.',
     cost: 1,
-    effect: { shield: 8 },
+    energy: 10,
+    type: 'shield',
+    effect: {
+      enchant: () => {},
+      disenchant: () => {},
+    },
     target: 'self',
     rarity: 2,
   },
@@ -145,11 +164,10 @@ const CARD_DATA = {
     text: 'Double the amount of damage dealt to enemy this turn.',
     cost: 2,
     effect: { 
-      special: (card) => {
-        const enemy = card.game.enemy;
-        enemy.damageMultiplier *= 2;
+      special: (_, target) => {
+        target.damageMultiplier *= 2;
       }
-     },
+    },
     target: 'enemy',
     rarity: 2,
   },
@@ -217,6 +235,7 @@ const startingDeck = {
   'Basic shield': 1,
   'Double damage': 1,
   'Strengthen': 2,
+  'Boon boost': 2,
 };
 
 // const startingDeck = {

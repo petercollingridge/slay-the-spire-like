@@ -121,7 +121,7 @@ class Card {
       target.shield(value);
     }
     if (this.effect.special) {
-      this.effect.special(this);
+      this.effect.special(this, target);
     }
     if (this.effect.store) {
       const value = getCardValue(this.effect.store, this);
