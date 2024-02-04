@@ -73,10 +73,23 @@ class Character {
     this.enchantments.push(enchantment);
   }
 
-  disenchant(card) {
-    this.enchantments = this.enchantments.filter((c) => c !== card);
-    card.effect.disenchant(this);
-    this.game.discard.addCard(card);
+  disenchant(enchantment) {
+    // Remove from list of enchanments
+    const index = this.enchantments.indexOf(enchantment);
+    this.enchantments.splice(index, 1);
+    enchantment.container.destroy();
+
+    // Move later enchanments down;
+    for (let i = index; i < this.enchantments.length; i++) {
+      const y = this.y + this.img.height / 2 - (index + 0.5) * 28;
+      this.enchantments[i].moveTo(y);
+    }
+
+    // Remove effect
+    enchantment.disenchant(this);
+
+    // Move card to discard pile
+    this.game.discard.addCard(enchantment.card);
   }
 
   heal(amount) {
@@ -181,13 +194,13 @@ class Character {
   startTurn() {
     // Reduce the energy of each enchantment by 1
     // and remove them if their energy reaches 0
-    this.enchantments.forEach((enchantment) => {
-      console.log(enchantment)
+    for (let i = this.enchantments.length - 1; i >= 0; i--)  {
+      const enchantment = this.enchantments[i];
       enchantment.setValue(enchantment.energy - 1);
       if (enchantment.energy <= 0) {
         this.disenchant(enchantment);
       }
-    })
+    }
 
     // Take damage for each poison
     if (this.poisonAmount) {
@@ -197,7 +210,6 @@ class Character {
 
   highlight() {
     this.hightlightImg.setVisible(true);
-    console.log('highlight')
   }
 
   clearTint() {
