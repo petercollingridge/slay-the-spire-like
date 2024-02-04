@@ -37,11 +37,37 @@ const CARD_DATA = {
     cost: 2,
     energy: 2,
     effect: {
-      enchant: (target) => target.attackBonus += 2,
-      disenchant: (target) => target.attackBonus -= 2,
+      enchant: { type: 'attack', func: (damage) => damage + 2 },
     },
     target: 'self',
     rarity: 2,
+  },
+  'Double damage': {
+    img: 'arrow-2',
+    text: 'Double the amount of damage dealt to enemy this turn.',
+    cost: 2,
+    energy: 1,
+    effect: {
+      enchant: { type: 'attack', func: (damage) => damage * 2 },
+    },
+    target: 'self',
+    rarity: 2,
+  },
+  'Boon blast': {
+    img: 'boon-blast',
+    text: 'Deal 1 damage for each energy on a boon.',
+    cost: 2,
+    effect: { 
+      damage: (card) => {
+        let damage = 0;
+        card.game.player.enchantments.forEach((enchantment) => {
+          damage += enchantment.energy;
+        });
+        return damage;
+      }
+    },
+    target: 'enemy',
+    rarity: 3,
   },
   'Boon boost': {
     img: 'orb-up',
@@ -62,10 +88,8 @@ const CARD_DATA = {
     text: 'Boon 5. Damage reduces shield energy instead of health',
     cost: 1,
     energy: 5,
-    type: 'shield',
     effect: {
-      enchant: () => {},
-      disenchant: () => {},
+      enchant: { type: 'shield' },
     },
     target: 'self',
     rarity: 1,
@@ -75,10 +99,8 @@ const CARD_DATA = {
     text: 'Shield 8.',
     cost: 1,
     energy: 10,
-    type: 'shield',
     effect: {
-      enchant: () => {},
-      disenchant: () => {},
+      enchant: { type: 'shield' },
     },
     target: 'self',
     rarity: 2,
@@ -159,18 +181,6 @@ const CARD_DATA = {
     target: 'enemy',
     rarity: 2,
   },
-  'Double damage': {
-    img: 'arrow-2',
-    text: 'Double the amount of damage dealt to enemy this turn.',
-    cost: 2,
-    effect: { 
-      special: (_, target) => {
-        target.damageMultiplier *= 2;
-      }
-    },
-    target: 'enemy',
-    rarity: 2,
-  },
   'Drain life': {
     img: 'fangs',
     text: 'Deal 3 damage and heal 3.',
@@ -235,7 +245,8 @@ const startingDeck = {
   'Basic shield': 1,
   'Double damage': 1,
   'Strengthen': 2,
-  'Boon boost': 2,
+  'Boon boost': 1,
+  'Boon blast': 2
 };
 
 // const startingDeck = {

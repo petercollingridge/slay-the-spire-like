@@ -100,9 +100,8 @@ class Card {
     this.game.hand.removeCard(this);
 
     if (this.effect.damage) {
-      let value = getCardValue(this.effect.damage, this);
-      value += this.game.player.attackBonus;
-      target.damage(value);
+      const value = getCardValue(this.effect.damage, this);
+      this.game.player.dealDamage(target, value);
     }
     if (this.effect.draw) {
       const value = getCardValue(this.effect.draw, this);

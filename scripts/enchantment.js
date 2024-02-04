@@ -6,7 +6,7 @@ class Enchantment {
     const scene = target.game;
     this.scene = scene;
     this.energy = card.data.energy;
-    this._disenchant = card.data.effect.disenchant;
+    this.effect = card.data.effect.enchant;
 
     const cardImg = scene.add.sprite(0, 0, 'card-small');
     const image = scene.add.sprite(cardImg.width / 2 - 13, 0, card.data.img).setScale(0.3);
@@ -35,9 +35,6 @@ class Enchantment {
       const y = this._getY(i);
       enchantmentsList[i].moveTo(y);
     }
-
-    // Remove effect
-    this._disenchant(this.target);
 
     // Move card to discard pile
     this.scene.discard.addCard(this.card);

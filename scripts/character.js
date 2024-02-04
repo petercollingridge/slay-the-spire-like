@@ -25,7 +25,6 @@ class Character {
     this.poisonIcon = new Icon(game, iconX + 90, iconY, 'skull', this.poisonAmount);
 
     this.damageMultiplier = 1
-    this.attackBonus = 0;
 
     this.enchantments = [];
   }
@@ -39,24 +38,34 @@ class Character {
     dropZone.parent = this;
   }
 
-  damage(damage) {
+  _getEnchantmentsOfType(type) {
+    return this.enchantments.filter((enchantment) => enchantment.effect.type === type);
+  }
+
+  dealDamage(target, amount) {
+    this._getEnchantmentsOfType('attack').forEach((attack) => {
+      amount = attack.effect.func(amount);
+    });
+    target.takeDamage(amount);
+  }
+
+  takeDamage(damage) {
     damage *= this.damageMultiplier;
 
     // Check for shielding enchantments
-    for (let i = 0; i < this.enchantments.length; i++) {
-      const enchantment = this.enchantments[i];
-      if (enchantment.card.data.type === 'shield') {
-        if (damage >= enchantment.energy) {
-          damage -= enchantment.energy;
-          this.showShieldBlock(enchantment.energy);
-          enchantment.setValue(0);
-        } else {
-          this.showShieldBlock(damage);
-          enchantment.setValue(enchantment.energy - damage);
-          damage = 0;
-        }
+    this._getEnchantmentsOfType('shield').forEach((shield) => {
+      if (damage >= shield.energy) {
+        // Shield destroyed
+        damage -= shield.energy;
+        this.showShieldBlock(shield.energy);
+        shield.setValue(0);
+      } else {
+        // Damage fully blocked
+        this.showShieldBlock(damage);
+        shield.setValue(shield.energy - damage);
+        damage = 0;
       }
-    }
+    });
 
     if (damage) {
       this.setHealth(this.health - damage);
@@ -75,8 +84,6 @@ class Character {
   }
 
   enchant(card) {
-    card.effect.enchant(this);
-
     // Create icon
     const enchantment = new Enchantment(this, card);
     this.enchantments.push(enchantment);
@@ -196,7 +203,7 @@ class Character {
 
     // Take damage for each poison
     if (this.poisonAmount) {
-      this.damage(this.poisonAmount);
+      this.takeDamage(this.poisonAmount);
     }
   }
 
@@ -258,7 +265,7 @@ class Enemy extends Character {
 
       Object.entries(currentAction).forEach(([name, value]) => {
         if (name === 'damage') {
-          player.damage(value);
+          player.takeDamage(value);
         } else if (name === 'heal') {
           this.heal(value);
         } else if (name === 'poison') {
