@@ -42,24 +42,25 @@ class Character {
   damage(damage) {
     damage *= this.damageMultiplier;
 
+    // Check for shielding enchantments
     for (let i = 0; i < this.enchantments.length; i++) {
-      const enchanment = this.enchantments[i];
-      if (enchanment.card.data.type === 'shield') {
-
+      const enchantment = this.enchantments[i];
+      if (enchantment.card.data.type === 'shield') {
+        if (damage >= enchantment.energy) {
+          damage -= enchantment.energy;
+          this.showShieldBlock(enchantment.energy);
+          enchantment.setValue(0);
+        } else {
+          this.showShieldBlock(damage);
+          enchantment.setValue(enchantment.energy - damage);
+          damage = 0;
+        }
       }
     }
 
-    if (damage > this.shieldStrength) {
-      damage -= this.shieldStrength;
-      this.showShieldBlock(this.shieldStrength);
-      this.shield(-this.shieldStrength);
-
-      const newHealth = Math.max(0, this.health - damage);
-      this.setHealth(newHealth);
+    if (damage) {
+      this.setHealth(this.health - damage);
       this.showDamage(damage);
-    } else {
-      this.shield(-damage);
-      this.showShieldBlock(damage);
     }
 
     // Reset damage multiplier
@@ -104,6 +105,7 @@ class Character {
   }
 
   setHealth(n) {
+    n = Math.max(0, n);
     this.health = n;
     this.healthTxt.setText(`${this.health} / ${this.maxHealth}`);
     if (this.health <= 0) {
