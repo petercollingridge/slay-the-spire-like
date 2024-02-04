@@ -5,6 +5,7 @@ const CARD_DATA = {
     cost: 1,
     effect: { damage: 2 },
     target: 'enemy',
+    rarity: 1,
   },
   'Strike': {
     img: 'sword-2',
@@ -12,6 +13,7 @@ const CARD_DATA = {
     cost: 1,
     effect: { damage: 3 },
     target: 'enemy',
+    rarity: 1,
   },
   'Mighty slash': {
     img: 'sword-3',
@@ -19,6 +21,7 @@ const CARD_DATA = {
     cost: 1,
     effect: { damage: 5 },
     target: 'enemy',
+    rarity: 2,
   },
   'Ultimate smash': {
     img: 'sword-4',
@@ -26,17 +29,19 @@ const CARD_DATA = {
     cost: 2,
     effect: { damage: 8 },
     target: 'enemy',
+    rarity: 2,
   },
   'Strengthen': {
     img: 'sword-clash',
-    text: 'Your attacks deal +2 damage. Lasts 3 turns.',
+    text: 'Boon: 2. Your attacks deal +2 damage.',
     cost: 2,
-    energy: 3,
+    energy: 2,
     effect: {
       enchant: (target) => target.attackBonus += 2,
       disenchant: (target) => target.attackBonus -= 2,
     },
     target: 'self',
+    rarity: 2,
   },
   'Poison blade': {
     img: 'sword-poison',
@@ -44,6 +49,7 @@ const CARD_DATA = {
     cost: 1,
     effect: { damage: 2, poison: 1 },
     target: 'enemy',
+    rarity: 2,
   },
   'Toxic bloom': {
     img: 'poison-mushroom',
@@ -52,6 +58,7 @@ const CARD_DATA = {
     effect: { poison: (card) => card.game.enemy.poisonAmount },
     target: 'enemy',
     oneUse: true,
+    rarity: 3,
   },
   'Fever': {
     img: 'sickness',
@@ -62,6 +69,7 @@ const CARD_DATA = {
       poison: -1
     },
     target: 'enemy',
+    rarity: 3,
   },
   'Arcane sword': {
     img: 'sword-magic',
@@ -71,6 +79,7 @@ const CARD_DATA = {
       damage: (card) => 2 * card.game.hand.cards.length
     },
     target: 'enemy',
+    rarity: 3,
   },
   'Scythe': {
     img: 'scythe',
@@ -80,6 +89,7 @@ const CARD_DATA = {
       damage: (card) => card.game.discard.cards.length
     },
     target: 'enemy',
+    rarity: 3,
   },
   'Blade vortex': {
     img: 'sword-spinning',
@@ -89,6 +99,7 @@ const CARD_DATA = {
       damage: (card) => card.castCount * 3
     },
     target: 'enemy',
+    rarity: 3,
   },
   'Quick shot': {
     img: 'arrow-1',
@@ -96,6 +107,7 @@ const CARD_DATA = {
     cost: 1,
     effect: { damage: 2, draw: 2 },
     target: 'enemy',
+    rarity: 2,
   },
   'Double damage': {
     img: 'arrow-2',
@@ -108,13 +120,15 @@ const CARD_DATA = {
       }
      },
     target: 'enemy',
+    rarity: 2,
   },
   'Drain life': {
     img: 'fangs',
-    text: 'Deal 2 damage and heal 2.',
+    text: 'Deal 3 damage and heal 3.',
     cost: 1,
     effect: { damage: 3, heal: 3 },
     target: 'enemy',
+    rarity: 2,
   },
   'Prepare': {
     img: 'draw-card',
@@ -122,13 +136,15 @@ const CARD_DATA = {
     cost: 1,
     effect: { draw: 3 },
     target: 'self',
+    rarity: 1,
   },
   'Heal': {
     img: 'heart',
-    text: 'Heal 10.',
+    text: 'Heal 8.',
     cost: 1,
-    effect: { heal: 10 },
+    effect: { heal: 8 },
     target: 'self',
+    rarity: 1,
   },
   'Basic shield': {
     img: 'shield',
@@ -136,6 +152,7 @@ const CARD_DATA = {
     cost: 1,
     effect: { shield: 4 },
     target: 'self',
+    rarity: 1,
   },
   'Tough shield': {
     img: 'shield-2',
@@ -143,6 +160,7 @@ const CARD_DATA = {
     cost: 1,
     effect: { shield: 8 },
     target: 'self',
+    rarity: 2,
   },
   'Arcane shield': {
     img: 'shield-magic',
@@ -152,6 +170,7 @@ const CARD_DATA = {
       shield: (card) => 2 * card.game.hand.cards.length
     },
     target: 'self',
+    rarity: 3,
   },
   'Store magic': {
     img: 'potion',
@@ -159,6 +178,7 @@ const CARD_DATA = {
     cost: 1,
     effect: { store: 1 },
     target: 'self',
+    rarity: 2,
   },
   'Curse': {
     img: 'curse',
@@ -166,6 +186,7 @@ const CARD_DATA = {
     cost: 1,
     effect: { damage: 3 },
     target: 'self',
+    rarity: 0,
   }
 };
 
@@ -173,6 +194,13 @@ const CARD_DATA = {
 Object.entries(CARD_DATA).forEach(([name, data]) => {
   data.name = name;
 });
+
+const PLAYER_CARDS = Object.entries(CARD_DATA).reduce((cards, [name, data]) => {
+  if (data.rarity) {
+    cards[name] = data;
+  }
+  return cards;
+}, {});
 
 const startingDeck = {
   'Gentle jab': 3,

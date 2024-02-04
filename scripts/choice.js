@@ -119,8 +119,7 @@ class EnemyChoice extends Choice {
 class CardChoice extends Choice {
   constructor() {
     super("CardChoice");
-    const { Curse: _, ...validCards} = CARD_DATA;
-    this.choiceData = validCards;
+    this.choiceData = PLAYER_CARDS;
     this.title = 'Choose a new card for your deck';
   }
 

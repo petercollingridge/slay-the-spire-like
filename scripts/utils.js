@@ -11,7 +11,7 @@ function getRandN(arr, n) {
 }
 
 function getCardsToWin(n) {
-  return getRandN(Object.keys(CARD_DATA).slice(), n);
+  return getRandN(Object.keys(PLAYER_CARDS).slice(), n);
 }
 
 function getMonstersToFight(n) {
