@@ -72,3 +72,7 @@ function getEnemyData(data, level = 1) {
 
   return newData;
 }
+
+function getMonstersToFight(n) {
+  return getRandN(Object.keys(ENEMY_DATA).slice(), n);
+}

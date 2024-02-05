@@ -21,7 +21,7 @@ const CARD_DATA = {
     cost: 1,
     effect: { damage: 5 },
     target: 'enemy',
-    rarity: 2,
+    rarity: 1,
   },
   'Ultimate smash': {
     img: 'sword-4',
@@ -35,20 +35,20 @@ const CARD_DATA = {
     img: 'sword-clash',
     text: 'Boon 2. Your attacks deal +2 damage.',
     cost: 2,
-    energy: 2,
     effect: {
       enchant: { type: 'attack', func: (damage) => damage + 2 },
+      energy: 2,
     },
     target: 'self',
     rarity: 2,
   },
   'Double damage': {
     img: 'arrow-2',
-    text: 'Double the amount of damage dealt to enemy this turn.',
+    text: 'Boon 1. Your attacks deal 2x damage.',
     cost: 2,
-    energy: 1,
     effect: {
       enchant: { type: 'attack', func: (damage) => damage * 2 },
+      energy: 1,
     },
     target: 'self',
     rarity: 2,
@@ -87,9 +87,9 @@ const CARD_DATA = {
     img: 'shield',
     text: 'Boon 5. Damage reduces shield energy instead of health',
     cost: 1,
-    energy: 5,
     effect: {
       enchant: { type: 'shield' },
+      energy: 5,
     },
     target: 'self',
     rarity: 1,
@@ -98,9 +98,9 @@ const CARD_DATA = {
     img: 'shield-2',
     text: 'Shield 8.',
     cost: 1,
-    energy: 10,
     effect: {
       enchant: { type: 'shield' },
+      energy: 10,
     },
     target: 'self',
     rarity: 2,
@@ -110,7 +110,8 @@ const CARD_DATA = {
     text: 'Shield 3 for each card in hand.',
     cost: 2,
     effect: {
-      shield: (card) => 2 * card.game.hand.cards.length
+      enchant: { type: 'shield' },
+      energy: (card) => 2 * card.game.hand.cards.length,
     },
     target: 'self',
     rarity: 3,
@@ -189,21 +190,29 @@ const CARD_DATA = {
     target: 'enemy',
     rarity: 2,
   },
+  'Anticipate': {
+    img: 'draw-card',
+    text: 'Draw 2 cards.',
+    cost: 1,
+    effect: { draw: 2 },
+    target: 'self',
+    rarity: 1,
+  },
   'Prepare': {
     img: 'draw-card',
     text: 'Draw 3 cards.',
     cost: 1,
     effect: { draw: 3 },
     target: 'self',
-    rarity: 1,
+    rarity: 3,
   },
   'Heal': {
     img: 'heart',
-    text: 'Heal 8.',
+    text: 'Heal 5.',
     cost: 1,
-    effect: { heal: 8 },
+    effect: { heal: 5 },
     target: 'self',
-    rarity: 1,
+    rarity: 2,
   },
   'Store magic': {
     img: 'potion',
@@ -220,6 +229,7 @@ const CARD_DATA = {
     effect: { damage: 3 },
     target: 'self',
     rarity: 0,
+    oneUse: true,
   }
 };
 
@@ -228,13 +238,53 @@ Object.entries(CARD_DATA).forEach(([name, data]) => {
   data.name = name;
 });
 
-const PLAYER_CARDS = Object.entries(CARD_DATA).reduce((cards, [name, data]) => {
-  if (data.rarity) {
-    cards[name] = data;
-  }
-  return cards;
-}, {});
+function getCardsByFunc(func) {
+  return Object.entries(CARD_DATA).reduce((cards, [name, data]) => {
+    if (func(data)) {
+      cards[name] = data;
+    }
+    return cards;
+  }, {});
+}
 
+const PLAYER_CARDS = Object.entries(CARD_DATA)
+  .reduce((cards, [name, data]) => {
+    if (data.rarity) {
+      cards[name] = data;
+    }
+    return cards;
+  }, {});
+
+const COMMON_CARDS = Object.keys(PLAYER_CARDS).filter((card) => PLAYER_CARDS[card].rarity === 1);
+const UNCOMMON_CARDS = Object.keys(PLAYER_CARDS).filter((card) => PLAYER_CARDS[card].rarity === 2);
+const RARE_CARDS = Object.keys(PLAYER_CARDS).filter((card) => PLAYER_CARDS[card].rarity === 3);
+
+function getStartingDeck() {
+  const deck = {};
+
+  for (i = 0; i < 2; i++) {
+    const card = getRand(RARE_CARDS);
+    deck[card] = (deck[card] || 0) + 1;
+  }
+  for (i = 0; i < 4; i++) {
+    const card = getRand(UNCOMMON_CARDS);
+    deck[card] = (deck[card] || 0) + 1;
+  }
+  for (i = 0; i < 6; i++) {
+    const card = getRand(COMMON_CARDS);
+    deck[card] = (deck[card] || 0) + 1;
+  }
+
+  return deck;
+}
+
+const startingDeck = getStartingDeck();
+
+function getCardsToWin(n) {
+  return getRandN(Object.keys(PLAYER_CARDS).slice(), n);
+}
+
+/*
 const startingDeck = {
   'Gentle jab': 3,
   'Strike': 2,
@@ -248,6 +298,7 @@ const startingDeck = {
   'Boon boost': 1,
   'Boon blast': 2
 };
+*/
 
 // const startingDeck = {
 //   'Poison blade': 3,

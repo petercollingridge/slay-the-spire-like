@@ -83,9 +83,9 @@ class Character {
     this.game.characterDies();
   }
 
-  enchant(card) {
+  enchant(card, energy) {
     // Create icon
-    const enchantment = new Enchantment(this, card);
+    const enchantment = new Enchantment(this, card, energy);
     this.enchantments.push(enchantment);
   }
 

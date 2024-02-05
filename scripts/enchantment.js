@@ -1,11 +1,11 @@
 class Enchantment {
-  constructor(target, card) {
+  constructor(target, card, energy) {
     this.target = target;
     this.card = card;
+    this.energy = energy;
 
     const scene = target.game;
     this.scene = scene;
-    this.energy = card.data.energy;
     this.effect = card.data.effect.enchant;
 
     const cardImg = scene.add.sprite(0, 0, 'card-small');

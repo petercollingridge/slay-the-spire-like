@@ -10,14 +10,6 @@ function getRandN(arr, n) {
   return Phaser.Utils.Array.Shuffle(arr).slice(0, n);
 }
 
-function getCardsToWin(n) {
-  return getRandN(Object.keys(PLAYER_CARDS).slice(), n);
-}
-
-function getMonstersToFight(n) {
-  return getRandN(Object.keys(ENEMY_DATA).slice(), n);
-}
-
 function getCardValue(valueOrFunction, game) {
   if (typeof valueOrFunction === 'number') {
     return valueOrFunction;
