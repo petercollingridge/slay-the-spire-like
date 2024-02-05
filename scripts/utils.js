@@ -1,3 +1,7 @@
+function actionToString(action) {
+  return Object.entries(action).map(([key, value]) => `${capitalise(key)}: ${value}`).join('; ');
+}
+
 function capitalise(str) {
   return str[0].toUpperCase() + str.slice(1);
 }

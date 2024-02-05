@@ -36,8 +36,10 @@ class Enchantment {
       enchantmentsList[i].moveTo(y);
     }
 
-    // Move card to discard pile
-    this.scene.discard.addCard(this.card);
+    // Move card to discard pile if it's a real card
+    if (this.card.container) {
+      this.scene.discard.addCard(this.card);
+    }
   }
 
   moveTo(y) {

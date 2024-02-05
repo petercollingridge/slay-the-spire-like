@@ -140,6 +140,7 @@ class Fight extends Phaser.Scene {
 
   playerTurn() {
     this.nextTurnBtn.show();
+    this.enemy.getAction();
     this.player.startTurn();
 
     if (!this.player.dead) {

@@ -252,26 +252,29 @@ class Enemy extends Character {
     this.direction = -1;
     this.actions = data.actions;
 
-    const iconX = x - this.img.width / 2 + 60;
-    const iconY = y + this.img.height / 2 + 10;
-    // const icon = new Icon(game, iconX, iconY, 'sword-1', this.attack);
+    const txtStyle = { fontSize: '16px', fill: '#000', fontFamily: 'Arial' };
+    this.actionText = game.add.text(x, y - this.img.height / 2 - 24, 'Test', txtStyle).setOrigin(0.5);
+  }
+
+  // Determine what action the enemy will do this turn
+  getAction() {
+    this.currentAction = getRand(this.actions);
+    this.actionText.setText(actionToString(this.currentAction));
   }
 
   turn(player) {
     this.startTurn();
 
     if (this.health > 0) {
-      const currentAction = getRand(this.actions);
-
-      Object.entries(currentAction).forEach(([name, value]) => {
+      Object.entries(this.currentAction).forEach(([name, value]) => {
         if (name === 'damage') {
-          player.takeDamage(value);
+          this.dealDamage(player, value)
         } else if (name === 'heal') {
           this.heal(value);
         } else if (name === 'poison') {
           player.poison(value);
         } else if (name === 'shield') {
-          this.shield(value);
+          this.enchant({ data: ENEMY_CARDS.shield }, value);
         } else if (name === 'curse') {
           for (let i = 0; i < value; i++) {
             const card = new Card(this.game, 'Curse');

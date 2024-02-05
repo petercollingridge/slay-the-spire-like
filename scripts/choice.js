@@ -100,8 +100,7 @@ class EnemyChoice extends Choice {
     const dy = 16;
 
     enemyData.actions.forEach((action) => {
-      const str = Object.entries(action).map(([key, value]) => `${capitalise(key)}: ${value}`).join('; ')
-      this.addText(textX, textY, str);
+      this.addText(textX, textY, actionToString(action));
       textY += dy;
     })
   

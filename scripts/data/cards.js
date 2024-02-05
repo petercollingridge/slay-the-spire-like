@@ -33,14 +33,47 @@ const CARD_DATA = {
   },
   'Strengthen': {
     img: 'sword-clash',
-    text: 'Boon 2. Your attacks deal +2 damage.',
-    cost: 2,
+    text: 'Boon 2. Attacks deal +1 damage.',
+    cost: 1,
     effect: {
-      enchant: { type: 'attack', func: (damage) => damage + 2 },
+      enchant: { type: 'attack', func: (damage) => damage + 1 },
       energy: 2,
     },
     target: 'self',
+    rarity: 1,
+  },
+  'Fortify': {
+    img: 'sword-clash',
+    text: 'Boon 3. Attacks deal +2 damage.',
+    cost: 2,
+    effect: {
+      enchant: { type: 'attack', func: (damage) => damage + 2 },
+      energy: 3,
+    },
+    target: 'self',
     rarity: 2,
+  },
+  'Weaken': {
+    img: 'weaken',
+    text: 'Boon 3. Attacks deal -1 damage.',
+    cost: 1,
+    effect: {
+      enchant: { type: 'attack', func: (damage) => Math.max(0, damage - 1) },
+      energy: 3,
+    },
+    target: 'enemy',
+    rarity: 1,
+  },
+  'Enfeeble': {
+    img: 'weaken',
+    text: 'Boon 4. Attacks deal -2 damage.',
+    cost: 1,
+    effect: {
+      enchant: { type: 'attack', func: (damage) => Math.max(0, damage - 2) },
+      energy: 4,
+    },
+    target: 'enemy',
+    rarity: 1,
   },
   'Double damage': {
     img: 'arrow-2',
@@ -55,19 +88,33 @@ const CARD_DATA = {
   },
   'Boon blast': {
     img: 'boon-blast',
-    text: 'Deal 1 damage for each energy on a boon.',
+    text: 'Deal 2 damage for each energy on a boon.',
     cost: 2,
     effect: { 
       damage: (card) => {
         let damage = 0;
         card.game.player.enchantments.forEach((enchantment) => {
-          damage += enchantment.energy;
+          damage += enchantment.energy * 2;
         });
         return damage;
       }
     },
     target: 'enemy',
     rarity: 3,
+  },
+  'Hex boost': {
+    img: 'orb-up',
+    text: 'Add 1 energy to each hex.',
+    cost: 1,
+    effect: { 
+      special: (_, target) => {
+        target.enchantments.forEach((enchantment) => {
+          enchantment.setValue(enchantment.energy + 1);
+        })
+      }
+    },
+    target: 'enemy',
+    rarity: 1,
   },
   'Boon boost': {
     img: 'orb-up',
@@ -81,7 +128,21 @@ const CARD_DATA = {
       }
     },
     target: 'self',
-    rarity: 2,
+    rarity: 1,
+  },
+  'Enchant boost': {
+    img: 'orb-up',
+    text: 'Add 1 energy to each boon or hex.',
+    cost: 1,
+    effect: { 
+      special: (_, target) => {
+        target.enchantments.forEach((enchantment) => {
+          enchantment.setValue(enchantment.energy + 1);
+        })
+      }
+    },
+    target: 'any',
+    rarity: 1,
   },
   'Basic shield': {
     img: 'shield',
@@ -96,7 +157,7 @@ const CARD_DATA = {
   },
   'Tough shield': {
     img: 'shield-2',
-    text: 'Shield 8.',
+    text: 'Boon 10. Damage reduces shield energy instead of health',
     cost: 1,
     effect: {
       enchant: { type: 'shield' },
@@ -107,11 +168,11 @@ const CARD_DATA = {
   },
   'Arcane shield': {
     img: 'shield-magic',
-    text: 'Shield 3 for each card in hand.',
+    text: 'Boon 3 for each card in hand. Damage reduces shield energy instead of health',
     cost: 2,
     effect: {
       enchant: { type: 'shield' },
-      energy: (card) => 2 * card.game.hand.cards.length,
+      energy: (card) => 3 * card.game.hand.cards.length,
     },
     target: 'self',
     rarity: 3,
@@ -233,6 +294,16 @@ const CARD_DATA = {
   }
 };
 
+const ENEMY_CARDS = {
+  shield: {
+    name: 'Shield',
+    img: 'shield',
+    effect: {
+      enchant: { type: 'shield' },
+    },
+  }
+}
+
 // Add names as attributes to card for easier look up
 Object.entries(CARD_DATA).forEach(([name, data]) => {
   data.name = name;
@@ -278,15 +349,14 @@ function getStartingDeck() {
   return deck;
 }
 
-const startingDeck = getStartingDeck();
+// const startingDeck = getStartingDeck();
 
 function getCardsToWin(n) {
   return getRandN(Object.keys(PLAYER_CARDS).slice(), n);
 }
 
-/*
 const startingDeck = {
-  'Gentle jab': 3,
+  'Gentle jab': 2,
   'Strike': 2,
   'Mighty slash': 1,
   'Ultimate smash': 1,
@@ -294,11 +364,13 @@ const startingDeck = {
   'Heal': 1,
   'Basic shield': 1,
   'Double damage': 1,
-  'Strengthen': 2,
+  'Fortify': 1,
+  'Strengthen': 1,
   'Boon boost': 1,
-  'Boon blast': 2
+  'Boon blast': 1,
+  'Weaken': 2,
 };
-*/
+
 
 // const startingDeck = {
 //   'Poison blade': 3,
