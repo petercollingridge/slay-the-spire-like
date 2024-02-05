@@ -367,8 +367,9 @@ const startingDeck = {
   'Fortify': 1,
   'Strengthen': 1,
   'Boon boost': 1,
+  'Enchant boost': 1,
+  'Hex boost': 1,
   'Boon blast': 1,
-  'Weaken': 2,
 };
 
 

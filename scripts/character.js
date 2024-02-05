@@ -286,7 +286,7 @@ class Enemy extends Character {
   }
 
   isValidDrop(card) {
-    return card.canPlay && card.target === 'enemy';
+    return card.canPlay && ['enemy', 'any'].includes(card.target);
   }
 }
 
@@ -303,6 +303,6 @@ class Player extends Character {
   }
 
   isValidDrop(card) {
-    return card.canPlay && card.target === 'self';
+    return card.canPlay && ['self', 'any'].includes(card.target);
   }
 }
