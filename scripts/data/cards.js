@@ -55,9 +55,47 @@ const CARD_DATA = {
     target: 'self',
     rarity: 2,
   },
+  'Poison blade': {
+    img: 'sword-poison',
+    text: 'Hex 8. Deal 2 damage + 1 each turn.',
+    cost: 1,
+    effect: { damage: 2 },
+    enchant: {
+      energy: 8,
+      type: 'start',
+      effect: (target) => target.takeDamage(1),
+    },
+    target: 'enemy',
+    rarity: 1,
+  },
+  'Venom blade': {
+    img: 'sword-poison',
+    text: 'Hex 6. Deal 3 damage + 2 each turn.',
+    cost: 1,
+    effect: { damage: 3 },
+    enchant: {
+      energy: 6,
+      type: 'start',
+      effect: (target) => target.takeDamage(2),
+    },
+    target: 'enemy',
+    rarity: 2,
+  },
+  'Toxic bloom': {
+    img: 'poison-mushroom',
+    text: 'Hex 4. Deal damage equal to energy each turn.',
+    cost: 1,
+    enchant: {
+      energy: 4,
+      type: 'start',
+      effect: (target, enchantment) => target.takeDamage(enchantment.energy),
+    },
+    target: 'enemy',
+    rarity: 3,
+  },
   'Weaken': {
     img: 'weaken',
-    text: 'Boon 3. Attacks deal -1 damage.',
+    text: 'Hex 3. Attacks deal -1 damage.',
     cost: 1,
     enchant: {
       energy: 3,
@@ -69,7 +107,7 @@ const CARD_DATA = {
   },
   'Enfeeble': {
     img: 'weaken',
-    text: 'Boon 4. Attacks deal -2 damage.',
+    text: 'Hex 4. Attacks deal -2 damage.',
     cost: 1,
     enchant: {
       energy: 4,
@@ -180,34 +218,17 @@ const CARD_DATA = {
     target: 'self',
     rarity: 3,
   },
-  'Poison blade': {
-    img: 'sword-poison',
-    text: 'Deal 2 damage and inflict 1 poison.',
-    cost: 1,
-    effect: { damage: 2, poison: 1 },
-    target: 'enemy',
-    rarity: 2,
-  },
-  'Toxic bloom': {
-    img: 'poison-mushroom',
-    text: 'Double the poison on an enemy. Use once.',
-    cost: 1,
-    effect: { poison: (card) => card.game.enemy.poisonAmount },
-    target: 'enemy',
-    oneUse: true,
-    rarity: 3,
-  },
-  'Fever': {
-    img: 'sickness',
-    text: 'Deal 2 damage for every poison. Remove 1 poison.',
-    cost: 2,
-    effect: {
-      damage: (card) => 2 * card.game.enemy.poisonAmount,
-      poison: -1
-    },
-    target: 'enemy',
-    rarity: 3,
-  },
+  // 'Fever': {
+  //   img: 'sickness',
+  //   text: 'Deal 2 damage for every poison. Remove 1 poison.',
+  //   cost: 2,
+  //   effect: {
+  //     damage: (card) => 2 * card.game.enemy.poisonAmount,
+  //     poison: -1
+  //   },
+  //   target: 'enemy',
+  //   rarity: 3,
+  // },
   'Arcane sword': {
     img: 'sword-magic',
     text: 'Deal 2 damage for each card in hand.',
@@ -304,7 +325,7 @@ const ENEMY_CARDS = {
     enchant: { type: 'shield' },
     target: 'self',
   }
-}
+};
 
 // Add names as attributes to card for easier look up
 Object.entries(CARD_DATA).forEach(([name, data]) => {
@@ -362,14 +383,14 @@ const startingDeck = {
   'Strike': 1,
   'Mighty slash': 1,
   'Ultimate smash': 1,
+  'Toxic bloom': 1,
   'Prepare': 1,
   'Heal': 1,
   'Basic shield': 1,
   'Double damage': 1,
   'Fortify': 1,
-  'Strengthen': 1,
+  'Poison blade': 2,
   'Weaken': 1,
-  'Enfeeble': 1,
   'Boon boost': 1,
   'Enchant boost': 1,
   'Hex boost': 1,

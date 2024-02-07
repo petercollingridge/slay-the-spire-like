@@ -15,17 +15,6 @@ class Character {
     this.healthTxt = game.add.text(x, txtY, '', txtStyle).setOrigin(0.5, 1);
     this.setHealth(data.health);
 
-    const iconX = x - this.img.width / 2 + 10;
-    const iconY = y + this.img.height / 2 + 10;
-
-    this.shieldStrength = 0;
-    this.shieldIcon = new Icon(game, iconX, iconY, 'shield', this.shieldStrength);
-
-    this.poisonAmount = 0;
-    this.poisonIcon = new Icon(game, iconX + 90, iconY, 'skull', this.poisonAmount);
-
-    this.damageMultiplier = 1
-
     this.enchantments = [];
   }
 
@@ -50,8 +39,6 @@ class Character {
   }
 
   takeDamage(damage) {
-    damage *= this.damageMultiplier;
-
     // Check for shielding enchantments
     this._getEnchantmentsOfType('shield').forEach((shield) => {
       if (damage >= shield.energy) {
@@ -71,10 +58,6 @@ class Character {
       this.setHealth(this.health - damage);
       this.showDamage(damage);
     }
-
-    // Reset damage multiplier
-    // TODO: do this nicely with events
-    this.damageMultiplier = 1;
   }
 
   die() {
@@ -100,15 +83,6 @@ class Character {
   }
 
   poison(n) {
-    if (!this.shieldStrength) {
-      this.poisonAmount = Math.max(0, this.poisonAmount + n);
-      this.poisonIcon.setValue(this.poisonAmount);
-    }
-  }
-
-  shield(n) {
-    this.shieldStrength += n;
-    this.shieldIcon.setValue(this.shieldStrength);
   }
 
   setHealth(n) {
@@ -194,16 +168,16 @@ class Character {
   }
 
   startTurn() {
+    // Activate start of turn enchantments
+    this._getEnchantmentsOfType('start').forEach((enchantment) => {
+      enchantment.effect(this, enchantment);
+    });
+
     // Reduce the energy of each enchantment by 1
     // and remove them if their energy reaches 0
     for (let i = this.enchantments.length - 1; i >= 0; i--)  {
       const enchantment = this.enchantments[i];
       enchantment.setValue(enchantment.energy - 1);
-    }
-
-    // Take damage for each poison
-    if (this.poisonAmount) {
-      this.takeDamage(this.poisonAmount);
     }
   }
 
