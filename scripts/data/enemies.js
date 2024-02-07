@@ -25,8 +25,8 @@ const ENEMY_DATA = {
     health: 64,
     actions: [
       { damage: 6 },
-      { damage: 2, poison: 1 },
-      { poison: 2 },
+      { damage: 2, poison: 4 },
+      { poison: 8 },
     ],
   },
   spikey: {

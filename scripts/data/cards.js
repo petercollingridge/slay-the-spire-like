@@ -137,7 +137,9 @@ const CARD_DATA = {
       damage: (card) => {
         let damage = 0;
         card.game.player.enchantments.forEach((enchantment) => {
-          damage += enchantment.energy * 2;
+          if (enchantment.mode === 'boon') {
+            damage += enchantment.energy * 2;
+          }
         });
         return damage;
       }
@@ -319,6 +321,16 @@ const CARD_DATA = {
 };
 
 const ENEMY_CARDS = {
+  poison: {
+    name: 'Poison',
+    img: 'sword-poison',
+    enchant: {
+      energy: 8,
+      type: 'start',
+      effect: (target) => target.takeDamage(1),
+    },
+    target: 'player',
+  },
   shield: {
     name: 'Shield',
     img: 'shield',

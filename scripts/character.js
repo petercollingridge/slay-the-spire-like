@@ -82,9 +82,6 @@ class Character {
     this.showHeal(amount);
   }
 
-  poison(n) {
-  }
-
   setHealth(n) {
     n = Math.max(0, n);
     this.health = n;
@@ -246,7 +243,7 @@ class Enemy extends Character {
         } else if (name === 'heal') {
           this.heal(value);
         } else if (name === 'poison') {
-          player.poison(value);
+          player.enchant({ data: ENEMY_CARDS.poison }, value);
         } else if (name === 'shield') {
           this.enchant({ data: ENEMY_CARDS.shield }, value);
         } else if (name === 'curse') {
