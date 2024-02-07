@@ -8,8 +8,9 @@ class Enchantment {
     this.scene = scene;
     this.type = card.data.enchant.type;
     this.effect = card.data.enchant.effect;
+    this.mode = card.data.target === 'self' ? 'boon' : 'hex';
 
-    const cardImg = scene.add.sprite(0, 0, 'card-small');
+    const cardImg = scene.add.sprite(0, 0, this.mode);
     const image = scene.add.sprite(cardImg.width / 2 - 13, 0, card.data.img).setScale(0.3);
     
     const cardName = scene.add.text(0, 0, card.data.name, CARD_NAME_STYLE).setOrigin(0.5);

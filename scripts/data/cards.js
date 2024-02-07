@@ -114,7 +114,9 @@ const CARD_DATA = {
     effect: { 
       special: (_, target) => {
         target.enchantments.forEach((enchantment) => {
-          enchantment.setValue(enchantment.energy + 1);
+          if (enchantment.mode === 'hex') {
+            enchantment.setValue(enchantment.energy + 1);
+          }
         })
       }
     },
@@ -128,7 +130,9 @@ const CARD_DATA = {
     effect: { 
       special: (_, target) => {
         target.enchantments.forEach((enchantment) => {
-          enchantment.setValue(enchantment.energy + 1);
+          if (enchantment.mode === 'boon') {
+            enchantment.setValue(enchantment.energy + 1);
+          }
         })
       }
     },
@@ -298,6 +302,7 @@ const ENEMY_CARDS = {
     name: 'Shield',
     img: 'shield',
     enchant: { type: 'shield' },
+    target: 'self',
   }
 }
 
@@ -353,8 +358,8 @@ function getCardsToWin(n) {
 }
 
 const startingDeck = {
-  'Gentle jab': 2,
-  'Strike': 2,
+  'Gentle jab': 1,
+  'Strike': 1,
   'Mighty slash': 1,
   'Ultimate smash': 1,
   'Prepare': 1,
@@ -363,6 +368,8 @@ const startingDeck = {
   'Double damage': 1,
   'Fortify': 1,
   'Strengthen': 1,
+  'Weaken': 1,
+  'Enfeeble': 1,
   'Boon boost': 1,
   'Enchant boost': 1,
   'Hex boost': 1,
