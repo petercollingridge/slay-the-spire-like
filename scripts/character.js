@@ -39,12 +39,12 @@ class Character {
   }
 
   _getEnchantmentsOfType(type) {
-    return this.enchantments.filter((enchantment) => enchantment.effect.type === type);
+    return this.enchantments.filter((enchantment) => enchantment.type === type);
   }
 
   dealDamage(target, amount) {
     this._getEnchantmentsOfType('attack').forEach((attack) => {
-      amount = attack.effect.func(amount);
+      amount = attack.effect(amount);
     });
     target.takeDamage(amount);
   }

@@ -7,7 +7,8 @@ class Card {
 
     // Copy some values from data to make look up easier
     this.cost = data.cost;
-    this.effect = data.effect;
+    this.effect = data.effect || {};
+    this.enchant = data.enchant;
     this.target = data.target;
 
     // Keep track of how many times this card was cast during the game
@@ -127,8 +128,8 @@ class Card {
       this.game.player.manaBonus(value);
     }
 
-    if (this.effect.enchant) {
-      const value = getCardValue(this.effect.energy, this);
+    if (this.enchant) {
+      const value = getCardValue(this.enchant.energy, this);
       target.enchant(this, value);
     } else if (!this.data.oneUse) {
       // Add card to discard pile after it's effect is resolved, unless it's one use only

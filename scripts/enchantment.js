@@ -6,7 +6,8 @@ class Enchantment {
 
     const scene = target.game;
     this.scene = scene;
-    this.effect = card.data.effect.enchant;
+    this.type = card.data.enchant.type;
+    this.effect = card.data.enchant.effect;
 
     const cardImg = scene.add.sprite(0, 0, 'card-small');
     const image = scene.add.sprite(cardImg.width / 2 - 13, 0, card.data.img).setScale(0.3);

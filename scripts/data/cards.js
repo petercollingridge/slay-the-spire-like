@@ -35,9 +35,10 @@ const CARD_DATA = {
     img: 'sword-clash',
     text: 'Boon 2. Attacks deal +1 damage.',
     cost: 1,
-    effect: {
-      enchant: { type: 'attack', func: (damage) => damage + 1 },
+    enchant: {
       energy: 2,
+      type: 'attack',
+      effect: (damage) => damage + 1,
     },
     target: 'self',
     rarity: 1,
@@ -46,9 +47,10 @@ const CARD_DATA = {
     img: 'sword-clash',
     text: 'Boon 3. Attacks deal +2 damage.',
     cost: 2,
-    effect: {
-      enchant: { type: 'attack', func: (damage) => damage + 2 },
+    enchant: {
       energy: 3,
+      type: 'attack',
+      effect: (damage) => damage + 2,
     },
     target: 'self',
     rarity: 2,
@@ -57,9 +59,10 @@ const CARD_DATA = {
     img: 'weaken',
     text: 'Boon 3. Attacks deal -1 damage.',
     cost: 1,
-    effect: {
-      enchant: { type: 'attack', func: (damage) => Math.max(0, damage - 1) },
+    enchant: {
       energy: 3,
+      type: 'attack',
+      effect: (damage) => Math.max(0, damage - 1),
     },
     target: 'enemy',
     rarity: 1,
@@ -68,9 +71,10 @@ const CARD_DATA = {
     img: 'weaken',
     text: 'Boon 4. Attacks deal -2 damage.',
     cost: 1,
-    effect: {
-      enchant: { type: 'attack', func: (damage) => Math.max(0, damage - 2) },
+    enchant: {
       energy: 4,
+      type: 'attack',
+      effect: (damage) => Math.max(0, damage - 2),
     },
     target: 'enemy',
     rarity: 1,
@@ -79,9 +83,10 @@ const CARD_DATA = {
     img: 'arrow-2',
     text: 'Boon 1. Your attacks deal 2x damage.',
     cost: 2,
-    effect: {
-      enchant: { type: 'attack', func: (damage) => damage * 2 },
+    enchant: {
       energy: 1,
+      type: 'attack',
+      effect: (damage) => damage * 2 ,
     },
     target: 'self',
     rarity: 2,
@@ -148,10 +153,7 @@ const CARD_DATA = {
     img: 'shield',
     text: 'Boon 5. Damage reduces shield energy instead of health',
     cost: 1,
-    effect: {
-      enchant: { type: 'shield' },
-      energy: 5,
-    },
+    enchant: { type: 'shield', energy: 5 },
     target: 'self',
     rarity: 1,
   },
@@ -159,10 +161,7 @@ const CARD_DATA = {
     img: 'shield-2',
     text: 'Boon 10. Damage reduces shield energy instead of health',
     cost: 1,
-    effect: {
-      enchant: { type: 'shield' },
-      energy: 10,
-    },
+    enchant: { type: 'shield', energy: 10, },
     target: 'self',
     rarity: 2,
   },
@@ -170,8 +169,8 @@ const CARD_DATA = {
     img: 'shield-magic',
     text: 'Boon 3 for each card in hand. Damage reduces shield energy instead of health',
     cost: 2,
-    effect: {
-      enchant: { type: 'shield' },
+    enchant: {
+      type: 'shield',
       energy: (card) => 3 * card.game.hand.cards.length,
     },
     target: 'self',
@@ -298,9 +297,7 @@ const ENEMY_CARDS = {
   shield: {
     name: 'Shield',
     img: 'shield',
-    effect: {
-      enchant: { type: 'shield' },
-    },
+    enchant: { type: 'shield' },
   }
 }
 
