@@ -147,7 +147,7 @@ class Fight extends Phaser.Scene {
       this.maxMana = BASE_MANA + (this.player.bonusMana || 0);
       this.player.bonusMana = 0;
       this.setManaSpent(0, this.maxMana);
-      this.drawCardsTo(START_HAND_SIZE);
+      this.drawCardsTo(this.player.getCardsToDraw());
     }
   }
 

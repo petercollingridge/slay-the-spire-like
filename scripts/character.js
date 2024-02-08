@@ -60,6 +60,14 @@ class Character {
     }
   }
 
+  getCardsToDraw() {
+    let cards = START_HAND_SIZE;
+    this._getEnchantmentsOfType('draw').forEach((enchantment) => {
+      cards = enchantment.effect(cards);
+    });
+    return cards;
+  }
+
   die() {
     this.dead = true;
     this.img.setTint(0xff0000);
@@ -94,7 +102,8 @@ class Character {
   showDamage(damage) {
     if (!damage) { return; }
 
-    const text = this.game.add.text(this.x, this.y, damage, {
+    const x = this.x + Phaser.Math.Between(-30, 30);
+    const text = this.game.add.text(x, this.y, damage, {
       font: '40px Impact',
       fill: '#ffffff'
     });
@@ -115,7 +124,8 @@ class Character {
   showHeal(damage) {
     if (!damage) { return; }
 
-    const text = this.game.add.text(this.x + 20, this.y, damage, {
+    const x = this.x + Phaser.Math.Between(-30, 30);
+    const text = this.game.add.text(x, this.y, damage, {
       font: '40px Impact',
       fill: '#0000dd'
     });

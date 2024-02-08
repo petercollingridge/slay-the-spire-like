@@ -9,25 +9,33 @@ const CARD_DATA = {
   },
   'Strike': {
     img: 'sword-2',
-    text: 'Deal 3 damage.',
-    cost: 1,
-    effect: { damage: 3 },
+    text: 'Deal 5 damage.',
+    cost: 2,
+    effect: { damage: 5 },
     target: 'enemy',
     rarity: 1,
   },
   'Mighty slash': {
     img: 'sword-3',
-    text: 'Deal 5 damage.',
-    cost: 1,
-    effect: { damage: 5 },
+    text: 'Deal 8 damage.',
+    cost: 3,
+    effect: { damage: 8 },
     target: 'enemy',
     rarity: 1,
   },
+  "Slice 'n' dice": {
+    img: 'sword-3',
+    text: 'Deal 8 damage.',
+    cost: 1,
+    effect: { damage: 4 },
+    target: 'enemy',
+    rarity: 2,
+  },
   'Ultimate smash': {
     img: 'sword-4',
-    text: 'Deal 8 damage.',
+    text: 'Deal 10 damage.',
     cost: 2,
-    effect: { damage: 8 },
+    effect: { damage: 10 },
     target: 'enemy',
     rarity: 2,
   },
@@ -131,13 +139,31 @@ const CARD_DATA = {
   },
   'Boon blast': {
     img: 'boon-blast',
-    text: 'Deal 2 damage for each energy on a boon.',
+    text: 'Deal 2 damage for each energy your boons.',
     cost: 2,
     effect: { 
       damage: (card) => {
         let damage = 0;
         card.game.player.enchantments.forEach((enchantment) => {
           if (enchantment.mode === 'boon') {
+            damage += enchantment.energy * 2;
+          }
+        });
+        return damage;
+      }
+    },
+    target: 'enemy',
+    rarity: 3,
+  },
+  'Hex blast': {
+    img: 'boon-blast',
+    text: "Deal 2 damage for each energy on target's hexes.",
+    cost: 2,
+    effect: { 
+      damage: (_, target) => {
+        let damage = 0;
+        target.enchantments.forEach((enchantment) => {
+          if (enchantment.mode === 'hex') {
             damage += enchantment.energy * 2;
           }
         });
@@ -220,17 +246,6 @@ const CARD_DATA = {
     target: 'self',
     rarity: 3,
   },
-  // 'Fever': {
-  //   img: 'sickness',
-  //   text: 'Deal 2 damage for every poison. Remove 1 poison.',
-  //   cost: 2,
-  //   effect: {
-  //     damage: (card) => 2 * card.game.enemy.poisonAmount,
-  //     poison: -1
-  //   },
-  //   target: 'enemy',
-  //   rarity: 3,
-  // },
   'Arcane sword': {
     img: 'sword-magic',
     text: 'Deal 2 damage for each card in hand.',
@@ -263,9 +278,17 @@ const CARD_DATA = {
   },
   'Quick shot': {
     img: 'arrow-1',
-    text: 'Deal 2 damage and draw 2 cards.',
+    text: 'Deal 2 damage and draw 1 card.',
     cost: 1,
-    effect: { damage: 2, draw: 2 },
+    effect: { damage: 2, draw: 1 },
+    target: 'enemy',
+    rarity: 1,
+  },
+  'Rapid shot': {
+    img: 'arrow-1',
+    text: 'Deal 3 damage and draw 2 cards.',
+    cost: 1,
+    effect: { damage: 3, draw: 2 },
     target: 'enemy',
     rarity: 2,
   },
@@ -291,6 +314,37 @@ const CARD_DATA = {
     cost: 1,
     effect: { draw: 3 },
     target: 'self',
+    rarity: 2,
+  },
+  'Formulate': {
+    img: 'draw-card',
+    text: 'Draw 1 card for every boon +1.',
+    cost: 2,
+    effect: {
+      draw: (_, target) => 1 + target.enchantments.length
+    },
+    target: 'self',
+    rarity: 3,
+  },
+  'Research': {
+    img: 'draw-card',
+    text: 'Boon 5. Draw 5 cards.',
+    cost: 2,
+    effect: { draw: 5 },
+    enchant: { energy: 5, type: 'null' },
+    target: 'self',
+    rarity: 3,
+  },
+  'Study': {
+    img: 'draw-card',
+    text: 'Boon 5. Draw an extra card each turn.',
+    cost: 2,
+    enchant: {
+      energy: 5,
+      type: 'draw',
+      effect: (cards) => cards + 1,
+    },
+    target: 'self',
     rarity: 3,
   },
   'Heal': {
@@ -308,6 +362,14 @@ const CARD_DATA = {
     effect: { store: 1 },
     target: 'self',
     rarity: 2,
+  },
+  'Accumulate magic': {
+    img: 'potion',
+    text: 'Gain 2 mana next turn.',
+    cost: 2,
+    effect: { store: 2 },
+    target: 'self',
+    rarity: 3,
   },
   'Curse': {
     img: 'curse',
@@ -384,38 +446,23 @@ function getStartingDeck() {
   return deck;
 }
 
-// const startingDeck = getStartingDeck();
-
 function getCardsToWin(n) {
   return getRandN(Object.keys(PLAYER_CARDS).slice(), n);
 }
 
-const startingDeck = {
-  'Gentle jab': 1,
-  'Strike': 1,
-  'Mighty slash': 1,
-  'Ultimate smash': 1,
-  'Toxic bloom': 1,
-  'Prepare': 1,
-  'Heal': 1,
-  'Basic shield': 1,
-  'Double damage': 1,
-  'Fortify': 1,
-  'Poison blade': 2,
-  'Weaken': 1,
-  'Boon boost': 1,
-  'Enchant boost': 1,
-  'Hex boost': 1,
-  'Boon blast': 1,
-};
-
+const startingDeck = getStartingDeck();
 
 // const startingDeck = {
-//   'Poison blade': 3,
-//   'Toxic bloom': 1,
-//   'Fever': 1,
-//   'Mighty slash': 2,
+//   'Gentle jab': 1,
+//   'Strike': 1,
+//   'Mighty slash': 1,
+//   'Ultimate smash': 1,
 //   'Prepare': 1,
 //   'Heal': 1,
+//   'Study': 1,
 //   'Basic shield': 1,
+//   'Double damage': 1,
+//   'Arcane sword': 1,
+//   'Fortify': 1,
+//   'Research': 1,
 // };
