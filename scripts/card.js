@@ -105,7 +105,7 @@ class Card {
       this.game.player.dealDamage(target, value);
     }
     if (this.effect.draw) {
-      const value = getCardValue(this.effect.draw, this);
+      const value = getCardValue(this.effect.draw, this, target);
       this.game.drawCards(value);
     }
     if (this.effect.heal) {

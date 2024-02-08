@@ -14,10 +14,10 @@ function getRandN(arr, n) {
   return Phaser.Utils.Array.Shuffle(arr).slice(0, n);
 }
 
-function getCardValue(valueOrFunction, game) {
+function getCardValue(valueOrFunction, game, target) {
   if (typeof valueOrFunction === 'number') {
     return valueOrFunction;
   } else {
-    return valueOrFunction(game);
+    return valueOrFunction(game, target);
   }
 }
