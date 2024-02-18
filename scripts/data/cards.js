@@ -25,17 +25,17 @@ const CARD_DATA = {
   },
   "Slice 'n' dice": {
     img: 'sword-3',
-    text: 'Deal 8 damage.',
-    cost: 1,
-    effect: { damage: 4 },
+    text: 'Deal 3 damage twice.',
+    cost: 2,
+    effect: [{ damage: 3 }, { damage: 3 }],
     target: 'enemy',
     rarity: 2,
   },
-  'Ultimate smash': {
+  "Smash 'n' bash": {
     img: 'sword-4',
-    text: 'Deal 10 damage.',
-    cost: 2,
-    effect: { damage: 10 },
+    text: 'Deal 5 damage twice.',
+    cost: 3,
+    effect: [{ damage: 5 }, { damage: 5 }],
     target: 'enemy',
     rarity: 2,
   },
@@ -450,19 +450,21 @@ function getCardsToWin(n) {
   return getRandN(Object.keys(PLAYER_CARDS).slice(), n);
 }
 
-const startingDeck = getStartingDeck();
+// const startingDeck = getStartingDeck();
 
-// const startingDeck = {
-//   'Gentle jab': 1,
-//   'Strike': 1,
-//   'Mighty slash': 1,
-//   'Ultimate smash': 1,
-//   'Prepare': 1,
-//   'Heal': 1,
-//   'Study': 1,
-//   'Basic shield': 1,
-//   'Double damage': 1,
-//   'Arcane sword': 1,
-//   'Fortify': 1,
-//   'Research': 1,
-// };
+const startingDeck = {
+  'Gentle jab': 1,
+  'Strike': 1,
+  'Mighty slash': 1,
+  "Slice 'n' dice": 1,
+  "Smash 'n' bash": 1,
+  'Prepare': 1,
+  'Heal': 1,
+  'Study': 1,
+  'Basic shield': 1,
+  'Double damage': 1,
+  'Arcane sword': 1,
+  'Strengthen': 1,
+  'Fortify': 1,
+  'Research': 1,
+};

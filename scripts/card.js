@@ -100,32 +100,10 @@ class Card {
     this.castCount++;
     this.game.hand.removeCard(this);
 
-    if (this.effect.damage) {
-      const value = getCardValue(this.effect.damage, this);
-      this.game.player.dealDamage(target, value);
-    }
-    if (this.effect.draw) {
-      const value = getCardValue(this.effect.draw, this, target);
-      this.game.drawCards(value);
-    }
-    if (this.effect.heal) {
-      const value = getCardValue(this.effect.heal, this);
-      target.heal(value);
-    }
-    if (this.effect.poison) {
-      const value = getCardValue(this.effect.poison, this);
-      target.poison(value);
-    }
-    if (this.effect.shield) {
-      const value = getCardValue(this.effect.shield, this);
-      target.shield(value);
-    }
-    if (this.effect.special) {
-      this.effect.special(this, target);
-    }
-    if (this.effect.store) {
-      const value = getCardValue(this.effect.store, this);
-      this.game.player.manaBonus(value);
+    if (Array.isArray(this.effect)) {
+      this.effect.forEach((effect) => this._applyEffect(effect, target));
+    } else {
+      this._applyEffect(this.effect, target);
     }
 
     if (this.enchant) {
@@ -134,6 +112,28 @@ class Card {
     } else if (!this.data.oneUse) {
       // Add card to discard pile after it's effect is resolved, unless it's one use only
       this.game.discard.addCard(this);
+    }
+  }
+
+  _applyEffect(effect, target) {
+    if (effect.damage) {
+      const value = getCardValue(effect.damage, this);
+      this.game.player.dealDamage(target, value);
+    }
+    if (effect.draw) {
+      const value = getCardValue(effect.draw, this, target);
+      this.game.drawCards(value);
+    }
+    if (effect.heal) {
+      const value = getCardValue(effect.heal, this);
+      target.heal(value);
+    }
+    if (effect.special) {
+      effect.special(this, target);
+    }
+    if (effect.store) {
+      const value = getCardValue(effect.store, this);
+      this.game.player.manaBonus(value);
     }
   }
 }
