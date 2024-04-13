@@ -9,6 +9,16 @@ const ENEMY_DATA = {
       { curse: 2 },
     ]
   },
+  serpent: {
+    img: 'enemy-6',
+    name: 'Giant serpent',
+    health: 45,
+    actions: [
+      { damage: 2, poison: 2 },
+      { damage: 3, damage: 4 },
+      { poison: 1 },
+    ]
+  },
   minotaur: {
     img: 'enemy-2',
     name: 'Minotaur',
@@ -47,6 +57,17 @@ const ENEMY_DATA = {
       { damage: 8 },
       { damage: 2, shield: 4 },
       { heal: 10 },
+    ]
+  },
+  gorgon: {
+    img: 'enemy-7',
+    name: 'Gorgon',
+    health: 75,
+    actions: [
+      { damage: 16, poison: 6 },
+      { damage: 2, curse: 10 },
+      { damage: 1 },
+      { damage: 2, curse: 1},
     ]
   },
 };
