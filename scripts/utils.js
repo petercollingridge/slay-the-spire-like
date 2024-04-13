@@ -1,3 +1,4 @@
+// COnvert a dict mapping action name to value, into a string showing all the action - value pairs
 function actionToString(action) {
   return Object.entries(action).map(([key, value]) => `${capitalise(key)}: ${value}`).join('; ');
 }
