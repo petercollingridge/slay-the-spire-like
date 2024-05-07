@@ -5,6 +5,7 @@ class StartScene extends Phaser.Scene {
 
   preload() {
     this.load.image('background', 'assets/option-background.svg');
+    this.load.image('deck-builder', 'assets/deck-builder.svg');
     this.load.image('rect', 'assets/characters/choice-outline.svg');
     this.load.image('button', 'assets/button.svg');
     this.load.image('card', 'assets/cards/card-base.svg');
