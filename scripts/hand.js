@@ -10,16 +10,6 @@ class Hand {
     this.y = y + this.r;
   }
 
-  // Draw <n> cards from <deck> into hand
-  // Determine the location and rotation of each card
-  addCards(deck, n) {
-    this.getCardPositions(n).forEach(({ x, y, rotation }, index) => {
-      const card = deck[index];
-      card.createSprite(x, y, rotation, index);
-      this.cards.push(card);
-    });
-  }
-
   addCard(card) {
     this.cards.push(card);
     card.show();
