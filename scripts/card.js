@@ -158,3 +158,14 @@ function getCardSprite(scene, data, x, y) {
   container.setSize(cardImg.width, cardImg.height);
   return container
 }
+
+// Get and array of card object from an objecting mapping card name to count
+function createCards(cardCounts, scene) {
+  const cards = [];
+  Object.entries(cardCounts).forEach(([name, count]) => {
+    for (let i = 0; i < count; i++) {
+      cards.push(new Card(scene, name));
+    }
+  });
+  return cards;
+}

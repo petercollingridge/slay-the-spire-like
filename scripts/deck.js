@@ -1,17 +1,12 @@
 class Deck {
-  constructor(game, name, x, y, cardsCounts = {}) {
+  constructor(game, name, x, y, cardCounts = {}) {
     this.game = game;
     this.name = name;
     this.x = x;
     this.y = y;
-    this.cards = [];
-    
-    Object.entries(cardsCounts).forEach(([name, count]) => {
-      for (let i = 0; i < count; i++) {
-        this.cards.push(new Card(game, name));
-      }
-    });
+    this.cards = createCards(cardCounts, game);
 
+    // Draw card representing where the deck and showing the number of cards it has
     this.img = game.add.sprite(x, y, 'card');
     game.add.text(x, y - 36, name, {
       fontSize: '13px', fill: '#000', align: 'center', wordWrap: { width: CARD_WIDTH - 24 }
