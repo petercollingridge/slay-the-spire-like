@@ -1,4 +1,4 @@
-class Fight extends Phaser.Scene {
+class Fight extends DraggableScene {
   constructor() {
     super("Fight");
   }
@@ -6,6 +6,7 @@ class Fight extends Phaser.Scene {
   init(data) {
     this.enemyType = data.enemyType;
     this.enemyLevel = data.enemyLevel;
+    super.init();
   }
 
   preload() {
@@ -64,13 +65,6 @@ class Fight extends Phaser.Scene {
     // Hand
     this.hand = new Hand(this, MIDX, HEIGHT - 130);
 
-    this.input.on('dragstart', this.dragStart, this);
-    this.input.on('dragenter', this.dragEnter, this);
-    this.input.on('dragleave', this.dragLeave, this);
-    this.input.on('drag', this.drag, this);
-    this.input.on('dragend', this.dragEnd, this);
-    this.input.on('drop', this.drop, this);
-
     this.graphics = this.add.graphics();
 
     this.playerTurn();
@@ -128,6 +122,11 @@ class Fight extends Phaser.Scene {
     this.discard.addCard(card);
   }
 
+  selectCard(card) {
+    card.cardImg.setTint(YELLOW_TINT);
+    this.hand.bringToFront(card.container);
+  }
+
   setManaSpent(mana, maxMana = this.maxMana) {
     this.manaSpent = mana;
     this.manaCount.setText(`${mana} / ${maxMana}`);
@@ -173,32 +172,5 @@ class Fight extends Phaser.Scene {
       this.discarding = false;
       this.discardMsg.visible = false;
     }
-  }
-
-  dragStart(pointer, target) {
-    target.parent.dragStart();
-  }
-  
-  drag(pointer, target, dragX, dragY) {
-    target.x = dragX;
-    target.y = dragY;
-  }
-
-  dragEnter(pointer, target, dropZone) {
-    dropZone.parent.dragEnter(target.parent);
-  }
-
-  dragLeave(pointer, target, dropZone) {
-    target.parent.cardImg.setTint(YELLOW_TINT);
-    dropZone.parent.clearTint();
-  }
-  
-  dragEnd(pointer, target) {
-    target.parent.dragEnd();
-  }
-
-  drop(pointer, target, dropZone) {
-    target.parent.clearTint();
-    dropZone.parent.drop(target.parent);
   }
 }

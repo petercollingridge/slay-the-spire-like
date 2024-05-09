@@ -1,9 +1,11 @@
-class DeckBuilder extends Phaser.Scene {
+class DeckBuilder extends DraggableScene {
   constructor() {
     super("DeckBuilder");
   }
 
   init() {
+    super.init();
+    console.log('DeckBuilder')
   }
 
   create() {
@@ -22,7 +24,7 @@ class DeckBuilder extends Phaser.Scene {
     let cardX = x + margin + CARD_WIDTH * 0.5;
     let cardY = y + margin + CARD_HEIGHT * 0.5;
 
-    this.unusedCards.forEach((card, index) => {
+    cards.forEach((card, index) => {
       card.setPosition(cardX, cardY);
       card.show();
       cardX += CARD_WIDTH + margin;
@@ -32,5 +34,9 @@ class DeckBuilder extends Phaser.Scene {
         cardY += margin + CARD_HEIGHT;
       }
     });
+  }
+
+  selectCard(card) {
+    card.cardImg.setTint(YELLOW_TINT);
   }
 };

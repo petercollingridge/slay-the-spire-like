@@ -1,9 +1,9 @@
 class Card {
-  constructor(game, name) {
+  constructor(scene, name) {
     const data = CARD_DATA[name];
 
     this.data = data;
-    this.game = game;
+    this.scene = scene;
 
     // Copy some values from data to make look up easier
     this.cost = data.cost;
@@ -16,18 +16,17 @@ class Card {
     this.castCount = 0;
 
     // Create a sprite and text
-    this.container = getCardSprite(game, data, 60, HEIGHT - 80);
+    this.container = getCardSprite(scene, data, 60, HEIGHT - 80);
     this.container.parent = this;
     this.cardImg = this.container.list[0];
 
     // Make card draggable
     this.container.setInteractive();
-    game.input.setDraggable(this.container);
+    scene.input.setDraggable(this.container);
     this.container.setVisible(false);
 
     this.container.on('pointerdown', () => {
-      this.cardImg.setTint(YELLOW_TINT);
-      game.hand.bringToFront(this.container);
+      this.scene.selectCard(this);
     });
   };
 
@@ -40,7 +39,7 @@ class Card {
   }
 
   moveTo(x, y, rotation = 0) {
-    this.game.tweens.add({
+    this.scene.tweens.add({
       targets: this.container,
       x,
       y,
@@ -67,7 +66,7 @@ class Card {
   }
 
   dragStart() {
-    this.canPlay = this.cost <= this.game.maxMana - this.game.manaSpent;
+    this.canPlay = this.cost <= this.scene.maxMana - this.scene.manaSpent;
     // Save card's current position so we can return it if the card is cancelled
     this.startX = this.container.x;
     this.startY = this.container.y;
@@ -76,7 +75,7 @@ class Card {
   dragEnd() {
     // Return card to hand
     this.clearTint();
-    this.game.hand.reorderHand();
+    this.scene.hand.reorderHand();
   }
 
   setPlayability(availableMana) {
@@ -96,9 +95,9 @@ class Card {
   }
 
   play(target) {
-    this.game.spendMana(this.cost);
+    this.scene.spendMana(this.cost);
     this.castCount++;
-    this.game.hand.removeCard(this);
+    this.scene.hand.removeCard(this);
 
     if (Array.isArray(this.effect)) {
       this.effect.forEach((effect) => this._applyEffect(effect, target));
@@ -111,18 +110,18 @@ class Card {
       target.enchant(this, value);
     } else if (!this.data.oneUse) {
       // Add card to discard pile after it's effect is resolved, unless it's one use only
-      this.game.discard.addCard(this);
+      this.scene.discard.addCard(this);
     }
   }
 
   _applyEffect(effect, target) {
     if (effect.damage) {
       const value = getCardValue(effect.damage, this);
-      this.game.player.dealDamage(target, value);
+      this.scene.player.dealDamage(target, value);
     }
     if (effect.draw) {
       const value = getCardValue(effect.draw, this, target);
-      this.game.drawCards(value);
+      this.scene.drawCards(value);
     }
     if (effect.heal) {
       const value = getCardValue(effect.heal, this);
@@ -133,7 +132,7 @@ class Card {
     }
     if (effect.store) {
       const value = getCardValue(effect.store, this);
-      this.game.player.manaBonus(value);
+      this.scene.player.manaBonus(value);
     }
   }
 }
