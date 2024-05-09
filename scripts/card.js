@@ -26,6 +26,7 @@ class Card {
     this.container.setVisible(false);
 
     this.container.on('pointerdown', () => {
+      this.cardImg.setTint(YELLOW_TINT);
       this.scene.selectCard(this);
     });
   };
@@ -75,7 +76,7 @@ class Card {
   dragEnd() {
     // Return card to hand
     this.clearTint();
-    this.scene.hand.reorderHand();
+    this.scene.dropCard(this);
   }
 
   setPlayability(availableMana) {

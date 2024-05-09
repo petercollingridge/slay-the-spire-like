@@ -19,24 +19,50 @@ class DeckBuilder extends DraggableScene {
     this.showCards(this.unusedCards, 0, y1 * 2);
   }
 
-  showCards(cards, x, y) {
+  // Get an array of <n> positions (x, y) for <n> cards
+  getCardPositions(n, x, y) {
+    const positions = [];
     const margin = 10;
     let cardX = x + margin + CARD_WIDTH * 0.5;
     let cardY = y + margin + CARD_HEIGHT * 0.5;
 
-    cards.forEach((card, index) => {
-      card.setPosition(cardX, cardY);
-      card.show();
+    for (let i = 0; i < n; i++) {
+      positions.push({ x: cardX, y: cardY });
       cardX += CARD_WIDTH + margin;
 
       if (cardX > WIDTH / 2) {
         cardX = x + margin + CARD_WIDTH * 0.5;
         cardY += margin + CARD_HEIGHT;
       }
+    };
+
+    return positions;
+  }
+
+  showCards(cards, x, y) {
+    const positions = this.getCardPositions(cards.length, x, y);
+
+    cards.forEach((card, index) => {
+      const position = positions[index];
+      card.setPosition(position.x, position.y);
+      card.show();
     });
   }
 
   selectCard(card) {
-    card.cardImg.setTint(YELLOW_TINT);
+
+  }
+
+  dropCard(card) {
+    
+    this.reorderCards(this.unusedCards);
+  }
+
+  reorderCards(cards) {
+    const positions = this.getCardPositions(cards.length, 0, 40);
+
+    positions.forEach(({ x, y }, index) => {
+      cards[index].moveTo(x, y);
+    });
   }
 };

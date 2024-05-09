@@ -123,8 +123,11 @@ class Fight extends DraggableScene {
   }
 
   selectCard(card) {
-    card.cardImg.setTint(YELLOW_TINT);
     this.hand.bringToFront(card.container);
+  }
+
+  dropCard(card) {
+    this.hand.reorderHand();
   }
 
   setManaSpent(mana, maxMana = this.maxMana) {
