@@ -28,14 +28,14 @@ class DeckBuilder extends DraggableScene {
 
   dragStart(pointer, target) {
     console.log('Deckbuilder drag start');
-    target.depth = 1;
+    target.depth = 100;
     this.selectedCard = target;
     target.parent.zone.removeCard(target.parent);
   }
 
-  drop(pointer, target) {
-    console.log('Deckbuilder drop');
-  }
+  // drop(pointer, target) {
+  //   console.log('Deckbuilder drop');
+  // }
 
   dropCard(card) {
     console.log('dropCard')

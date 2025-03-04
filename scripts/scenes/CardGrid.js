@@ -9,7 +9,7 @@ class CardGrid {
 
     this.zone = scene.add.zone(x + width / 2, y + height / 2, width, height).setRectangleDropZone(width, height);
     this.zone.name = name;
-    scene.zones[name] = this.zone;
+    scene.zones[name] = this;
 
     this.cards = createCards(cards, scene);
     this.cards.forEach((card) => {
@@ -54,7 +54,26 @@ class CardGrid {
     const positions = this.getCardPositions(this.cards.length);
     positions.forEach(({ x, y, rotation }, index) => {
       this.cards[index].moveTo(x, y, rotation);
+      this.cards[index].container.depth = index;
     });
+  }
+
+  dropCard(card, position) {
+    const { x, y } = position.position;
+    const row = Math.max(0, Math.floor((y - this.y - this.margin / 2) / (CARD_HEIGHT + this.margin)));
+    const col = Math.max(0, Math.floor((x - this.x - this.margin / 2) / (CARD_WIDTH + this.margin)));
+    const nCols = Math.floor((this.width - this.margin) / (CARD_WIDTH + this.margin));
+    const cardIndex = Math.min(row * nCols + col, this.cards.length);
+    this.addCard(card, cardIndex);
+  }
+
+  addCard(card, index) {
+    if (index === undefined) {
+      this.cards.push(card)
+    } else {
+      this.cards.splice(index, 0, card);
+    }
+    this.reorganiseCards();
   }
 
   removeCard(card) {
