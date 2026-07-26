@@ -1,3 +1,5 @@
+// A scene in which item, probably cards, can be dragged and dropped between zones
+
 class DraggableScene extends Phaser.Scene {
   init() {
     this.input.on('dragstart', this.dragStart, this);

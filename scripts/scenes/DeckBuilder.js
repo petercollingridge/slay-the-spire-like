@@ -5,26 +5,31 @@ class DeckBuilder extends DraggableScene {
 
   init() {
     super.init();
-    console.log('DeckBuilder')
+    console.log('DeckBuilder');
   }
 
   create() {
     const y1 = 20;
-    const y2 = HEIGHT - y1 * 2;
 
     this.add.image(MIDX, MIDY + y1, 'deck-builder');
     this.add.text(MIDX, y1, "Deck Builder", OPTION_STYLE).setOrigin(0.5);
 
-    this.zone1 = new CardGrid(this, 'zone1', 0, y1 * 2, MIDX, y2, startingDeck);
-    // this.zone2 = new CardGrid(this, 'zone2', MIDX, y1 * 2, MIDX, y2, []);
+    // this.zone1 = new CardGrid(this, 'zone1', 0, y1 * 2, MIDX, y2, startingDeck);
+    // this.zone2 = new CardGrid(this, 'zone2', MIDX, y1 * 2, MIDX, y2, {'Gentle jab': 2});
 
+    const LIST_WIDTH = 320;
+    const LIST_Y1 = 60
+    const LIST_Y2 = HEIGHT - LIST_Y1 - 20;
+    this.zone1 = new CardList(this, 'zone1', 20, LIST_Y1, LIST_WIDTH, LIST_Y2);
+    this.zone2 = new CardList(this, 'zone2', WIDTH - 10 - LIST_WIDTH, LIST_Y1, LIST_WIDTH, LIST_Y2);
+
+    this.zone1.addCards(startingDeck);
+    this.zone2.addCards({'Gentle jab': 2});
     this.zone1.showCards();
-    // this.zone2.showCards();
+    this.zone2.showCards();
 
     this.selectedCard = null;
   }
-
-  selectCard(card) { }
 
   dragStart(pointer, target) {
     console.log('Deckbuilder drag start');
@@ -33,25 +38,19 @@ class DeckBuilder extends DraggableScene {
     target.parent.zone.removeCard(target.parent);
   }
 
-  // drop(pointer, target) {
-  //   console.log('Deckbuilder drop');
-  // }
-
-  dropCard(card) {
-    console.log('dropCard')
-    console.log(card)
-    // this.reorderCards(this.unusedCards);
-  }
-
   dragEnter() {
     console.log('Deckbuilder drag enter')
   }
 
-  reorderCards(cards) {
-    const positions = this.getCardPositions(cards.length, 0, 40);
+  dragLeave() {}
 
-    positions.forEach(({ x, y }, index) => {
-      cards[index].moveTo(x, y);
-    });
+  dropCard(card) {
+    console.log('dropCard')
+  }
+
+  update() {
+    const pointer = this.input.activePointer;
+    // this.zone1.mouseOver(pointer.x, pointer.y);
+    // this.zone2.mouseOver(pointer.x, pointer.y);
   }
 };

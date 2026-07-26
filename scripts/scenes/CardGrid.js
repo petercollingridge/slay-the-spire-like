@@ -5,14 +5,35 @@ class CardGrid {
     this.y = y;
     this.width = width;
     this.height = height;
+    this.x2 = x + width;
+    this.y2 = y + height;
     this.margin = 10;
+    this.offset = 0;
 
+    // Create drag drop zone
     this.zone = scene.add.zone(x + width / 2, y + height / 2, width, height).setRectangleDropZone(width, height);
     this.zone.name = name;
     scene.zones[name] = this;
 
+    // Create container for masking
+    this.container = scene.add.container(x, y);
+    const maskShape = scene.add.graphics();
+    maskShape.fillStyle(0xffffff);
+    maskShape.fillRect(x, y, width, height);
+
+    // Create background for the scrollable zone
+    let background = scene.add.graphics();
+    background.fillStyle(0x222222, 0.8); // Dark grey background
+    background.fillRect(x, y, width, height);
+    background.setInteractive();
+
+    const mask = maskShape.createGeometryMask();
+    this.container.setMask(mask);
+
+    // Add cards to container
     this.cards = createCards(cards, scene);
     this.cards.forEach((card) => {
+      this.container.add(card.container);
       card.zone = this;
     })
   }
@@ -27,7 +48,7 @@ class CardGrid {
       positions.push({ x: cardX, y: cardY });
       cardX += CARD_WIDTH + this.margin;
 
-      if (cardX > WIDTH / 2) {
+      if (cardX > this.x2) {
         cardX = this.x + this.margin + CARD_WIDTH * 0.5;
         cardY += this.margin + CARD_HEIGHT;
       }
@@ -44,10 +65,6 @@ class CardGrid {
       card.setPosition(position.x, position.y);
       card.show();
     });
-
-    this.scene.add.graphics()
-    .lineStyle(2, 0x0000ff)
-    .strokeRect(this.x, this.y, this.width, this.height);
   }
 
   reorganiseCards() {
@@ -90,4 +107,12 @@ class CardGrid {
     // card.hide();
   }
   
+  mouseOver(x, y) {
+    if (x >= this.x && x <= this.x2 && y >= this.y2 - 50 && y <= this.y2) {
+      // this.offset++;
+      // this.cameras.main.scrollY = this.offset
+      this.container.y--;
+      console.log(this.container)
+    }
+  }
 };
