@@ -42,12 +42,7 @@ class Button extends Phaser.GameObjects.Container {
 
     this.setSize(width, height);
     this.setInteractive(
-      new Phaser.Geom.Rectangle(
-        -width / 2,
-        -height / 2,
-        width,
-        height
-      ),
+      new Phaser.Geom.Rectangle(0, 0, width, height),
       Phaser.Geom.Rectangle.Contains
     );
 
