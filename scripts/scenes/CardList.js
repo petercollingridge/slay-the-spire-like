@@ -1,6 +1,7 @@
 class CardList {
   constructor(scene, name, x, y, width, height) {
     this.scene = scene;
+    this.name = name;
     this.x = x;
     this.y = y;
     this.width = width;
@@ -8,15 +9,19 @@ class CardList {
     this.x2 = x + width;
     this.y2 = y + height;
     this.margin = 10;
-    this.offset = 0;
+
     this.cards = [];
     this.cardHeight = 20;
     this.cardWidth = width - 2 * this.margin;
+    this.selectedCardIndex = null;
 
+    // Light grey background
     const background = scene.add.graphics();
-    background.fillStyle(0xffffff, 0.8); // Light grey background
-    background.fillRect(x, y, width, height);
+    background.fillStyle(0xffffff, 0.8);
+    background.fillRect(x, y + 20, width, height - 20);
 
+    // Add title text
+    scene.add.text(x + width / 2, y, name, OPTION_STYLE).setOrigin(0.5);
   }
 
   addCards(cardCounts) {
@@ -27,7 +32,7 @@ class CardList {
   showCards() {
     this.cards.forEach((card, index) => {
       const cardX = this.x + this.margin;
-      const cardY = this.y + this.margin + index * (this.cardHeight + 2);
+      const cardY = this.y + this.margin + 20 + index * (this.cardHeight + 2);
 
       const container = this.scene.add.container(cardX, cardY);
       const background = this.scene.add.graphics();
@@ -51,7 +56,28 @@ class CardList {
         background.fillRect(cardX, cardY, this.width - 2 * this.margin, this.cardHeight);
       });
 
-
+      container.on('pointerup', () => {
+        this.selectCard(index);
+      });
     });
+  }
+
+  selectCard(index) {
+    this.selectedCardIndex = index;
+    const selectedCard = this.cards[index];
+    this.scene.selectCard(this.name, selectedCard);
+  }
+
+  addCard(card) {
+    this.cards.push(card);
+    this.showCards();
+  }
+
+  removeSelectedCard() {
+    if (this.selectedCardIndex !== null) {
+      this.cards.splice(this.selectedCardIndex, 1);
+      this.selectedCardIndex = null;
+      this.showCards();
+    }
   }
 };

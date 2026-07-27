@@ -20,37 +20,75 @@ class DeckBuilder extends DraggableScene {
     const LIST_WIDTH = 320;
     const LIST_Y1 = 60
     const LIST_Y2 = HEIGHT - LIST_Y1 - 20;
-    this.zone1 = new CardList(this, 'zone1', 20, LIST_Y1, LIST_WIDTH, LIST_Y2);
-    this.zone2 = new CardList(this, 'zone2', WIDTH - 10 - LIST_WIDTH, LIST_Y1, LIST_WIDTH, LIST_Y2);
+    this.zone1 = new CardList(this, 'Unused cards', 20, LIST_Y1, LIST_WIDTH, LIST_Y2);
+    this.zone2 = new CardList(this, 'Deck', WIDTH - 10 - LIST_WIDTH, LIST_Y1, LIST_WIDTH, LIST_Y2);
 
     this.zone1.addCards(startingDeck);
-    this.zone2.addCards({'Gentle jab': 2});
+    this.zone2.addCards({});
     this.zone1.showCards();
     this.zone2.showCards();
 
     this.selectedCard = null;
+
+    this.addCardButton = new Button(
+      this,
+      {x: MIDX, y: MIDY + 140,
+      text: 'Add to deck',
+      trigger: this.addCard.bind(this)
+      }
+    );
+
+    this.removeCardButton = new Button(
+      this,
+      {x: MIDX, y: MIDY + 140,
+      text: 'Remove from deck',
+      trigger: this.removeCard.bind(this)
+      }
+    );
+
+    this.addCardButton.hide();
+    this.removeCardButton.hide();
   }
 
-  dragStart(pointer, target) {
-    console.log('Deckbuilder drag start');
-    target.depth = 100;
-    this.selectedCard = target;
-    target.parent.zone.removeCard(target.parent);
-  }
+  selectCard(zone, card) {
+    if (this.selectedCard) {
+      // Deselect previous card
+      // this.selectedCard.clearTint();
+    }
 
-  dragEnter() {
-    console.log('Deckbuilder drag enter')
-  }
+    const x = MIDX - CARD_WIDTH / 2;
+    const cardSprite = getCardSprite(this, card.data, MIDX, MIDY);
+    this.selectedCard = card;
 
-  dragLeave() {}
+    if (zone === 'Deck') {
+      this.addCardButton.hide();
+      this.removeCardButton.show();
+    } else if (zone === 'Unused cards') {
+      this.addCardButton.show();
+      this.removeCardButton.hide();
+    }
 
-  dropCard(card) {
-    console.log('dropCard')
   }
 
   update() {
     const pointer = this.input.activePointer;
     // this.zone1.mouseOver(pointer.x, pointer.y);
     // this.zone2.mouseOver(pointer.x, pointer.y);
+  }
+
+  addCard() {
+    this.zone1.addCard(this.selectedCard);
+    this.zone2.removeSelectedCard();
+    this.selectedCard = null;
+    this.addCardButton.hide();
+    this.removeCardButton.hide();
+  }
+
+  removeCard() {
+    this.zone2.addCard(this.selectedCard);
+    this.zone1.removeSelectedCard();
+    this.selectedCard = null;
+    this.addCardButton.hide();
+    this.removeCardButton.hide();
   }
 };

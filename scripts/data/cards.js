@@ -450,21 +450,21 @@ function getCardsToWin(n) {
   return getRandN(Object.keys(PLAYER_CARDS).slice(), n);
 }
 
-// const startingDeck = getStartingDeck();
+const startingDeck = getStartingDeck();
 
-const startingDeck = {
-  'Gentle jab': 1,
-  'Strike': 1,
-  'Mighty slash': 1,
-  "Slice 'n' dice": 1,
-  "Smash 'n' bash": 1,
-  'Prepare': 1,
-  'Heal': 1,
-  'Study': 1,
-  'Basic shield': 1,
-  'Double damage': 1,
-  'Arcane sword': 1,
-  'Strengthen': 1,
-  'Fortify': 1,
-  'Research': 1,
-};
+// const startingDeck = {
+//   'Gentle jab': 1,
+//   'Strike': 1,
+//   'Mighty slash': 1,
+//   "Slice 'n' dice": 1,
+//   "Smash 'n' bash": 1,
+//   'Prepare': 1,
+//   'Heal': 1,
+//   'Study': 1,
+//   'Basic shield': 1,
+//   'Double damage': 1,
+//   'Arcane sword': 1,
+//   'Strengthen': 1,
+//   'Fortify': 1,
+//   'Research': 1,
+// };

@@ -1,63 +1,113 @@
-class Button {
-  constructor(game, x, y, txt, onClick) {
-    this.container = game.add.container(x, y);
+class Button extends Phaser.GameObjects.Container {
+  constructor(
+    scene,
+    {
+      x = 0,
+      y = 0,
+      width = 120,
+      height = 32,
+      radius = 10,
+      text = "",
+      trigger = () => {},
+      backgroundColor = 0x3366ff,
+      hoverColor = 0x5588ff,
+      textStyle = {}
+    } = {}
+  ) {
+    super(scene, x, y);
 
-    // Create the background for the button
-    this.background = game.add.sprite(0, 0, 'button');
-    this.background.setOrigin(0.5, 0.5);
+    this.buttonWidth = width;
+    this.buttonHeight = height;
+    this.radius = radius;
+    this.backgroundColor = backgroundColor;
+    this.hoverColor = hoverColor;
+    this.trigger = trigger;
 
-    // Create text for the button
-    const buttonText = game.add.text(0, 0, txt, {
-      fill: '#111',
-      fontFamily: 'Arial',
-      fontSize: '20px',
+    this.background = scene.add.graphics();
+
+    this.label = scene.add
+      .text(0, 0, text, {
+        fontFamily: "Arial",
+        fontSize: "18px",
+        color: "#ffffff",
+        ...textStyle
+      })
+      .setOrigin(0.5);
+
+    this.add([this.background, this.label]);
+
+    // The Container origin is effectively its local 0,0 point,
+    // so draw around that centre.
+    this.drawBackground(this.backgroundColor);
+
+    this.setSize(width, height);
+    this.setInteractive(
+      new Phaser.Geom.Rectangle(
+        -width / 2,
+        -height / 2,
+        width,
+        height
+      ),
+      Phaser.Geom.Rectangle.Contains
+    );
+
+    this.on("pointerover", () => {
+      this.drawBackground(this.hoverColor);
+      scene.input.setDefaultCursor("pointer");
     });
-    buttonText.setOrigin(0.5, 0.5);
 
-    // Add the background and text to the button container
-    this.container.add([this.background, buttonText]);
-
-    // Make the button interactive
-    this.container.setSize(this.background.width, this.background.height);
-    this.container.setInteractive({ useHandCursor: true });
-
-    // Set up event listeners for the button
-    this.container.on('pointerover', () => {
-      this.background.setTint(0xaaccff);
+    this.on("pointerout", () => {
+      this.drawBackground(this.backgroundColor);
+      scene.input.setDefaultCursor("default");
     });
 
-    this.container.on('pointerout', () => {
-      this.background.clearTint();
+    this.on("pointerdown", () => {
+      this.setScale(0.97);
     });
 
-    let pressed = false;
-    this.container.on('pointerdown', () => {
-      pressed = true;
+    this.on("pointerup", (pointer) => {
+      this.setScale(1);
+      this.trigger(pointer, this);
     });
 
-    this.container.on('pointerup', () => {
-      if (pressed && onClick) {
-        onClick();
-      }
-      pressed = false;
-    });
+    scene.add.existing(this);
   }
 
-  enable() {
-    this.background.clearTint();
-    this.container.setInteractive({ useHandCursor: true });
+  drawBackground(color) {
+    this.background.clear();
+
+    this.background.fillStyle(color, 1);
+    this.background.fillRoundedRect(
+      -this.buttonWidth / 2,
+      -this.buttonHeight / 2,
+      this.buttonWidth,
+      this.buttonHeight,
+      this.radius
+    );
   }
 
-  disable() {
-    this.background.setTint(0x707070);
-    this.container.disableInteractive();
+  setText(text) {
+    this.label.setText(text);
+    return this;
+  }
+
+  setEnabled(enabled) {
+    if (enabled) {
+      this.setInteractive();
+      this.setAlpha(1);
+    } else {
+      this.disableInteractive();
+      this.setAlpha(0.5);
+    }
+
+    return this;
   }
 
   hide() {
-    this.container.visible = false;
+    this.setVisible(false);
   }
 
   show() {
-    this.container.visible = true;
+    this.setVisible(true);
   }
 }
