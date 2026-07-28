@@ -278,7 +278,7 @@ const CARD_DATA = {
   },
   'Quick shot': {
     img: 'arrow-1',
-    text: 'Deal 2 damage and draw 1 card.',
+    text: 'Deal 2 damage. Draw 1 card.',
     cost: 1,
     effect: { damage: 2, draw: 1 },
     target: 'enemy',
@@ -401,6 +401,8 @@ const ENEMY_CARDS = {
   }
 };
 
+const RARITY_LETTERS = ['C', 'U', 'R'];
+
 // Add names as attributes to card for easier look up
 Object.entries(CARD_DATA).forEach(([name, data]) => {
   data.name = name;
@@ -427,18 +429,25 @@ const COMMON_CARDS = Object.keys(PLAYER_CARDS).filter((card) => PLAYER_CARDS[car
 const UNCOMMON_CARDS = Object.keys(PLAYER_CARDS).filter((card) => PLAYER_CARDS[card].rarity === 2);
 const RARE_CARDS = Object.keys(PLAYER_CARDS).filter((card) => PLAYER_CARDS[card].rarity === 3);
 
-function getStartingDeck() {
-  const deck = {};
+const STARTING_CARDS = {
+  'Gentle jab': 2,
+  'Strike': 1,
+  'Basic shield': 2,
+  'Anticipate': 1,
+};
 
-  for (i = 0; i < 2; i++) {
+function getStartingDeck() {
+  const deck = {...STARTING_CARDS};
+
+  for (let i = 0; i < 1; i++) {
     const card = getRand(RARE_CARDS);
     deck[card] = (deck[card] || 0) + 1;
   }
-  for (i = 0; i < 4; i++) {
+  for (let i = 0; i < 3; i++) {
     const card = getRand(UNCOMMON_CARDS);
     deck[card] = (deck[card] || 0) + 1;
   }
-  for (i = 0; i < 6; i++) {
+  for (let i = 0; i < 6; i++) {
     const card = getRand(COMMON_CARDS);
     deck[card] = (deck[card] || 0) + 1;
   }

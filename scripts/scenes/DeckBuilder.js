@@ -1,3 +1,9 @@
+// TODO
+// Always have a card selected
+// Show card counts rather than multiple copies of the same card
+// Sort by card name and/or rarity
+// Double click to add/remove card
+
 class DeckBuilder extends DraggableScene {
   constructor() {
     super("DeckBuilder");
@@ -5,7 +11,6 @@ class DeckBuilder extends DraggableScene {
 
   init() {
     super.init();
-    console.log('DeckBuilder');
   }
 
   create() {
@@ -14,19 +19,14 @@ class DeckBuilder extends DraggableScene {
     this.add.image(MIDX, MIDY + y1, 'deck-builder');
     this.add.text(MIDX, y1, "Deck Builder", OPTION_STYLE).setOrigin(0.5);
 
-    // this.zone1 = new CardGrid(this, 'zone1', 0, y1 * 2, MIDX, y2, startingDeck);
-    // this.zone2 = new CardGrid(this, 'zone2', MIDX, y1 * 2, MIDX, y2, {'Gentle jab': 2});
-
     const LIST_WIDTH = 320;
     const LIST_Y1 = 60
     const LIST_Y2 = HEIGHT - LIST_Y1 - 20;
     this.zone1 = new CardList(this, 'Unused cards', 20, LIST_Y1, LIST_WIDTH, LIST_Y2);
     this.zone2 = new CardList(this, 'Deck', WIDTH - 20 - LIST_WIDTH, LIST_Y1, LIST_WIDTH, LIST_Y2);
 
-    this.zone1.addCards(startingDeck);
-    this.zone2.addCards({});
-
-    this.selectedCard = null;
+    this.zone1.addItems(startingDeck);
+    this.zone2.addItems({});
 
     this.addCardButton = new Button(
       this,
@@ -38,20 +38,16 @@ class DeckBuilder extends DraggableScene {
       {x: MIDX, y: MIDY + 140, width: 180, text: 'Remove from deck', trigger: () => this.removeCard() }
     );
 
-    this.addCardButton.hide();
-    this.removeCardButton.hide();
+    // this.selectedCard = this.zone1.selectCard(0);
   }
 
   selectCard(zone, card) {
-    if (this.selectedCard) {
-      // Deselect previous card
-      // this.selectedCard.clearTint();
-    }
-
+    // Show selected card in the middle of the screen
     const x = MIDX - CARD_WIDTH / 2;
     const cardSprite = getCardSprite(this, card.data, MIDX, MIDY);
     this.selectedCard = card;
 
+    // Show the add or remove button
     if (zone === 'Deck') {
       this.addCardButton.hide();
       this.removeCardButton.show();
@@ -69,16 +65,16 @@ class DeckBuilder extends DraggableScene {
   }
 
   addCard() {
-    this.zone1.removeSelectedCard();
-    this.zone2.addCard(this.selectedCard);
+    this.zone1.removeSelectedItem();
+    this.zone2.addItem(this.selectedCard);
     this.selectedCard = null;
     this.addCardButton.hide();
     this.removeCardButton.hide();
   }
 
   removeCard() {
-    this.zone1.addCard(this.selectedCard);
-    this.zone2.removeSelectedCard();
+    this.zone1.addItem(this.selectedCard);
+    this.zone2.removeSelectedItem();
     this.selectedCard = null;
     this.addCardButton.hide();
     this.removeCardButton.hide();
