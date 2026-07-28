@@ -86,16 +86,14 @@ class Button extends Phaser.GameObjects.Container {
     return this;
   }
 
-  setEnabled(enabled) {
-    if (enabled) {
-      this.setInteractive();
-      this.setAlpha(1);
-    } else {
-      this.disableInteractive();
-      this.setAlpha(0.5);
-    }
+  enable() {
+    this.setInteractive();
+    this.setAlpha(1);
+  }
 
-    return this;
+  disable() {
+    this.setInteractive(false);
+    this.setAlpha(0.5);
   }
 
   hide() {

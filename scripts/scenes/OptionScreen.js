@@ -13,10 +13,7 @@ class Choice extends Phaser.Scene {
 
     this.button = new Button(
       this,
-      MIDX,
-      MIDY + 140,
-      'Select',
-      this.makeSelection.bind(this)
+      { x: MIDX, y: MIDY + 140, text: 'Select', trigger: () => this.makeSelection() }
     );
 
     this.button.disable();

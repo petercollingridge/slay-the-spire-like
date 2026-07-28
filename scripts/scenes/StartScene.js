@@ -55,7 +55,6 @@ class StartScene extends Phaser.Scene {
     background.setInteractive();
     background.on('pointerup', () => {
       this.scene.start('DeckBuilder');
-      // this.scene.start('EnemyChoice', { choices: getMonstersToFight(3) });
     });
   }
 }

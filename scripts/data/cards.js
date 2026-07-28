@@ -429,15 +429,15 @@ const COMMON_CARDS = Object.keys(PLAYER_CARDS).filter((card) => PLAYER_CARDS[car
 const UNCOMMON_CARDS = Object.keys(PLAYER_CARDS).filter((card) => PLAYER_CARDS[card].rarity === 2);
 const RARE_CARDS = Object.keys(PLAYER_CARDS).filter((card) => PLAYER_CARDS[card].rarity === 3);
 
-const STARTING_CARDS = {
+const startingDeck = {
   'Gentle jab': 2,
   'Strike': 1,
   'Basic shield': 2,
   'Anticipate': 1,
 };
 
-function getStartingDeck() {
-  const deck = {...STARTING_CARDS};
+function getPackOfCards() {
+  const deck = {};
 
   for (let i = 0; i < 1; i++) {
     const card = getRand(RARE_CARDS);
@@ -459,7 +459,7 @@ function getCardsToWin(n) {
   return getRandN(Object.keys(PLAYER_CARDS).slice(), n);
 }
 
-const startingDeck = getStartingDeck();
+const firstPack = getPackOfCards();
 
 // const startingDeck = {
 //   'Gentle jab': 1,

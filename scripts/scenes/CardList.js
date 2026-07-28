@@ -36,7 +36,7 @@ class CardListItem {
     });
 
     this.container.on('pointerup', () => {
-      this.select();
+      this.parent.selectItem(this.index);
     });
   }
 
@@ -54,7 +54,6 @@ class CardListItem {
   select() {
     this.selected = true;
     this._updateBackground(0xaaccff);
-    this.parent.selectItem(this.index);
   }
 
   updateCount(count) {
@@ -129,15 +128,32 @@ class CardList {
   }
 
   selectItem(index) {
+    if (index < 0 || index >= this.items.length) {
+      return;
+    }
+
     if (this.selectedItemIndex !== null && this.selectedItemIndex !== index) {
+      // Deselect the previously selected item
       this.items[this.selectedItemIndex].deselect();
     }
 
     this.selectedItemIndex = index;
+    this.items[index].select();
     this.scene.selectCard(this.name, this.items[index].card);
   }
 
+  deselectItem() {
+    if (this.selectedItemIndex !== null) {
+      this.items[this.selectedItemIndex].deselect();
+      this.selectedItemIndex = null;
+    }
+  }
+
   addItem(card) {
+    if (!card) {
+      return;
+    }
+
     const cardName = card.data.name;
     const existingItem = this.items.find(item => item.card.data.name === cardName);
     if (existingItem) {
@@ -151,21 +167,33 @@ class CardList {
   }
 
   removeSelectedItem() {
-    if (this.selectedItemIndex !== null) {
-      const item = this.items[this.selectedItemIndex];
-      if (item.count > 1) {
-        // If the count is greater than 1, decrement the count
-        const newCount = parseInt(item.count) - 1;
-        item.updateCount(newCount);
-      } else {
-        // If the count is 1, remove the item from the list
-        this.items[this.selectedItemIndex].container.destroy();
-        this.items.splice(this.selectedItemIndex, 1);
-        this.selectedItemIndex = null;
-        this._updateListPositions();
-      }
-      this._updateTitle();
+    if (this.selectedItemIndex === null) {
+      return;
     }
+
+    const item = this.items[this.selectedItemIndex];
+    if (item.count > 1) {
+      // If the count is greater than 1, decrement the count
+      const newCount = parseInt(item.count) - 1;
+      item.updateCount(newCount);
+    } else {
+      // If the count is 1, remove the item from the list
+      this.items[this.selectedItemIndex].container.destroy();
+      this.items.splice(this.selectedItemIndex, 1);
+      this._updateListPositions();
+
+      if (this.selectedItemIndex >= this.items.length) {
+        this.selectedItemIndex = this.items.length - 1;
+      }
+
+      if (this.selectedItemIndex === -1) {
+        this.scene.deselectCard();
+      } else {
+        this.selectItem(this.selectedItemIndex);
+      }
+
+    }
+    this._updateTitle();
   }
 
 };

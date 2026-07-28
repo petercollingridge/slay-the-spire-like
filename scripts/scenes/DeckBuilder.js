@@ -1,6 +1,4 @@
 // TODO
-// Always have a card selected
-// Show card counts rather than multiple copies of the same card
 // Sort by card name and/or rarity
 // Double click to add/remove card
 
@@ -25,8 +23,8 @@ class DeckBuilder extends DraggableScene {
     this.zone1 = new CardList(this, 'Unused cards', 20, LIST_Y1, LIST_WIDTH, LIST_Y2);
     this.zone2 = new CardList(this, 'Deck', WIDTH - 20 - LIST_WIDTH, LIST_Y1, LIST_WIDTH, LIST_Y2);
 
-    this.zone1.addItems(startingDeck);
-    this.zone2.addItems({});
+    this.zone1.addItems(firstPack);
+    this.zone2.addItems(startingDeck);
 
     this.addCardButton = new Button(
       this,
@@ -38,7 +36,16 @@ class DeckBuilder extends DraggableScene {
       {x: MIDX, y: MIDY + 140, width: 180, text: 'Remove from deck', trigger: () => this.removeCard() }
     );
 
-    // this.selectedCard = this.zone1.selectCard(0);
+    const continueButton = new Button(
+      this,
+      {x: MIDX, y: HEIGHT - 36, width: 180, text: 'Continue', trigger: () => this.continue() }
+    );
+
+    this.zone1.selectItem(0);
+  }
+
+  continue() {
+    this.scene.start('EnemyChoice', { choices: getMonstersToFight(3) });
   }
 
   selectCard(zone, card) {
@@ -49,34 +56,31 @@ class DeckBuilder extends DraggableScene {
 
     // Show the add or remove button
     if (zone === 'Deck') {
+      this.zone1.deselectItem();
       this.addCardButton.hide();
       this.removeCardButton.show();
     } else if (zone === 'Unused cards') {
+      this.zone2.deselectItem();
       this.addCardButton.show();
       this.removeCardButton.hide();
     }
-
   }
 
-  update() {
-    const pointer = this.input.activePointer;
-    // this.zone1.mouseOver(pointer.x, pointer.y);
-    // this.zone2.mouseOver(pointer.x, pointer.y);
+  deselectCard() {
+    if (this.selectedCard) {
+      this.selectedCard = null;
+      this.addCardButton.hide();
+      this.removeCardButton.hide();
+    }
   }
 
   addCard() {
-    this.zone1.removeSelectedItem();
     this.zone2.addItem(this.selectedCard);
-    this.selectedCard = null;
-    this.addCardButton.hide();
-    this.removeCardButton.hide();
+    this.zone1.removeSelectedItem();
   }
 
   removeCard() {
     this.zone1.addItem(this.selectedCard);
     this.zone2.removeSelectedItem();
-    this.selectedCard = null;
-    this.addCardButton.hide();
-    this.removeCardButton.hide();
   }
 };
