@@ -1,11 +1,12 @@
 // TODO: Scrolling if there are too many cards to fit in the list
 
 class CardListItem {
-  constructor(scene, index, parent, card, coords) {
+  constructor(scene, index, parent, name, count, coords) {
     this.scene = scene;
     this.index = index;
     this.parent = parent;
-    this.card = card;
+    this.card = new Card(scene, name);
+    this.count = count;
     this.coords = coords;
     this.selected = false;
 
@@ -17,10 +18,11 @@ class CardListItem {
     this.background = scene.add.graphics();
     this._updateBackground(0xffffff); // Light grey background
 
-    const cardName = this.scene.add.text(10 - coords.w / 2, 0, card.data.name, CARD_NAME_STYLE).setOrigin(0, 0.5);
-    const rarityText = RARITY_LETTERS[card.data.rarity - 1];
-    const cardRarity = this.scene.add.text(coords.w / 2 - 10, 0, rarityText, CARD_NAME_STYLE).setOrigin(1, 0.5);
-    this.container.add([this.background, cardName, cardRarity]);
+    this.countText = this.scene.add.text(8 - coords.w / 2, 0, count, CARD_NAME_STYLE).setOrigin(0, 0.5);
+    const cardName = this.scene.add.text(20 - coords.w / 2, 0, this.card.data.name, CARD_NAME_STYLE).setOrigin(0, 0.5);
+    const rarityText = RARITY_LETTERS[this.card.data.rarity - 1];
+    const cardRarity = this.scene.add.text(coords.w / 2 - 8, 0, rarityText, CARD_NAME_STYLE).setOrigin(1, 0.5);
+    this.container.add([this.background, this.countText, cardName, cardRarity]);
 
     // Change background color on hover
     this.container.on('pointerover', () => {
@@ -54,6 +56,11 @@ class CardListItem {
     this._updateBackground(0xaaccff);
     this.parent.selectItem(this.index);
   }
+
+  updateCount(count) {
+    this.count = count;
+    this.countText.setText(count);
+  }
 }
 
 class CardList {
@@ -83,9 +90,9 @@ class CardList {
     this._updateTitle();
   }
 
-  _addItem(card, index) {
+  _addItem(name, count, index) {
       const containerProps = this._getContainerCoords(index);
-      const item = new CardListItem(this.scene, index, this, card, containerProps);
+      const item = new CardListItem(this.scene, index, this, name, count, containerProps);
       this.items.push(item);
   }
 
@@ -108,15 +115,14 @@ class CardList {
   }
 
   _updateTitle() {
-    const titleText = `${this.name} (${this.items.length})`;
+    const count = this.items.reduce((sum, item) => sum + item.count, 0);
+    const titleText = `${this.name} (${count})`;
     this.title.setText(titleText);
   }
 
   addItems(cardCounts) {
-    const cards = createCards(cardCounts, this.scene);
-
-    cards.forEach((card, index) => {
-      this._addItem(card, index);
+    Object.entries(cardCounts).forEach(([name, count], index) => {
+      this._addItem(name, count, index);
     });
 
     this._updateTitle();
@@ -132,17 +138,32 @@ class CardList {
   }
 
   addItem(card) {
-    const index = this.items.length;
-    this._addItem(card, index);
+    const cardName = card.data.name;
+    const existingItem = this.items.find(item => item.card.data.name === cardName);
+    if (existingItem) {
+      // If the card already exists in the list, increment its count
+      const newCount = parseInt(existingItem.count) + 1;
+      existingItem.updateCount(newCount);
+    } else {
+      this._addItem(cardName, 1, this.items.length);
+    }
     this._updateTitle();
   }
 
   removeSelectedItem() {
     if (this.selectedItemIndex !== null) {
-      this.items[this.selectedItemIndex].container.destroy();
-      this.items.splice(this.selectedItemIndex, 1);
-      this.selectedItemIndex = null;
-      this._updateListPositions();
+      const item = this.items[this.selectedItemIndex];
+      if (item.count > 1) {
+        // If the count is greater than 1, decrement the count
+        const newCount = parseInt(item.count) - 1;
+        item.updateCount(newCount);
+      } else {
+        // If the count is 1, remove the item from the list
+        this.items[this.selectedItemIndex].container.destroy();
+        this.items.splice(this.selectedItemIndex, 1);
+        this.selectedItemIndex = null;
+        this._updateListPositions();
+      }
       this._updateTitle();
     }
   }
