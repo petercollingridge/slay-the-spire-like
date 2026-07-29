@@ -35,8 +35,6 @@ class DraggableScene extends Phaser.Scene {
 
   drop(pointer, target, dropZone) {
     target.parent.clearTint();
-    console.log('drop')
-    console.log('dropZone', this.zones[dropZone.name])
-    this.zones[dropZone.name].dropCard(target.parent, pointer);
+    this.zones[dropZone.name].drop(target.parent, pointer);
   }
 }

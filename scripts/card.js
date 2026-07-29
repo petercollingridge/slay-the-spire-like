@@ -76,7 +76,7 @@ class Card {
   dragEnd() {
     // Return card to hand
     this.clearTint();
-    this.scene.dropCard(this);
+    this.scene.drop(this);
   }
 
   setPlayability(availableMana) {

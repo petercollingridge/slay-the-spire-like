@@ -41,12 +41,12 @@ class Fight extends DraggableScene {
     this.player = new Player(this, 200, HEIGHT / 2 - 20);
     this.enemy = new Enemy(this, this.enemyType, this.enemyLevel, 810, HEIGHT / 2 - 10);
 
+    this.zones['player'] = this.player;
+    this.zones['enemy'] = this.enemy;
+
     this.nextTurnBtn = new Button(
       this,
-      MIDX,
-      HEIGHT - 24,
-      'End turn',
-      this.endTurn.bind(this)
+      { x: MIDX, y: HEIGHT - 24, text: 'End turn', trigger: () => this.endTurn() }
     );
 
     // Display mana/cards spent this turn
@@ -126,8 +126,14 @@ class Fight extends DraggableScene {
     this.hand.bringToFront(card.container);
   }
 
-  dropCard(card) {
-    this.hand.reorderHand();
+  drop(pointer, target, dropZone) {
+    if (target) {
+      // Drop card onto a zone, e.g. the player or enemy
+      target.parent.clearTint();
+      this.zones[dropZone.name].drop(target.parent, pointer);
+    } else {
+      this.hand.reorderHand();
+    }
   }
 
   setManaSpent(mana, maxMana = this.maxMana) {
