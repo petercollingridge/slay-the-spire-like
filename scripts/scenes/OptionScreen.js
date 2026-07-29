@@ -8,20 +8,26 @@ class Choice extends Phaser.Scene {
   }
 
   create() {
+    const dx = 180;
+    const optionY = MIDY - 5;
+
     this.add.image(MIDX, MIDY, 'background');
     this.add.text(MIDX, MIDY - 144, this.title, OPTION_STYLE).setOrigin(0.5);
 
-    this.button = new Button(
+
+    this.selectButton = new Button(
       this,
-      { x: MIDX, y: MIDY + 140, text: 'Select', trigger: () => this.makeSelection() }
+      { x: MIDX, y: MIDY + 140, text: 'Fight', trigger: () => this.makeSelection() }
+    );
+    this.selectButton.disable();
+
+    this.deckButton = new Button(
+      this,
+      { x: MIDX - dx, y: MIDY + 140, text: 'Cards', trigger: () => this.scene.start('DeckBuilder') }
     );
 
-    this.button.disable();
 
-    const dx = 180;
     let x = (WIDTH - dx * (this.choices.length - 1)) / 2;
-    const optionY = MIDY - 5;
-
     const choiceImages = this.choices.map((choice) => {
       const data = this.choiceData[choice];
       const card = this.getSprite(data, x, optionY);
@@ -31,7 +37,7 @@ class Choice extends Phaser.Scene {
         choiceImages.forEach((box) => box.img.clearTint());
         card.img.setTint(YELLOW_TINT);
         this.selectedChoice = { name: choice, data: card.data };
-        this.button.enable();
+        this.selectButton.enable();
       });
 
       x += dx;
