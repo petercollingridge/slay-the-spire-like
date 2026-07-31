@@ -8,7 +8,6 @@ class DraggableScene extends Phaser.Scene {
     this.input.on('drag', this.drag, this);
     this.input.on('dragend', this.dragEnd, this);
     this.input.on('drop', this.drop, this);
-    this.zones = {};
   }
 
   dragStart(pointer, target) {
@@ -34,7 +33,8 @@ class DraggableScene extends Phaser.Scene {
   }
 
   drop(pointer, target, dropZone) {
+    console.log('Drag scen drop')
     target.parent.clearTint();
-    this.zones[dropZone.name].drop(target.parent, pointer);
+    dropZone.parent.drop(target.parent, pointer);
   }
 }

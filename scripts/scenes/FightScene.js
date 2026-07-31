@@ -20,7 +20,6 @@ class Fight extends DraggableScene {
   }
 
   create() {
-    const fight = this;
     this.add.image(MIDX, 150, 'sky');
 
     const flame = this.add.particles(600, 260, 'flares', {
@@ -37,13 +36,6 @@ class Fight extends DraggableScene {
 
     this.add.image(MIDX, 400, 'floor');
 
-    // Draw Player and Enemy characters
-    this.player = new Player(this, 200, HEIGHT / 2 - 20);
-    this.enemy = new Enemy(this, this.enemyType, this.enemyLevel, 810, HEIGHT / 2 - 10);
-
-    this.zones['player'] = this.player;
-    this.zones['enemy'] = this.enemy;
-
     this.nextTurnBtn = new Button(
       this,
       { x: MIDX, y: HEIGHT - 24, text: 'End turn', trigger: () => this.endTurn() }
@@ -51,8 +43,15 @@ class Fight extends DraggableScene {
 
     // Display mana/cards spent this turn
     this.manaCount = this.add.text(MIDX, HEIGHT - 230, '', FIGHT_STYLE).setOrigin(0.5);
-
     this.discardMsg = this.add.text(MIDX, HEIGHT - 24, '', FIGHT_STYLE).setOrigin(0.5);
+
+    // Objects to handle Player and Enemy characters
+    this.player = new Character(PLAYER_DATA);
+    this.enemy = new Enemy(this.enemyType, this.enemyLevel);
+
+    // Objects to render Player and Enemy characters
+    this.renderPlayer = new RenderPlayer(this, this.player, 200, HEIGHT / 2 - 20);
+    this.renderEnemy = new RenderEnemy(this, this.enemy, 810, HEIGHT / 2 - 10);
 
     // Deck
     const deckHeight = HEIGHT - 95;
@@ -60,7 +59,7 @@ class Fight extends DraggableScene {
     this.deck.shuffle();
 
     this.discard = new Deck(this, 'Discard pile', WIDTH - 65, deckHeight);
-    this.discard.isValidDrop = () => fight.discarding;
+    this.discard.isValidDrop = () => this.discarding;
 
     // Hand
     this.hand = new Hand(this, MIDX, HEIGHT - 130);
@@ -122,6 +121,18 @@ class Fight extends DraggableScene {
     this.discard.addCard(card);
   }
 
+  playCard(card, target) {
+    console.log('FightScene playCard', card, target);
+    this.spendMana(card.cost);
+    this.hand.removeCard(card);
+
+    // We need to keep track of this for some card effects
+    card.castCount++;
+    
+    
+    // card.play(this.player, target);
+  }
+
   selectCard(card) {
     this.hand.bringToFront(card.container);
   }
@@ -130,8 +141,10 @@ class Fight extends DraggableScene {
     if (target) {
       // Drop card onto a zone, e.g. the player or enemy
       target.parent.clearTint();
-      this.zones[dropZone.name].drop(target.parent, pointer);
+      console.log('FightScene drop');
+      dropZone.parent.drop(target.parent, pointer);
     } else {
+      // If the card is dropped outside of a zone, return it to the hand
       this.hand.reorderHand();
     }
   }
@@ -148,14 +161,12 @@ class Fight extends DraggableScene {
 
   playerTurn() {
     this.nextTurnBtn.show();
-    this.enemy.getAction();
-    this.player.startTurn();
-
+    
     if (!this.player.dead) {
-      this.maxMana = BASE_MANA + (this.player.bonusMana || 0);
-      this.player.bonusMana = 0;
+      this.maxMana = BASE_MANA;
       this.setManaSpent(0, this.maxMana);
-      this.drawCardsTo(this.player.getCardsToDraw());
+      this.drawCardsTo(START_HAND_SIZE);
+      this.player.triggerActiveSpells();
     }
   }
 

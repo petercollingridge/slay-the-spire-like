@@ -15,6 +15,13 @@ function getRandN(arr, n) {
   return Phaser.Utils.Array.Shuffle(arr).slice(0, n);
 }
 
+function removeFromArray(arr, item) {
+  const index = arr.indexOf(item);
+  if (index > -1) {
+    arr.splice(index, 1);
+  }
+}
+
 function getCardValue(valueOrFunction, game, target) {
   if (typeof valueOrFunction === 'number') {
     return valueOrFunction;

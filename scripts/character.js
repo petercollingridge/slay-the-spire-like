@@ -1,21 +1,45 @@
-class Character {
-  constructor(game, data, x, y) {
+// Code for displaying player and enemy characters, and handling drag and drop events for playing cards on them.
+
+class RenderCharacter {
+  constructor(game, obj, x, y) {
     this.game = game;
+    this.obj = obj;
     this.x = x;
     this.y = y;
 
-    this.hightlightImg = game.add.image(x, y, 'highlight');
-    this.hightlightImg.setVisible(false);
-    this.img = game.add.image(x, y, data.img);
+    this.highlightImg = game.add.image(x, y, 'highlight');
+    this.highlightImg.setVisible(false);
+    this.img = game.add.image(x, y, obj.data.img);
 
     const txtY = y - this.img.height / 2 + 5;
     const txtStyle = { fontSize: '16px', fill: '#000' };
 
-    this.maxHealth = data.health;
+    this.maxHealth = obj.data.health;
     this.healthTxt = game.add.text(x, txtY, '', txtStyle).setOrigin(0.5, 1);
-    this.setHealth(data.health);
+    this.setHealth(obj.data.health);
 
     this.enchantments = [];
+  }
+
+  dragEnter(card) {
+    if (card.canPlay) {      
+      const valid = this.isValidDrop(card);
+      card.setTint(valid ? BLUE_TINT : RED_TINT);
+      if (valid) {
+        this.highlight();
+      }
+    }
+  }
+
+  drop(card) {
+    console.log('RenderCharacter drop');
+    if (this.isValidDrop(card)) {
+      // Play the card - the source will be the player
+      this.game.playCard(card, this.game.player, this);
+    } else {
+      this.game.hand.reorderHand();
+    }
+    this.clearTint();
   }
 
   getDropZone() {
@@ -58,14 +82,6 @@ class Character {
       this.setHealth(this.health - damage);
       this.showDamage(damage);
     }
-  }
-
-  getCardsToDraw() {
-    let cards = START_HAND_SIZE;
-    this._getEnchantmentsOfType('draw').forEach((enchantment) => {
-      cards = enchantment.effect(cards);
-    });
-    return cards;
   }
 
   die() {
@@ -189,58 +205,24 @@ class Character {
   }
 
   highlight() {
-    this.hightlightImg.setVisible(true);
+    this.highlightImg.setVisible(true);
   }
 
   clearTint() {
-    this.hightlightImg.setVisible(false);
-  }
-
-  dragEnter(card) {
-    if (card.canPlay) {      
-      const valid = this.isValidDrop(card);
-      card.setTint(valid ? BLUE_TINT : RED_TINT);
-      if (valid) {
-        this.highlight();
-      }
-    }
-  }
-
-  drop(card) {
-    if (this.isValidDrop(card)) {
-      card.play(this);
-    } else {
-      this.game.hand.reorderHand();
-    }
-    this.clearTint();
+    this.highlightImg.setVisible(false);
   }
 }
 
-class Enemy extends Character {
-  constructor(game, name, level, x, y) {
-    const baseData = ENEMY_DATA[name];
-
-    if (!baseData) {
-      console.error(`No data for enemy: ${name}`);
-    }
-
-    const data = getEnemyData(baseData, level);
-    
-    super(game, data, x, y);
+class RenderEnemy extends RenderCharacter {
+  constructor(game, obj, x, y) {    
+    super(game, obj, x, y);
     this.type = 'enemy';
     this.getDropZone();
 
     this.direction = -1;
-    this.actions = data.actions;
 
     const txtStyle = { fontSize: '16px', fill: '#000', fontFamily: 'Arial' };
     this.actionText = game.add.text(x, y - this.img.height / 2 - 24, 'Test', txtStyle).setOrigin(0.5);
-  }
-
-  // Determine what action the enemy will do this turn
-  getAction() {
-    this.currentAction = getRand(this.actions);
-    this.actionText.setText(actionToString(this.currentAction));
   }
 
   turn(player) {
@@ -271,16 +253,12 @@ class Enemy extends Character {
   }
 }
 
-class Player extends Character {
-  constructor(game, x, y) {
-    super(game, PLAYER_DATA, x, y);
+class RenderPlayer extends RenderCharacter {
+  constructor(game, obj, x, y) {
+    super(game, obj, x, y);
     this.type = 'player';
     this.getDropZone();
     this.direction = 1;
-  }
-
-  manaBonus(n) {
-    this.bonusMana = (this.bonusMana || 0) + n;
   }
 
   isValidDrop(card) {
