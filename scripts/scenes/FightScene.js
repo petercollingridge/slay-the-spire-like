@@ -1,3 +1,5 @@
+// TODO: Move mana logic to character class, so that it can be used for enemies too
+
 class Fight extends DraggableScene {
   constructor() {
     super("Fight");
@@ -46,12 +48,12 @@ class Fight extends DraggableScene {
     this.discardMsg = this.add.text(MIDX, HEIGHT - 24, '', FIGHT_STYLE).setOrigin(0.5);
 
     // Objects to handle Player and Enemy characters
-    this.player = new Character(PLAYER_DATA);
-    this.enemy = new Enemy(this.enemyType, this.enemyLevel);
+    this.player = new Character(this, PLAYER_DATA);
+    this.enemy = new Enemy(this, this.enemyType, this.enemyLevel);
 
     // Objects to render Player and Enemy characters
-    this.renderPlayer = new RenderPlayer(this, this.player, 200, HEIGHT / 2 - 20);
-    this.renderEnemy = new RenderEnemy(this, this.enemy, 810, HEIGHT / 2 - 10);
+    this.playerView = new RenderPlayer(this, this.player, 200, HEIGHT / 2 - 20);
+    this.enemyView = new RenderEnemy(this, this.enemy, 810, HEIGHT / 2 - 10);
 
     // Deck
     const deckHeight = HEIGHT - 95;
@@ -121,16 +123,21 @@ class Fight extends DraggableScene {
     this.discard.addCard(card);
   }
 
-  playCard(card, target) {
-    console.log('FightScene playCard', card, target);
+  playCard(card, source, target) {
+    console.log('FightScene playCard');
+    // TODO: Move this logic to Character class, so that it can be used for enemies too
     this.spendMana(card.cost);
     this.hand.removeCard(card);
 
+    const spell = new Spell(this, card, source, target);
+
+    if (spell.time) {
+      const targetView = target === this.player ? this.playerView : this.enemyView;
+      const spellView = new SpellView(this, spell, targetView);
+    }
+
     // We need to keep track of this for some card effects
     card.castCount++;
-    
-    
-    // card.play(this.player, target);
   }
 
   selectCard(card) {

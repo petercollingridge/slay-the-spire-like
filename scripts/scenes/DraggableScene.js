@@ -24,7 +24,7 @@ class DraggableScene extends Phaser.Scene {
   }
 
   dragLeave(pointer, target, dropZone) {
-    target.parent.cardImg.setTint(YELLOW_TINT);
+    // target.parent.cardImg.setTint(YELLOW_TINT);
     dropZone.parent.clearTint();
   }
   

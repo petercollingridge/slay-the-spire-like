@@ -45,6 +45,15 @@ const CARD_DATA = {
     target: 'enemy',
     rarity: 2,
   },
+  'Anticipate': {
+    img: 'draw-card',
+    text: 'Draw (P) cards.',
+    cost: 1,
+    power: 2,
+    onCast: [{ draw: 'power' }],
+    target: 'self',
+    rarity: 1,
+  },
   'Strengthen': {
     img: 'sword-clash',
     text: 'Boon 2. Attacks deal +1 damage.',
@@ -307,16 +316,6 @@ const CARD_DATA = {
     effect: { damage: 3, heal: 3 },
     target: 'enemy',
     rarity: 2,
-  },
-  'Anticipate': {
-    img: 'draw-card',
-    text: 'Draw (P) cards.',
-    cost: 1,
-    power: 2,
-    onCast: [{ draw: 2 }],
-    effect: { draw: 2 },
-    target: 'self',
-    rarity: 1,
   },
   'Prepare': {
     img: 'draw-card',

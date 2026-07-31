@@ -3,7 +3,8 @@
 // This class does not handle rendering, and should not require Phaser.js
 
 class Character {
-  constructor(data) {
+  constructor(scene, data) {
+    this.scene = scene;
     this.data = data;
     this.maxHealth = data.health;
     this.health = data.health;
@@ -17,8 +18,14 @@ class Character {
     this.dead = true;
   }
 
-  enchant(card) {
-    this.enchantments.push(new Spell(this, card));
+  enchant(spell) {
+    if (spell.source === spell.target) {
+      // Character was enchanted by self, so this is a boon, and enters the stack from the bottom
+      this.enchantments.push(spell);
+    } else {
+      // Character was enchanted by enemy, so this is a hex, and enters the stack from the top
+      this.enchantments.unshift(spell);
+    }
   }
 
   disenchant(spell) {
@@ -46,7 +53,7 @@ class Character {
 }
 
 class Enemy extends Character {
-  constructor(type, level) {
+  constructor(scene, type, level) {
     const baseData = ENEMY_DATA[type];
 
     if (!baseData) {
@@ -55,8 +62,13 @@ class Enemy extends Character {
 
     const data = getEnemyData(baseData, level);
 
-    super(data);
+    super(scene, data);
     this.type = data.type;
     this.level = data.level;
+  }
+
+  turn(player) {
+    this.triggerActiveSpells();
+    // Enemy AI logic to determine what action to take
   }
 }

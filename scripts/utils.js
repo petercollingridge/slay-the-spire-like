@@ -22,10 +22,14 @@ function removeFromArray(arr, item) {
   }
 }
 
-function getCardValue(valueOrFunction, game, target) {
-  if (typeof valueOrFunction === 'number') {
-    return valueOrFunction;
+// Convert a given value into a numerical value
+function getCardValue(givenValue, spell) {
+  if (typeof givenValue === 'number') {
+    return givenValue;
+  } else if (typeof givenValue === 'string') {
+    // e.g. "power" or "cost" - get the value from the spell object
+    return spell[givenValue];
   } else {
-    return valueOrFunction(game, target);
+    return givenValue(spell);
   }
 }

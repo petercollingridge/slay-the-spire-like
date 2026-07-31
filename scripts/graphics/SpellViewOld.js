@@ -1,5 +1,12 @@
-class Enchantment {
+// Class to handle rendering of a spell on a character.
+
+class SpellView {
   constructor(target, card, energy) {
+    if (card && card.card) {
+      this.cast(target, card);
+      return;
+    }
+
     this.target = target;
     this.card = card;
     this.energy = energy;
@@ -37,11 +44,6 @@ class Enchantment {
       const y = this._getY(i);
       enchantmentsList[i].moveTo(y);
     }
-
-    // Move card to discard pile if it's a real card
-    if (this.card.container) {
-      this.scene.discard.addCard(this.card);
-    }
   }
 
   moveTo(y) {
@@ -51,14 +53,5 @@ class Enchantment {
       duration: 240,
       ease: 'Sine.easeOut',
     });
-  }
-
-  setValue(value) {
-    if (value <= 0) {
-      this.disenchant();
-    } else {
-      this.energy = value;
-      this.energyImg.setText(value);
-    }
   }
 }

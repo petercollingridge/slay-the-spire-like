@@ -95,22 +95,22 @@ class Card {
     // this.cardImg.clearTint();
   }
 
-  play(source, target) {
+  // play(source, target) {
 
-    if (Array.isArray(this.effect)) {
-      this.effect.forEach((effect) => this._applyEffect(effect, target));
-    } else {
-      this._applyEffect(this.effect, target);
-    }
+  //   if (Array.isArray(this.effect)) {
+  //     this.effect.forEach((effect) => this._applyEffect(effect, target));
+  //   } else {
+  //     this._applyEffect(this.effect, target);
+  //   }
 
-    if (this.enchant) {
-      const value = getCardValue(this.enchant.energy, this);
-      target.enchant(this, value);
-    } else if (!this.data.oneUse) {
-      // Add card to discard pile after it's effect is resolved, unless it's one use only
-      this.scene.discard.addCard(this);
-    }
-  }
+  //   if (this.enchant) {
+  //     const value = getCardValue(this.enchant.energy, this);
+  //     target.enchant(this, value);
+  //   } else if (!this.data.oneUse) {
+  //     // Add card to discard pile after it's effect is resolved, unless it's one use only
+  //     this.scene.discard.addCard(this);
+  //   }
+  // }
 
   _applyEffect(effect, target) {
     if (effect.damage) {

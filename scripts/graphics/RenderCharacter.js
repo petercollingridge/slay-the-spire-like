@@ -17,8 +17,6 @@ class RenderCharacter {
     this.maxHealth = obj.data.health;
     this.healthTxt = game.add.text(x, txtY, '', txtStyle).setOrigin(0.5, 1);
     this.setHealth(obj.data.health);
-
-    this.enchantments = [];
   }
 
   dragEnter(card) {
@@ -35,7 +33,7 @@ class RenderCharacter {
     console.log('RenderCharacter drop');
     if (this.isValidDrop(card)) {
       // Play the card - the source will be the player
-      this.game.playCard(card, this.game.player, this);
+      this.game.playCard(card, this.game.player, this.obj);
     } else {
       this.game.hand.reorderHand();
     }
@@ -51,54 +49,50 @@ class RenderCharacter {
     dropZone.parent = this;
   }
 
-  _getEnchantmentsOfType(type) {
-    return this.enchantments.filter((enchantment) => enchantment.type === type);
-  }
+  // dealDamage(target, amount) {
+  //   this._getEnchantmentsOfType('attack').forEach((attack) => {
+  //     amount = attack.effect(amount);
+  //   });
+  //   target.takeDamage(amount);
+  // }
 
-  dealDamage(target, amount) {
-    this._getEnchantmentsOfType('attack').forEach((attack) => {
-      amount = attack.effect(amount);
-    });
-    target.takeDamage(amount);
-  }
+  // takeDamage(damage) {
+  //   // Check for shielding enchantments
+  //   this._getEnchantmentsOfType('shield').forEach((shield) => {
+  //     if (damage >= shield.energy) {
+  //       // Shield destroyed
+  //       damage -= shield.energy;
+  //       this.showShieldBlock(shield.energy);
+  //       shield.setValue(0);
+  //     } else {
+  //       // Damage fully blocked
+  //       this.showShieldBlock(damage);
+  //       shield.setValue(shield.energy - damage);
+  //       damage = 0;
+  //     }
+  //   });
 
-  takeDamage(damage) {
-    // Check for shielding enchantments
-    this._getEnchantmentsOfType('shield').forEach((shield) => {
-      if (damage >= shield.energy) {
-        // Shield destroyed
-        damage -= shield.energy;
-        this.showShieldBlock(shield.energy);
-        shield.setValue(0);
-      } else {
-        // Damage fully blocked
-        this.showShieldBlock(damage);
-        shield.setValue(shield.energy - damage);
-        damage = 0;
-      }
-    });
+  //   if (damage) {
+  //     this.setHealth(this.health - damage);
+  //     this.showDamage(damage);
+  //   }
+  // }
 
-    if (damage) {
-      this.setHealth(this.health - damage);
-      this.showDamage(damage);
-    }
-  }
+  // die() {
+  //   this.dead = true;
+  //   this.img.setTint(0xff0000);
+  //   this.game.characterDies();
+  // }
 
-  die() {
-    this.dead = true;
-    this.img.setTint(0xff0000);
-    this.game.characterDies();
-  }
+  // enchant(card, energy) {
+  //   // Create icon
+  //   const enchantment = new Enchantment(this, card, energy);
+  //   this.enchantments.push(enchantment);
+  // }
 
-  enchant(card, energy) {
-    // Create icon
-    const enchantment = new Enchantment(this, card, energy);
-    this.enchantments.push(enchantment);
-  }
-
-  disenchant(enchantment) {
-    enchantment.disenchant();
-  }
+  // disenchant(enchantment) {
+  //   enchantment.disenchant();
+  // }
 
   heal(amount) {
     const newHealth = Math.min(this.maxHealth, this.health + amount);
@@ -191,17 +185,17 @@ class RenderCharacter {
   }
 
   startTurn() {
-    // Activate start of turn enchantments
-    this._getEnchantmentsOfType('start').forEach((enchantment) => {
-      enchantment.effect(this, enchantment);
-    });
+    // // Activate start of turn enchantments
+    // this._getEnchantmentsOfType('start').forEach((enchantment) => {
+    //   enchantment.effect(this, enchantment);
+    // });
 
-    // Reduce the energy of each enchantment by 1
-    // and remove them if their energy reaches 0
-    for (let i = this.enchantments.length - 1; i >= 0; i--)  {
-      const enchantment = this.enchantments[i];
-      enchantment.setValue(enchantment.energy - 1);
-    }
+    // // Reduce the energy of each enchantment by 1
+    // // and remove them if their energy reaches 0
+    // for (let i = this.enchantments.length - 1; i >= 0; i--)  {
+    //   const enchantment = this.enchantments[i];
+    //   enchantment.setValue(enchantment.energy - 1);
+    // }
   }
 
   highlight() {
