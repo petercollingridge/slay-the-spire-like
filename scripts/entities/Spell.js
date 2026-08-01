@@ -4,7 +4,6 @@
 class Spell extends Phaser.Events.EventEmitter {
   constructor(game, card, source, target) {
     super();
-    console.log('Spell constructor');
     this.game = game;
     this.card = card;
     this.source = source;
@@ -60,8 +59,7 @@ class Spell extends Phaser.Events.EventEmitter {
     } else {
       if (effect.damage) {
         const value = getCardValue(effect.damage, this);
-        console.log(`Spell effect: ${this.card.data.name} deals ${value} damage to ${this.target.type}`);
-        this.target.takeDamage(value);
+        this.target.triggerDamage(this, value);
       }
       if (effect.draw) {
         const value = getCardValue(effect.draw, this);

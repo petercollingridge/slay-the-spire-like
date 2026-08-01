@@ -1,22 +1,29 @@
 // Code for displaying player and enemy characters, and handling drag and drop events for playing cards on them.
 
 class RenderCharacter {
-  constructor(game, obj, x, y) {
+  constructor(game, character, x, y) {
     this.game = game;
-    this.obj = obj;
+    this.character = character;
     this.x = x;
     this.y = y;
 
     this.highlightImg = game.add.image(x, y, 'highlight');
     this.highlightImg.setVisible(false);
-    this.img = game.add.image(x, y, obj.data.img);
+    this.img = game.add.image(x, y, character.data.img);
 
     const txtY = y - this.img.height / 2 + 5;
     const txtStyle = { fontSize: '16px', fill: '#000' };
 
-    this.maxHealth = obj.data.health;
+    this.maxHealth = character.data.health;
     this.healthTxt = game.add.text(x, txtY, '', txtStyle).setOrigin(0.5, 1);
-    this.setHealth(obj.data.health);
+    this.setHealth(character.data.health);
+
+    this.spellViews = [];
+    character.on("updateEnchantments", () => {
+      this.spellViews.forEach((spellView) => {
+        spellView.updatePosition();
+      });
+    });
   }
 
   dragEnter(card) {
@@ -30,10 +37,9 @@ class RenderCharacter {
   }
 
   drop(card) {
-    console.log('RenderCharacter drop');
     if (this.isValidDrop(card)) {
       // Play the card - the source will be the player
-      this.game.playCard(card, this.game.player, this.obj);
+      this.game.playCard(card, this.game.player, this.character);
     } else {
       this.game.hand.reorderHand();
     }
@@ -47,6 +53,11 @@ class RenderCharacter {
       .setName(this.type);
 
     dropZone.parent = this;
+  }
+
+  addSpellView(spell) {
+    const spellView = new SpellView(this.game, spell, this);
+    this.spellViews.push(spellView);
   }
 
   // dealDamage(target, amount) {
@@ -208,8 +219,8 @@ class RenderCharacter {
 }
 
 class RenderEnemy extends RenderCharacter {
-  constructor(game, obj, x, y) {    
-    super(game, obj, x, y);
+  constructor(game, character, x, y) {    
+    super(game, character, x, y);
     this.type = 'enemy';
     this.getDropZone();
 
@@ -248,8 +259,8 @@ class RenderEnemy extends RenderCharacter {
 }
 
 class RenderPlayer extends RenderCharacter {
-  constructor(game, obj, x, y) {
-    super(game, obj, x, y);
+  constructor(game, character, x, y) {
+    super(game, character, x, y);
     this.type = 'player';
     this.getDropZone();
     this.direction = 1;

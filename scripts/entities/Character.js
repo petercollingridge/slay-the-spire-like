@@ -2,8 +2,9 @@
 // Specifically, their health and active spells and enchantments
 // This class does not handle rendering, and should not require Phaser.js
 
-class Character {
+class Character extends Phaser.Events.EventEmitter {
   constructor(scene, data) {
+    super();
     this.scene = scene;
     this.data = data;
     this.maxHealth = data.health;
@@ -21,10 +22,12 @@ class Character {
   enchant(spell) {
     if (spell.source === spell.target) {
       // Character was enchanted by self, so this is a boon, and enters the stack from the bottom
-      this.enchantments.push(spell);
+      this.enchantments.unshift(spell);
+      this.emit('updateEnchantments');
+      // TODO: Need to reorder spell views
     } else {
       // Character was enchanted by enemy, so this is a hex, and enters the stack from the top
-      this.enchantments.unshift(spell);
+      this.enchantments.push(spell);
     }
   }
 
@@ -40,12 +43,18 @@ class Character {
     }
   }
 
-  triggerActiveSpells() {
-    console.log('Trigger active spells');
+  triggerDamage(spell, value) {
+    // Spell on the stack passes its damage down the stack to the character
+    console.log(`Spell effect: ${spell.card.data.name} deals ${value} damage to ${this.data.name}`);
+    const index = this.enchantments.indexOf(spell);
+    console.log(index);
+    this.setHealth(this.health - value);
+  }
 
-    // Reduce the time of each spell in play by 1
-    // and remove them if their energy reaches 0
-    this.activeSpells.forEach((spell) => {
+  tickDownActiveSpells() {
+    // Remove a time token from each active spell
+    // Make a copy of the array so we can safely remove spells from the original array while iterating
+    this.activeSpells.slice().forEach((spell) => {
       spell.tick();
     });
   }
@@ -68,7 +77,7 @@ class Enemy extends Character {
   }
 
   turn(player) {
-    this.triggerActiveSpells();
+    this.tickDownActiveSpells();
     // Enemy AI logic to determine what action to take
   }
 }

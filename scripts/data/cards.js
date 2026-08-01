@@ -443,7 +443,8 @@ const RARE_CARDS = Object.keys(PLAYER_CARDS).filter((card) => PLAYER_CARDS[card]
 const startingDeck = {
   'Gentle jab': 2,
   'Strike': 1,
-  'Basic shield': 2,
+  'Basic shield': 1,
+  'Tough shield': 1,
   'Anticipate': 1,
 };
 

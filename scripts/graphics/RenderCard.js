@@ -9,6 +9,11 @@ class PropertySprite extends Phaser.GameObjects.Container {
     this.text = scene.add.text(0, 0, value, CIRCLE_NUM_STYLE).setOrigin(0.5);
     this.add([this.circle, this.text]);
   }
+
+  setValue(value) {
+    this.value = value;
+    this.text.setText(value);
+  }
 }
 
 function getCardSprite(scene, data, x, y) {
@@ -64,11 +69,12 @@ function getSpellSprite(scene, data, x, y) {
   const image = scene.add.sprite(12 - w2, 1, data.img).setScale(0.28);
   const cardName = scene.add.text(24 - w2, 2, data.name, CARD_NAME_STYLE).setOrigin(0, 0.5);
 
-  const elements = [background, image, cardName];
-  elements.push(new PropertySprite(scene, w2 - 27, 1, data.time, 0x416296));
-  elements.push(new PropertySprite(scene, w2 - 10, 1, data.power, 0x8b4348));
+  const timeSprite = new PropertySprite(scene, w2 - 27, 1, data.time, 0x416296);
+  const powerSprite = new PropertySprite(scene, w2 - 10, 1, data.power, 0x8b4348);
 
+  const elements = [background, image, cardName, timeSprite, powerSprite];
   const container = scene.add.container(x, y, elements);
   container.setSize(SPELL_WIDTH, SPELL_HEIGHT);
-  return container
+
+  return { container, timeSprite, powerSprite };
 }

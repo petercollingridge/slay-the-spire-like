@@ -9,17 +9,20 @@ class SpellView {
     this.card = spell.card;
     this.energy = spell.cost;
 
-    this.container = getSpellSprite(scene, this.card.data, targetView.x, this._getY());
+    const { container, timeSprite, powerSprite } = getSpellSprite(scene, this.card.data, targetView.x, this._getY());
+    this.container = container;
+    this.timeSprite = timeSprite;
+    this.powerSprite = powerSprite;
 
     spell.on("tick", (value) => {
-        this.energyImg.setText(value.toString());
+      this.timeSprite.setValue(value.toString());
     });
   }
 
   _getY() {
     const target = this.spell.target;
     const index = target.enchantments.indexOf(this.spell);
-    return this.targetView.y + this.targetView.img.height / 2 - (index + 0.5) * 28;
+    return this.targetView.y + this.targetView.img.height / 2 - (index + 0.5) * 25;
   }
 
   disenchant() {
@@ -34,6 +37,11 @@ class SpellView {
     //   const y = this._getY(i);
     //   enchantmentsList[i].moveTo(y);
     // }
+  }
+
+  updatePosition() {
+    const y = this._getY();
+    this.moveTo(y);
   }
 
   moveTo(y) {

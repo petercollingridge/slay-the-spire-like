@@ -131,8 +131,9 @@ class Fight extends DraggableScene {
     const spell = new Spell(this, card, source, target);
 
     if (spell.time) {
+      // Spell enchants a character, so we need to render it on the target
       const targetView = target === this.player ? this.playerView : this.enemyView;
-      const spellView = new SpellView(this, spell, targetView);
+      targetView.addSpellView(spell);
     }
 
     // We need to keep track of this for some card effects
@@ -147,7 +148,6 @@ class Fight extends DraggableScene {
     if (target) {
       // Drop card onto a zone, e.g. the player or enemy
       target.parent.clearTint();
-      console.log('FightScene drop');
       dropZone.parent.drop(target.parent, pointer);
     } else {
       // If the card is dropped outside of a zone, return it to the hand
@@ -172,7 +172,7 @@ class Fight extends DraggableScene {
       this.maxMana = BASE_MANA;
       this.setManaSpent(0, this.maxMana);
       this.drawCardsTo(START_HAND_SIZE);
-      this.player.triggerActiveSpells();
+      this.player.tickDownActiveSpells();
     }
   }
 
