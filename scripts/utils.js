@@ -27,7 +27,10 @@ function getCardValue(givenValue, spell) {
   if (typeof givenValue === 'number') {
     return givenValue;
   } else if (typeof givenValue === 'string') {
-    // e.g. "power" or "cost" - get the value from the spell object
+    // e.g. "power" - get the value from the spell object
+    if (givenValue[0] === '-') {
+      return -spell[givenValue.slice(1)];
+    }
     return spell[givenValue];
   } else {
     return givenValue(spell);

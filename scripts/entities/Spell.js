@@ -14,6 +14,7 @@ class Spell extends Phaser.Events.EventEmitter {
     this.power = card.data.power;
     this.time = card.data.time;
     this.onTick = card.data.onTick;
+    this.onDamage = card.data.onDamage;
     this.onResolve = card.data.onResolve;
 
     if (card.data.onCast) {
@@ -31,11 +32,16 @@ class Spell extends Phaser.Events.EventEmitter {
   tick() {
     this.time -= 1;
     this.triggerEffect(this.onTick);
-    this.emit('tick', this.time);
+    this.emit('updateTime', this.time);
 
     if (this.time <= 0) {
       this.resolve();
     }
+  }
+
+  updatePower(value) {
+    this.power = Math.max(0, value);
+    this.emit('updatePower', this.power);
   }
 
   resolve() {
@@ -65,6 +71,10 @@ class Spell extends Phaser.Events.EventEmitter {
       if (effect.draw) {
         const value = getCardValue(effect.draw, this);
         this.game.drawCards(value);
+      }
+      if (effect.power) {
+        const value = getCardValue(effect.power, this);
+        this.updatePower(this.power + value);
       }
     }
   }

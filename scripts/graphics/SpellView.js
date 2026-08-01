@@ -18,8 +18,11 @@ class SpellView {
     this.powerSprite = powerSprite;
     this.moveTo(this._getY());
       
-    spell.on("tick", (value) => {
+    spell.on("updateTime", (value) => {
       this.timeSprite.setValue(value.toString());
+    });
+    spell.on("updatePower", (value) => {
+      this.powerSprite.setValue(value.toString());
     });
 
     spell.on("remove", () => {

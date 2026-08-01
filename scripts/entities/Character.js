@@ -52,11 +52,19 @@ class Character extends Phaser.Events.EventEmitter {
     }
   }
 
-  triggerDamage(spell, value) {
+  triggerDamage(spell, damage) {
     // Spell on the stack passes its damage down the stack to the character
-    console.log(`Spell effect: ${spell.card.data.name} deals ${value} damage to ${this.data.name}`);
     const index = this.enchantments.indexOf(spell);
-    this.setHealth(this.health - value);
+
+    for (let i = index - 1; i >= 0; i--) {
+      const enchantment = this.enchantments[i];
+      if (enchantment.onDamage) {
+        const updateValue = getCardValue(enchantment.onDamage.damage, enchantment);
+        damage = Math.max(0, damage + updateValue);
+      }
+    }
+
+    this.setHealth(this.health - damage);
   }
 
   tickDownActiveSpells() {
@@ -105,7 +113,10 @@ class Enemy extends Character {
     // Add a delay so it's obvious which cards are cleared and which are new
 
     // Enemy AI logic to determine what action to take
-    const cardName = getRand(['Strike', 'Gentle jab', 'Mighty slash'])
+    const cardName = getRand(['Strike', 'Gentle jab', 'Tenderise', "Slice 'n' dice"])
+    // const cardName = 'Poison blade';
+
+
     const card = { data: CARD_DATA[cardName] };
     this.playCard(card, player);
 
