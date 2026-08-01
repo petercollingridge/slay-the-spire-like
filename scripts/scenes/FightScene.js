@@ -124,7 +124,6 @@ class Fight extends DraggableScene {
   }
 
   playCard(card, source, target) {
-    console.log('FightScene playCard');
     // TODO: Move this logic to Character class, so that it can be used for enemies too
     this.spendMana(card.cost);
     this.hand.removeCard(card);

@@ -1,11 +1,12 @@
 const WIDTH = 1000;
 const HEIGHT = 500;
+const MIDX = WIDTH / 2;
+const MIDY = HEIGHT / 2;
 
 const CARD_WIDTH = 108;
 const CARD_HEIGHT = 164;
-
-const MIDX = WIDTH / 2;
-const MIDY = HEIGHT / 2;
+const SPELL_WIDTH = 128;
+const SPELL_HEIGHT = 24;
 
 const RED_TINT = 0xcc2200;
 const BLUE_TINT = 0x2288dd;

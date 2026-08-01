@@ -9,15 +9,7 @@ class SpellView {
     this.card = spell.card;
     this.energy = spell.cost;
 
-    const cardImg = scene.add.sprite(0, 0, spell.type);
-    const image = scene.add.sprite(cardImg.width / 2 - 13, 0, this.card.data.img).setScale(0.3);
-    
-    const cardName = scene.add.text(0, 0, this.card.data.name, CARD_NAME_STYLE).setOrigin(0.5);
-    this.energyImg = scene.add.text(13 - cardImg.width / 2, 1, this.energy, CIRCLE_NUM_STYLE).setOrigin(0.5);
-
-    const x = targetView.x;
-    const y = this._getY();
-    this.container = scene.add.container(x, y, [cardImg, image, this.energyImg, cardName]);
+    this.container = getSpellSprite(scene, this.card.data, targetView.x, this._getY());
 
     spell.on("tick", (value) => {
         this.energyImg.setText(value.toString());
