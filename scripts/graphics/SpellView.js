@@ -9,13 +9,21 @@ class SpellView {
     this.card = spell.card;
     this.energy = spell.cost;
 
-    const { container, timeSprite, powerSprite } = getSpellSprite(scene, this.card.data, targetView.x, this._getY());
+    const startY = spell.type === 'boon' ? HEIGHT + SPELL_HEIGHT : -SPELL_HEIGHT;
+    const { container, timeSprite, powerSprite } = getSpellSprite(
+      scene, this.card.data, targetView.x, startY, this.spell.type);
+
     this.container = container;
     this.timeSprite = timeSprite;
     this.powerSprite = powerSprite;
-
+    this.moveTo(this._getY());
+      
     spell.on("tick", (value) => {
       this.timeSprite.setValue(value.toString());
+    });
+
+    spell.on("remove", () => {
+      this.container.destroy();
     });
   }
 
@@ -23,20 +31,6 @@ class SpellView {
     const target = this.spell.target;
     const index = target.enchantments.indexOf(this.spell);
     return this.targetView.y + this.targetView.img.height / 2 - (index + 0.5) * 25;
-  }
-
-  disenchant() {
-    // Remove from list of enchanments
-    const enchantmentsList = this.spell.target.enchantments;
-    const index = enchantmentsList.indexOf(this.spell);
-    enchantmentsList.splice(index, 1);
-    this.container.destroy();
-
-    // Move later enchanments down;
-    // for (let i = index; i < enchantmentsList.length; i++) {
-    //   const y = this._getY(i);
-    //   enchantmentsList[i].moveTo(y);
-    // }
   }
 
   updatePosition() {

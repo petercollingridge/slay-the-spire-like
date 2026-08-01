@@ -32,12 +32,21 @@ class Character extends Phaser.Events.EventEmitter {
   }
 
   disenchant(spell) {
-    const index = this.enchantments.indexOf(spell);
-    this.enchantments.splice(index, 1);
+    removeFromArray(this.enchantments, spell);
+    this.emit('updateEnchantments');
+  }
+
+  playCard(card, target) {
+    const spell = new Spell(this.scene, card, this, target);
+
+    if (spell.time) {
+      target.emit('addSpell', spell);
+    }
   }
 
   setHealth(value) {
     this.health = Math.max(0, value);
+    this.emit('updateHealth', this.health);
     if (this.health <= 0) {
       this.die();
     }
@@ -47,7 +56,6 @@ class Character extends Phaser.Events.EventEmitter {
     // Spell on the stack passes its damage down the stack to the character
     console.log(`Spell effect: ${spell.card.data.name} deals ${value} damage to ${this.data.name}`);
     const index = this.enchantments.indexOf(spell);
-    console.log(index);
     this.setHealth(this.health - value);
   }
 
@@ -58,7 +66,16 @@ class Character extends Phaser.Events.EventEmitter {
       spell.tick();
     });
   }
+}
 
+class Player extends Character {
+  constructor(scene, data) {
+    super(scene, data);
+  }
+
+  discard(card) {
+    this.scene.discard.addCard(card);
+  }
 }
 
 class Enemy extends Character {
@@ -76,8 +93,21 @@ class Enemy extends Character {
     this.level = data.level;
   }
 
+  discard(card) {
+    // Enemies don't have a discard pile, so just remove the card from play
+  }
+
   turn(player) {
+    console.log(`Enemy turn: ${this.data.name}`);
+    console.log(player);
     this.tickDownActiveSpells();
+
+    // Add a delay so it's obvious which cards are cleared and which are new
+
     // Enemy AI logic to determine what action to take
+    const cardName = getRand(['Strike', 'Gentle jab', 'Mighty slash'])
+    const card = { data: CARD_DATA[cardName] };
+    this.playCard(card, player);
+
   }
 }

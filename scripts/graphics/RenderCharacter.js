@@ -19,10 +19,19 @@ class RenderCharacter {
     this.setHealth(character.data.health);
 
     this.spellViews = [];
+
     character.on("updateEnchantments", () => {
       this.spellViews.forEach((spellView) => {
         spellView.updatePosition();
       });
+    });
+
+    character.on("addSpell", (spell) => {
+      this.addSpellView(spell);
+    });
+
+    character.on("updateHealth", (value) => {
+      this.setHealth(value);
     });
   }
 
@@ -111,13 +120,8 @@ class RenderCharacter {
     this.showHeal(amount);
   }
 
-  setHealth(n) {
-    n = Math.max(0, n);
-    this.health = n;
-    this.healthTxt.setText(`${this.health} / ${this.maxHealth}`);
-    if (this.health <= 0) {
-      this.die();
-    }
+  setHealth(value) {
+    this.healthTxt.setText(`${value} / ${this.maxHealth}`);
   }
 
   showDamage(damage) {

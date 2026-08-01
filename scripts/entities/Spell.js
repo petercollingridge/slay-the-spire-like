@@ -45,8 +45,9 @@ class Spell extends Phaser.Events.EventEmitter {
 
   remove() {
     removeFromArray(this.source.activeSpells, this);
-    removeFromArray(this.target.enchantments, this);
-    this.game.discard.addCard(this.card);
+    this.target.disenchant(this);
+    this.source.discard(this.card);
+    this.emit('remove');
   }
 
   triggerEffect(effect) {

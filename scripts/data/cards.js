@@ -249,9 +249,9 @@ const CARD_DATA = {
     text: 'Reduce damage by (P)',
     target: 'self',
     cost: 1,
-    time: 1,
-    power: 10,
-    enchant: { type: 'shield', energy: 10, },
+    time: 2,
+    power: 4,
+    onDamage: { damage: '-power' },
     rarity: 2,
   },
   'Arcane shield': {

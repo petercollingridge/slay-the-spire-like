@@ -48,7 +48,7 @@ class Fight extends DraggableScene {
     this.discardMsg = this.add.text(MIDX, HEIGHT - 24, '', FIGHT_STYLE).setOrigin(0.5);
 
     // Objects to handle Player and Enemy characters
-    this.player = new Character(this, PLAYER_DATA);
+    this.player = new Player(this, PLAYER_DATA);
     this.enemy = new Enemy(this, this.enemyType, this.enemyLevel);
 
     // Objects to render Player and Enemy characters
@@ -128,13 +128,7 @@ class Fight extends DraggableScene {
     this.spendMana(card.cost);
     this.hand.removeCard(card);
 
-    const spell = new Spell(this, card, source, target);
-
-    if (spell.time) {
-      // Spell enchants a character, so we need to render it on the target
-      const targetView = target === this.player ? this.playerView : this.enemyView;
-      targetView.addSpellView(spell);
-    }
+    source.playCard(card, target);
 
     // We need to keep track of this for some card effects
     card.castCount++;

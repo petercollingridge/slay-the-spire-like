@@ -56,12 +56,13 @@ function getCardSprite(scene, data, x, y) {
   return container
 }
 
-function getSpellSprite(scene, data, x, y) {
+function getSpellSprite(scene, data, x, y, type) {
   const w2 = SPELL_WIDTH / 2;
   const h2 = SPELL_HEIGHT / 2;
 
   const background = scene.add.graphics();
-  background.fillStyle(0xffffff, 1);
+  const colour = type === 'boon' ? 0xffffff : 0xffa0b0;
+  background.fillStyle(colour, 1);
   background.fillRoundedRect(-w2, 1 - h2, SPELL_WIDTH, SPELL_HEIGHT, 5);
   background.lineStyle(1, 0x000000, 1);
   background.strokeRoundedRect(-w2, 1 - h2, SPELL_WIDTH, SPELL_HEIGHT, 5);
