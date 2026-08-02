@@ -1,7 +1,7 @@
 // Code for displaying player and enemy characters, and handling drag and drop events for playing cards on them.
 
 class RenderCharacter {
-  constructor(game, character, x, y) {
+  constructor(game, character, x, y, size = 120) {
     this.game = game;
     this.character = character;
     this.x = x;
@@ -9,14 +9,15 @@ class RenderCharacter {
 
     this.highlightImg = game.add.image(x, y, 'highlight');
     this.highlightImg.setVisible(false);
-    this.img = game.add.image(x, y, character.data.img);
-    this.img.setDisplaySize(120, 120);
 
-    const txtY = y - this.img.displayHeight / 2 + 5;
+    this.img = game.add.image(x, y, character.data.img);
+    this.img.setDisplaySize(size * this.img.width / this.img.height, size);
+
+    const txtY = y + this.img.displayHeight / 2;
     const txtStyle = { fontSize: '16px', fill: '#000' };
 
     this.maxHealth = character.data.health;
-    this.healthTxt = game.add.text(x, txtY, '', txtStyle).setOrigin(0.5, 1);
+    this.healthTxt = game.add.text(x, txtY, '', txtStyle).setOrigin(0.5, 0);
     this.setHealth(character.data.health);
 
     this.spellViews = [];
@@ -223,7 +224,7 @@ class RenderCharacter {
 
 class RenderEnemy extends RenderCharacter {
   constructor(game, character, x, y) {    
-    super(game, character, x, y);
+    super(game, character, x, y - 40, 200);
     this.type = 'enemy';
     this.getDropZone();
     this.direction = -1;
@@ -259,7 +260,7 @@ class RenderEnemy extends RenderCharacter {
 
 class RenderPlayer extends RenderCharacter {
   constructor(game, character, x, y) {
-    super(game, character, x, y);
+    super(game, character, x, y + 20, 160);
     this.type = 'player';
     this.getDropZone();
     this.direction = 1;

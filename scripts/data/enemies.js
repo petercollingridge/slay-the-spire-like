@@ -29,6 +29,16 @@ const ENEMY_DATA = {
       { damage: 4, shield: 4 },
     ],
   },
+  spikey: {
+    img: 'enemy-3',
+    name: 'Spike',
+    health: 40,
+    actions: [
+      { damage: 15 },
+      { damage: 10 },
+      { damage: 5 },
+    ]
+  },
   // poisonDemon: {
   //   img: 'enemy-4',
   //   name: 'Poison demon',
@@ -38,16 +48,6 @@ const ENEMY_DATA = {
   //     { damage: 2, poison: 4 },
   //     { poison: 8 },
   //   ],
-  // },
-  // spikey: {
-  //   img: 'enemy-3',
-  //   name: 'Spike',
-  //   health: 40,
-  //   actions: [
-  //     { damage: 15 },
-  //     { damage: 10 },
-  //     { damage: 5 },
-  //   ]
   // },
   // yeti: {
   //   img: 'enemy-1',

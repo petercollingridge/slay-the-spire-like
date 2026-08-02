@@ -18,7 +18,7 @@ class Fight extends DraggableScene {
     this.load.atlas('flares', 'assets/flares.png', 'assets/flares.json');
     this.load.image('skull', 'assets/cards/skull.svg');
 
-    this.load.image('player', 'assets/characters/player.svg');
+    this.load.image('player', 'assets/characters/Character.png');
   }
 
   create() {
