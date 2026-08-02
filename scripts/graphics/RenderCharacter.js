@@ -10,8 +10,9 @@ class RenderCharacter {
     this.highlightImg = game.add.image(x, y, 'highlight');
     this.highlightImg.setVisible(false);
     this.img = game.add.image(x, y, character.data.img);
+    this.img.setDisplaySize(120, 120);
 
-    const txtY = y - this.img.height / 2 + 5;
+    const txtY = y - this.img.displayHeight / 2 + 5;
     const txtStyle = { fontSize: '16px', fill: '#000' };
 
     this.maxHealth = character.data.health;
@@ -20,18 +21,22 @@ class RenderCharacter {
 
     this.spellViews = [];
 
+    character.on("addSpell", (spell) => {
+      this.addSpellView(spell);
+    });
+
+    character.on("shieldBlock", (amount) => {
+      this.showShieldBlock(amount);
+    });
+
     character.on("updateEnchantments", () => {
       this.spellViews.forEach((spellView) => {
         spellView.updatePosition();
       });
     });
 
-    character.on("addSpell", (spell) => {
-      this.addSpellView(spell);
-    });
-
-    character.on("updateHealth", (value) => {
-      this.setHealth(value);
+    character.on("updateHealth", (amount) => {
+      this.setHealth(amount);
     });
   }
 
@@ -57,8 +62,8 @@ class RenderCharacter {
 
   getDropZone() {
     const dropZone = this.game.add
-      .zone(this.x, this.y, this.img.width, this.img.height)
-      .setRectangleDropZone(this.img.width * 1.5, this.img.height * 1.5)
+      .zone(this.x, this.y, this.img.displayWidth, this.img.displayHeight)
+      .setRectangleDropZone(this.img.displayWidth * 1.5, this.img.displayHeight * 1.5)
       .setName(this.type);
 
     dropZone.parent = this;
@@ -96,12 +101,6 @@ class RenderCharacter {
   //     this.setHealth(this.health - damage);
   //     this.showDamage(damage);
   //   }
-  // }
-
-  // die() {
-  //   this.dead = true;
-  //   this.img.setTint(0xff0000);
-  //   this.game.characterDies();
   // }
 
   // enchant(card, energy) {
@@ -171,7 +170,7 @@ class RenderCharacter {
   showShieldBlock(damage) {
     if (!damage) { return; }
 
-    const x = this.x - this.img.width / 2;
+    const x = this.x - this.img.displayWidth / 2;
     const y = this.y - 20;
 
     const text = this.game.add.text(x, y, damage, {
@@ -227,11 +226,7 @@ class RenderEnemy extends RenderCharacter {
     super(game, character, x, y);
     this.type = 'enemy';
     this.getDropZone();
-
     this.direction = -1;
-
-    const txtStyle = { fontSize: '16px', fill: '#000', fontFamily: 'Arial' };
-    this.actionText = game.add.text(x, y - this.img.height / 2 - 24, 'Test', txtStyle).setOrigin(0.5);
   }
 
   turn(player) {

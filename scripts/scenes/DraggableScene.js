@@ -33,7 +33,7 @@ class DraggableScene extends Phaser.Scene {
   }
 
   drop(pointer, target, dropZone) {
-    console.log('Drag scen drop')
+    console.log('Drag scene drop')
     target.parent.clearTint();
     dropZone.parent.drop(target.parent, pointer);
   }

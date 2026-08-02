@@ -9,6 +9,8 @@ class Character extends Phaser.Events.EventEmitter {
     this.data = data;
     this.maxHealth = data.health;
     this.health = data.health;
+    this.mana = 0;
+    this.maxMana = data.maxMana || 3;
     this.dead = false;
 
     this.activeSpells = [];
@@ -17,6 +19,7 @@ class Character extends Phaser.Events.EventEmitter {
 
   die() {
     this.dead = true;
+    this.scene.characterDies();
   }
 
   enchant(spell) {
@@ -58,8 +61,16 @@ class Character extends Phaser.Events.EventEmitter {
 
     for (let i = index - 1; i >= 0; i--) {
       const enchantment = this.enchantments[i];
-      if (enchantment.onDamage) {
-        const updateValue = getCardValue(enchantment.onDamage.damage, enchantment);
+      if (enchantment.onDamageIn) {
+        let updateValue = getCardValue(enchantment.onDamageIn.damage, enchantment);
+
+        if (updateValue < 0) {
+          updateValue = Math.max(-damage, updateValue);
+          if (updateValue < 0) {
+            this.emit('shieldBlock', -updateValue);
+          }
+        }
+
         damage = Math.max(0, damage + updateValue);
       }
     }

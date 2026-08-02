@@ -50,4 +50,5 @@ const CARD_NAME_STYLE = {
 const PLAYER_DATA = {
   img: 'player',
   health: 60,
+  maxMana: 4,
 };

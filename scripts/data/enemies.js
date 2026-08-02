@@ -29,47 +29,47 @@ const ENEMY_DATA = {
       { damage: 4, shield: 4 },
     ],
   },
-  poisonDemon: {
-    img: 'enemy-4',
-    name: 'Poison demon',
-    health: 64,
-    actions: [
-      { damage: 6 },
-      { damage: 2, poison: 4 },
-      { poison: 8 },
-    ],
-  },
-  spikey: {
-    img: 'enemy-3',
-    name: 'Spike',
-    health: 40,
-    actions: [
-      { damage: 15 },
-      { damage: 10 },
-      { damage: 5 },
-    ]
-  },
-  yeti: {
-    img: 'enemy-1',
-    name: 'Yeti',
-    health: 120,
-    actions: [
-      { damage: 8 },
-      { damage: 2, shield: 4 },
-      { heal: 10 },
-    ]
-  },
-  gorgon: {
-    img: 'enemy-7',
-    name: 'Gorgon',
-    health: 75,
-    actions: [
-      { damage: 16, poison: 6 },
-      { damage: 2, curse: 10 },
-      { damage: 1 },
-      { damage: 2, curse: 1},
-    ]
-  },
+  // poisonDemon: {
+  //   img: 'enemy-4',
+  //   name: 'Poison demon',
+  //   health: 64,
+  //   actions: [
+  //     { damage: 6 },
+  //     { damage: 2, poison: 4 },
+  //     { poison: 8 },
+  //   ],
+  // },
+  // spikey: {
+  //   img: 'enemy-3',
+  //   name: 'Spike',
+  //   health: 40,
+  //   actions: [
+  //     { damage: 15 },
+  //     { damage: 10 },
+  //     { damage: 5 },
+  //   ]
+  // },
+  // yeti: {
+  //   img: 'enemy-1',
+  //   name: 'Yeti',
+  //   health: 120,
+  //   actions: [
+  //     { damage: 8 },
+  //     { damage: 2, shield: 4 },
+  //     { heal: 10 },
+  //   ]
+  // },
+  // gorgon: {
+  //   img: 'enemy-7',
+  //   name: 'Gorgon',
+  //   health: 75,
+  //   actions: [
+  //     { damage: 16, poison: 6 },
+  //     { damage: 2, curse: 10 },
+  //     { damage: 1 },
+  //     { damage: 2, curse: 1},
+  //   ]
+  // },
 };
 
 // Given an attribute with value n, get the value for the levelled up value

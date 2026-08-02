@@ -43,13 +43,8 @@ function getCardSprite(scene, data, x, y) {
   const elements = [background, image, cardName, text];
 
   elements.push(new PropertySprite(scene, 12 - width / 2, detailY, data.cost, 0x51814f));
-  
-  if (data.time) {
-    elements.push(new PropertySprite(scene, width / 2 - 30, detailY, data.time, 0x416296));
-  }
-  if (data.power) {
-    elements.push(new PropertySprite(scene, width / 2 - 12, detailY, data.power, 0x8b4348));
-  }
+  elements.push(new PropertySprite(scene, width / 2 - 30, detailY, data.time, 0x416296));
+  elements.push(new PropertySprite(scene, width / 2 - 12, detailY, data.power, 0x8b4348));
 
   const container = scene.add.container(x, y, elements);
   container.setSize(width, height);

@@ -49,6 +49,16 @@ const CARD_DATA = {
     target: 'enemy',
     rarity: 2,
   },
+  'Lightning strike': {
+    img: 'lightning',
+    text: 'Deal (P) damage.',
+    cost: 1,
+    time: 0,
+    power: 2,
+    onCast: { damage: 'power' },
+    target: 'enemy',
+    rarity: 2,
+  },
   'Quick shot': {
     img: 'arrow-1',
     text: 'Deal 2 damage. Draw 1 card.',
@@ -76,10 +86,20 @@ const CARD_DATA = {
     text: 'Deal [P] damage, reduce power by one each tick.',
     cost: 1,
     time: 5,
-    power: 5,
+    power: 4,
     onTick: [{ damage: 'power' }, { power: -1 }],
     target: 'enemy',
     rarity: 1,
+  },
+  'Venom blade': {
+    img: 'sword-poison',
+    text: 'Deal [P] damage, reduce power by one each tick.',
+    cost: 1,
+    time: 5,
+    power: 7,
+    onTick: [{ damage: 'power' }, { power: -1 }],
+    target: 'enemy',
+    rarity: 2,
   },
   'Constrict': {
     img: 'sword-poison',
@@ -98,7 +118,7 @@ const CARD_DATA = {
     cost: 1,
     time: 1,
     power: 5,
-    onDamage: { damage: '-power' },
+    onDamageIn: { damage: '-power' },
     rarity: 1,
   },
   'Tough shield': {
@@ -108,7 +128,7 @@ const CARD_DATA = {
     cost: 1,
     time: 2,
     power: 4,
-    onDamage: { damage: '-power' },
+    onDamageIn: { damage: '-power' },
     rarity: 2,
   },
   'Tenderise': {
@@ -118,7 +138,7 @@ const CARD_DATA = {
     cost: 1,
     time: 3,
     power: 1,
-    onDamage: { damage: 'power' },
+    onDamageIn: { damage: 'power' },
     rarity: 1,
   },
   'Anticipate': {
@@ -164,19 +184,6 @@ const OLD_CARD_DATA = {
       effect: (damage) => damage + 2,
     },
     target: 'self',
-    rarity: 2,
-  },
-  'Venom blade': {
-    img: 'sword-poison',
-    text: 'Hex 6. Deal 3 damage + 2 each turn.',
-    cost: 1,
-    effect: { damage: 3 },
-    enchant: {
-      energy: 6,
-      type: 'start',
-      effect: (target) => target.takeDamage(2),
-    },
-    target: 'enemy',
     rarity: 2,
   },
   'Toxic bloom': {
@@ -479,6 +486,7 @@ const startingDeck = {
   'Anticipate': 1,
 
   'Quick shot': 1,
+  'Lightning strike': 1,
 };
 
 function getPackOfCards() {

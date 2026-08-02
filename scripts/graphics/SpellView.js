@@ -33,7 +33,7 @@ class SpellView {
   _getY() {
     const target = this.spell.target;
     const index = target.enchantments.indexOf(this.spell);
-    return this.targetView.y + this.targetView.img.height / 2 - (index + 0.5) * 25;
+    return this.targetView.y + this.targetView.img.displayHeight / 2 - (index + 0.5) * 25;
   }
 
   updatePosition() {

@@ -73,6 +73,8 @@ class EnemyChoice extends Choice {
   getSprite(data, x, y) {
     const cardImg = this.add.sprite(x, y, 'card-large');
     const image = this.add.sprite(x, y - 14, data.img);
+    image.setDisplaySize(120, 120);
+    const w2 = image.displayWidth / 2;
   
     // Card name
     const fontSize = Math.min(16, Math.ceil(144 / (data.name.length + 2)));
@@ -92,13 +94,13 @@ class EnemyChoice extends Choice {
 
     // Health
     let textY = y - cardImg.height / 2 + 22;
-    this.add.text(x - image.width / 2 + 8, textY, enemyData.health, CIRCLE_NUM_STYLE).setOrigin(0.5);
+    this.add.text(x - w2 + 8, textY, enemyData.health, CIRCLE_NUM_STYLE).setOrigin(0.5);
 
     // Level
-    this.add.text(x + image.width / 2 - 7, textY, data.level || 1, CIRCLE_NUM_STYLE).setOrigin(0.5);
+    this.add.text(x + w2 - 7, textY, data.level || 1, CIRCLE_NUM_STYLE).setOrigin(0.5);
 
     // Show enemy actions
-    const textX = x - image.width / 2;
+    const textX = x - w2;
     textY = y + 50;
     const dy = 16;
 

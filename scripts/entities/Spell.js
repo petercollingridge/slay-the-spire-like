@@ -14,7 +14,7 @@ class Spell extends Phaser.Events.EventEmitter {
     this.power = card.data.power;
     this.time = card.data.time;
     this.onTick = card.data.onTick;
-    this.onDamage = card.data.onDamage;
+    this.onDamageIn = card.data.onDamageIn;
     this.onResolve = card.data.onResolve;
 
     if (card.data.onCast) {

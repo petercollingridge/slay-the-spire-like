@@ -18,9 +18,11 @@ class StartScene extends Phaser.Scene {
     this.load.image('enemy-2', 'assets/characters/minotaur.svg');
     this.load.image('enemy-3', 'assets/characters/spikey.svg');
     this.load.image('enemy-4', 'assets/characters/poison-demon.svg');
-    this.load.image('enemy-5', 'assets/characters/ghost.svg');
     this.load.image('enemy-6', 'assets/characters/serpent.svg');
     this.load.image('enemy-7', 'assets/characters/gorgon.svg');
+
+    // this.load.image('enemy-5', 'assets/characters/ghost.svg');
+    this.load.image('enemy-5', 'assets/characters/Ghost.png');
 
     this.load.image('arrow-1', 'assets/cards/arrow-1.svg');
     this.load.image('arrow-2', 'assets/cards/arrow-2.svg');
@@ -36,6 +38,7 @@ class StartScene extends Phaser.Scene {
     this.load.image('heart', 'assets/cards/heart.svg');
     this.load.image('boon-blast', 'assets/cards/boon-blast.svg');
     this.load.image('draw-card', 'assets/cards/draw.svg');
+    this.load.image('lightning', 'assets/cards/lightning.svg');
     this.load.image('orb-up', 'assets/cards/orb-up.svg');
     this.load.image('potion', 'assets/cards/potion.svg');
     this.load.image('poison-mushroom', 'assets/cards/poison-mushroom.svg');
