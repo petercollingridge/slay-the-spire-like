@@ -17,12 +17,20 @@ class Fight extends DraggableScene {
     this.load.image('button', 'assets/button.svg');
     this.load.atlas('flares', 'assets/flares.png', 'assets/flares.json');
     this.load.image('skull', 'assets/cards/skull.svg');
+    this.load.image('background-wall', 'assets/Background-wall.png');
+    this.load.image('eye', 'assets/Eye.png');
 
     this.load.image('player', 'assets/characters/Character.png');
   }
 
   create() {
     this.add.image(MIDX, 150, 'sky');
+
+    const eye = this.add.image(WIDTH, 220, 'eye').setOrigin(1, 0.5);
+    eye.setDisplaySize(72 * eye.width / eye.height, 72);
+
+    const wall = this.add.image(WIDTH, 300, 'background-wall').setOrigin(1, 1);
+    wall.setDisplaySize(280 * wall.width / wall.height, 280);
 
     const flame = this.add.particles(600, 260, 'flares', {
       frame: 'white',
