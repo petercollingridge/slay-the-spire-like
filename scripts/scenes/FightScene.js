@@ -1,4 +1,4 @@
-// TODO: Move mana logic to character class, so that it can be used for enemies too
+// TODO: Move hand and discard pile to character class, so that it can be used for enemies too
 
 class Fight extends DraggableScene {
   constructor() {
@@ -74,8 +74,6 @@ class Fight extends DraggableScene {
     // Hand
     this.hand = new Hand(this, MIDX, HEIGHT - 130);
 
-    this.graphics = this.add.graphics();
-
     this.player.on('updateMana', (mana, maxMana) => {
       this.setManaCount(mana, maxMana);
     });
@@ -108,7 +106,7 @@ class Fight extends DraggableScene {
   drawCard() {
     const card = this.deck.draw();
     if (card) {
-      card.setPlayability(this.maxMana - this.manaSpent);
+      card.setPlayability(this.player.mana);
       this.hand.addCard(card);
     } else if (this.discard.cards.length) {
       // Shuffle discard pile into the deck
@@ -138,9 +136,6 @@ class Fight extends DraggableScene {
   playCard(card, source, target) {
     this.hand.removeCard(card);
     source.playCard(card, target);
-
-    // We need to keep track of this for some card effects
-    card.castCount++;
   }
 
   selectCard(card) {
@@ -160,13 +155,8 @@ class Fight extends DraggableScene {
   }
 
   setManaCount(availableMana, maxMana) {
-    const spentMana = maxMana - availableMana;
-    this.manaCount.setText(`${spentMana} / ${maxMana}`);
+    this.manaCount.setText(`${availableMana} / ${maxMana}`);
     this.hand.showPlayableCards(availableMana);
-  }
-
-  spendMana(mana) {
-    this.setManaSpent(this.manaSpent + mana);
   }
 
   playerTurn() {

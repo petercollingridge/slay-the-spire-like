@@ -46,6 +46,9 @@ class Character extends Phaser.Events.EventEmitter {
     if (spell.time) {
       target.emit('addSpell', spell);
     }
+
+    // We need to keep track of this for some card effects
+    card.castCount++;
   }
 
   setHealth(value) {

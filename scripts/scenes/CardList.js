@@ -90,9 +90,9 @@ class CardList {
   }
 
   _addItem(name, count, index) {
-      const containerProps = this._getContainerCoords(index);
-      const item = new CardListItem(this.scene, index, this, name, count, containerProps);
-      this.items.push(item);
+    const containerProps = this._getContainerCoords(index);
+    const item = new CardListItem(this.scene, index, this, name, count, containerProps);
+    this.items.push(item);
   }
 
   _getContainerCoords(index) {
@@ -120,6 +120,7 @@ class CardList {
   }
 
   addItems(cardCounts) {
+    console.log(`Adding items`, cardCounts);
     Object.entries(cardCounts).forEach(([name, count], index) => {
       this._addItem(name, count, index);
     });

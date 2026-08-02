@@ -72,6 +72,10 @@ class Spell extends Phaser.Events.EventEmitter {
         const value = getCardValue(effect.draw, this);
         this.game.drawCards(value);
       }
+      if (effect.mana) {
+        const value = getCardValue(effect.mana, this);
+        this.target.updateMana(this.target.mana + value);
+      }
       if (effect.power) {
         const value = getCardValue(effect.power, this);
         this.updatePower(this.power + value);

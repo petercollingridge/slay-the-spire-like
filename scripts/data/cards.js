@@ -49,6 +49,26 @@ const CARD_DATA = {
     target: 'enemy',
     rarity: 2,
   },
+  'Slow blow': {
+    img: 'sword-3',
+    text: 'Deal (P) damage.',
+    cost: 2,
+    time: 2,
+    power: 10,
+    onResolve: { damage: 'power' },
+    target: 'enemy',
+    rarity: 2,
+  },
+  'Flashback': {
+    img: 'sword-3',
+    text: 'Deal (P) damage each turn.',
+    cost: 2,
+    time: 2,
+    power: 3,
+    onTick: { damage: 'power' },
+    target: 'enemy',
+    rarity: 2,
+  },
   'Lightning strike': {
     img: 'lightning',
     text: 'Deal (P) damage.',
@@ -91,10 +111,10 @@ const CARD_DATA = {
     target: 'enemy',
     rarity: 1,
   },
-  'Venom blade': {
-    img: 'sword-poison',
+  'Toxic bloom': {
+    img: 'poison-mushroom',
     text: 'Deal [P] damage, reduce power by one each tick.',
-    cost: 1,
+    cost: 2,
     time: 5,
     power: 7,
     onTick: [{ damage: 'power' }, { power: -1 }],
@@ -109,9 +129,9 @@ const CARD_DATA = {
     power: 1,
     onTick: [{ damage: 'power' }, { power: 1 }],
     target: 'enemy',
-    rarity: 1,
+    rarity: 2,
   },
-  'Basic shield': {
+  'Quick shield': {
     img: 'shield',
     text: 'Reduce damage by (P)',
     target: 'self',
@@ -129,6 +149,28 @@ const CARD_DATA = {
     time: 2,
     power: 4,
     onDamageIn: { damage: '-power' },
+    rarity: 2,
+  },
+  'Pulse shield': {
+    img: 'shield-2',
+    text: 'Reduce damage by (P)',
+    target: 'self',
+    cost: 2,
+    time: 5,
+    power: 5,
+    onDamageIn: { damage: '-power' },
+    onTick: { power: -1 },
+    rarity: 2,
+  },
+  'Growing shield': {
+    img: 'shield-2',
+    text: 'Reduce damage by (P)',
+    target: 'self',
+    cost: 2,
+    time: 5,
+    power: 1,
+    onDamageIn: { damage: '-power' },
+    onTick: { power: 1 },
     rarity: 2,
   },
   'Tenderise': {
@@ -159,6 +201,36 @@ const CARD_DATA = {
     target: 'self',
     rarity: 2,
   },
+  'Store magic': {
+    img: 'potion',
+    text: 'Gain (P) mana next turn.',
+    cost: 1,
+    power: 1,
+    time: 1,
+    onResolve: { mana: 'power' },
+    target: 'self',
+    rarity: 2,
+  },
+  'Accumulate magic': {
+    img: 'potion',
+    text: 'Gain (P) mana next turn.',
+    cost: 2,
+    power: 2,
+    time: 1,
+    onResolve: { mana: 'power' },
+    target: 'self',
+    rarity: 2,
+  },
+  'Sustain magic': {
+    img: 'potion',
+    text: 'Gain (P) mana each turn.',
+    cost: 2,
+    power: 1,
+    time: 2,
+    onResolve: { mana: 'power' },
+    target: 'self',
+    rarity: 3,
+  },
 };
 
 const OLD_CARD_DATA = {
@@ -185,18 +257,6 @@ const OLD_CARD_DATA = {
     },
     target: 'self',
     rarity: 2,
-  },
-  'Toxic bloom': {
-    img: 'poison-mushroom',
-    text: 'Hex 4. Deal damage equal to energy each turn.',
-    cost: 1,
-    enchant: {
-      energy: 4,
-      type: 'start',
-      effect: (target, enchantment) => target.takeDamage(enchantment.energy),
-    },
-    target: 'enemy',
-    rarity: 3,
   },
   'Weaken': {
     img: 'weaken',
@@ -404,22 +464,6 @@ const OLD_CARD_DATA = {
     target: 'self',
     rarity: 2,
   },
-  'Store magic': {
-    img: 'potion',
-    text: 'Gain 1 mana next turn.',
-    cost: 1,
-    effect: { store: 1 },
-    target: 'self',
-    rarity: 2,
-  },
-  'Accumulate magic': {
-    img: 'potion',
-    text: 'Gain 2 mana next turn.',
-    cost: 2,
-    effect: { store: 2 },
-    target: 'self',
-    rarity: 3,
-  },
   'Curse': {
     img: 'curse',
     text: 'Take 3 damage.',
@@ -481,21 +525,23 @@ const RARE_CARDS = Object.keys(PLAYER_CARDS).filter((card) => PLAYER_CARDS[card]
 const startingDeck = {
   'Gentle jab': 2,
   'Strike': 1,
-  'Basic shield': 1,
+  'Quick shield': 1,
   'Tough shield': 1,
   'Anticipate': 1,
 
   'Quick shot': 1,
   'Lightning strike': 1,
+  'Store magic': 1,
+  'Growing shield': 1,
 };
 
 function getPackOfCards() {
   const deck = {};
 
-  for (let i = 0; i < 1; i++) {
-    const card = getRand(RARE_CARDS);
-    deck[card] = (deck[card] || 0) + 1;
-  }
+  // for (let i = 0; i < 1; i++) {
+  //   const card = getRand(RARE_CARDS);
+  //   deck[card] = (deck[card] || 0) + 1;
+  // }
   for (let i = 0; i < 3; i++) {
     const card = getRand(UNCOMMON_CARDS);
     deck[card] = (deck[card] || 0) + 1;

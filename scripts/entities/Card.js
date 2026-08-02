@@ -2,6 +2,10 @@ class Card {
   constructor(scene, name) {
     const data = CARD_DATA[name];
 
+    if (!data) {
+      console.error(`No data for card: ${name}`);
+    }
+
     this.data = data;
     this.scene = scene;
 

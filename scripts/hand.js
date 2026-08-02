@@ -1,4 +1,5 @@
 // Object dealing with cards in the player's hand
+
 class Hand {
   constructor(game, x, y) {
     this.game = game;
@@ -87,7 +88,6 @@ class Hand {
   }
 
   showPlayableCards(availableMana) {
-    console.log('showPlayableCards', availableMana);
     this.cards.forEach((card) => card.setPlayability(availableMana));
   }
 
