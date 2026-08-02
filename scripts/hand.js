@@ -87,6 +87,7 @@ class Hand {
   }
 
   showPlayableCards(availableMana) {
+    console.log('showPlayableCards', availableMana);
     this.cards.forEach((card) => card.setPlayability(availableMana));
   }
 

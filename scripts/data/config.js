@@ -15,7 +15,6 @@ const YELLOW_TINT = 0xffffa0;
 
 const START_HAND_SIZE = 5;
 const END_HAND_SIZE = 4;
-const BASE_MANA = 4;
 
 const OPTION_STYLE = {
   fill: '#f8f8f8',
@@ -51,4 +50,5 @@ const PLAYER_DATA = {
   img: 'player',
   health: 60,
   maxMana: 4,
+  drawCards: 5, 
 };

@@ -43,21 +43,21 @@ class RenderCharacter {
     });
   }
 
-  dragEnter(card) {
-    if (card.canPlay) {      
-      const valid = this.isValidDrop(card);
-      card.setTint(valid ? BLUE_TINT : RED_TINT);
-      if (valid) {
-        this.highlight();
-      }
+  dragEnter(card) {     
+    const valid = this.isValidDrop(card);
+    card.setTint(valid ? BLUE_TINT : RED_TINT);
+    if (valid) {
+      this.highlight();
     }
   }
 
   drop(card) {
     if (this.isValidDrop(card)) {
+      console.log('Character.drop valid');
       // Play the card - the source will be the player
       this.game.playCard(card, this.game.player, this.character);
     } else {
+      console.log('Character.drop not valid');
       this.game.hand.reorderHand();
     }
     this.clearTint();
@@ -255,7 +255,7 @@ class RenderEnemy extends RenderCharacter {
   }
 
   isValidDrop(card) {
-    return card.canPlay && ['enemy', 'any'].includes(card.target);
+    return ['enemy', 'any'].includes(card.target);
   }
 }
 
@@ -267,6 +267,6 @@ class RenderPlayer extends RenderCharacter {
   }
 
   isValidDrop(card) {
-    return card.canPlay && ['self', 'any'].includes(card.target);
+    return ['self', 'any'].includes(card.target);
   }
 }

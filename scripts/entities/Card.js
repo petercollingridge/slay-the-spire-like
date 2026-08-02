@@ -67,7 +67,6 @@ class Card {
   }
 
   dragStart() {
-    this.canPlay = this.cost <= this.scene.maxMana - this.scene.manaSpent;
     // Save card's current position so we can return it if the card is cancelled
     this.startX = this.container.x;
     this.startY = this.container.y;

@@ -40,6 +40,7 @@ class Character extends Phaser.Events.EventEmitter {
   }
 
   playCard(card, target) {
+    this.updateMana(this.mana - card.cost);
     const spell = new Spell(this.scene, card, this, target);
 
     if (spell.time) {
@@ -53,6 +54,16 @@ class Character extends Phaser.Events.EventEmitter {
     if (this.health <= 0) {
       this.die();
     }
+  }
+
+  startTurn() {
+    this.updateMana(this.maxMana);
+    this.tickDownActiveSpells();
+  }
+
+  updateMana(amount) {
+    this.mana = amount;
+    this.emit('updateMana', this.mana, this.maxMana);
   }
 
   triggerDamage(spell, damage) {
