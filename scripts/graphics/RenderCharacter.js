@@ -53,11 +53,9 @@ class RenderCharacter {
 
   drop(card) {
     if (this.isValidDrop(card)) {
-      console.log('Character.drop valid');
       // Play the card - the source will be the player
       this.game.playCard(card, this.game.player, this.character);
     } else {
-      console.log('Character.drop not valid');
       this.game.hand.reorderHand();
     }
     this.clearTint();
@@ -238,12 +236,6 @@ class RenderEnemy extends RenderCharacter {
       Object.entries(this.currentAction).forEach(([name, value]) => {
         if (name === 'damage') {
           this.dealDamage(player, value)
-        } else if (name === 'heal') {
-          this.heal(value);
-        } else if (name === 'poison') {
-          player.enchant({ data: ENEMY_CARDS.poison }, value);
-        } else if (name === 'shield') {
-          this.enchant({ data: ENEMY_CARDS.shield }, value);
         } else if (name === 'curse') {
           for (let i = 0; i < value; i++) {
             const card = new Card(this.game, 'Curse');

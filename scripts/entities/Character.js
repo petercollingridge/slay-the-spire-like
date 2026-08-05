@@ -3,7 +3,7 @@
 // This class does not handle rendering, and should not require Phaser.js
 
 class Character extends Phaser.Events.EventEmitter {
-  constructor(scene, data) {
+  constructor(scene, data, deck) {
     super();
     this.scene = scene;
     this.data = data;
@@ -12,6 +12,9 @@ class Character extends Phaser.Events.EventEmitter {
     this.mana = 0;
     this.maxMana = data.maxMana || 3;
     this.dead = false;
+
+    this.cards = new CardSet(this, deck || {});
+    this.cards.shuffle();
 
     this.activeSpells = [];
     this.enchantments = [];
@@ -27,7 +30,6 @@ class Character extends Phaser.Events.EventEmitter {
       // Character was enchanted by self, so this is a boon, and enters the stack from the bottom
       this.enchantments.unshift(spell);
       this.emit('updateEnchantments');
-      // TODO: Need to reorder spell views
     } else {
       // Character was enchanted by enemy, so this is a hex, and enters the stack from the top
       this.enchantments.push(spell);
@@ -46,9 +48,6 @@ class Character extends Phaser.Events.EventEmitter {
     if (spell.time) {
       target.emit('addSpell', spell);
     }
-
-    // We need to keep track of this for some card effects
-    card.castCount++;
   }
 
   setHealth(value) {
@@ -60,8 +59,10 @@ class Character extends Phaser.Events.EventEmitter {
   }
 
   startTurn() {
+    this.cards.drawCards(5);
     this.updateMana(this.maxMana);
     this.tickDownActiveSpells();
+    console.log(this.cards.hand);
   }
 
   updateMana(amount) {
@@ -75,17 +76,23 @@ class Character extends Phaser.Events.EventEmitter {
 
     for (let i = index - 1; i >= 0; i--) {
       const enchantment = this.enchantments[i];
-      if (enchantment.onDamageIn) {
-        let updateValue = getCardValue(enchantment.onDamageIn.damage, enchantment);
+      if (enchantment.onDamagePass) {
+        // TODO: Trigger onDamagePass for enchantments, which may modify the damage value
 
-        if (updateValue < 0) {
-          updateValue = Math.max(-damage, updateValue);
-          if (updateValue < 0) {
-            this.emit('shieldBlock', -updateValue);
-          }
+        // Increase damage from hexes, or reduce damage from boons
+        const damageValue = getCardValue(enchantment.onDamagePass.damage, enchantment);
+        damage = Math.max(0, damage + damageValue);
+
+        let blockValue = getCardValue(enchantment.onDamagePass.block, enchantment);
+        blockValue = Math.min(blockValue, damage);
+        damage -= blockValue;
+
+        if (blockValue) {
+          // Show shields blocking damage
+          this.emit('shieldBlock', blockValue);
+          // Blocking reduces a spell's power
+          enchantment.updatePower(enchantment.power - blockValue);
         }
-
-        damage = Math.max(0, damage + updateValue);
       }
     }
 
@@ -95,6 +102,7 @@ class Character extends Phaser.Events.EventEmitter {
   tickDownActiveSpells() {
     // Remove a time token from each active spell
     // Make a copy of the array so we can safely remove spells from the original array while iterating
+    // TODO: Add a delay so it's obvious which cards are cleared and which are new
     this.activeSpells.slice().forEach((spell) => {
       spell.tick();
     });
@@ -102,8 +110,8 @@ class Character extends Phaser.Events.EventEmitter {
 }
 
 class Player extends Character {
-  constructor(scene, data) {
-    super(scene, data);
+  constructor(scene, data, deck) {
+    super(scene, data, deck);
   }
 
   discard(card) {
@@ -121,7 +129,9 @@ class Enemy extends Character {
 
     const data = getEnemyData(baseData, level);
 
-    super(scene, data);
+    // TODO: Get specific deck for this enemy type
+    const deck = data.deck || ENEMY_DECK;
+    super(scene, data, deck);
     this.type = data.type;
     this.level = data.level;
   }
@@ -133,17 +143,21 @@ class Enemy extends Character {
   turn(player) {
     console.log(`Enemy turn: ${this.data.name}`);
     console.log(player);
-    this.tickDownActiveSpells();
 
-    // Add a delay so it's obvious which cards are cleared and which are new
+    this.startTurn();
 
     // Enemy AI logic to determine what action to take
-    const cardName = getRand(['Strike', 'Gentle jab', 'Tenderise', "Slice 'n' dice"])
-    // const cardName = 'Poison blade';
-
-
-    const card = { data: CARD_DATA[cardName] };
-    this.playCard(card, player);
+    // const cardName = getRand(['Strike', 'Gentle jab', 'Tenderise', "Slice 'n' dice"])
+    // const cardName = 'Gentle jab';
+    const cardToPlay = expensiveFirst(this, player);
+    console.log(this.cards.hand);
+    
+    if (cardToPlay) {
+      console.log(`Enemy plays card: ${cardToPlay.name}`);
+      const card = { data: cardToPlay };
+      this.playCard(card, player);
+      // TODO: Keep playing cards until mana runs out, or no playable cards remain
+    }
 
   }
 }

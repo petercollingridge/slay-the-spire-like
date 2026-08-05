@@ -23,6 +23,7 @@ const ENEMY_DATA = {
     img: 'enemy-2',
     name: 'Minotaur',
     health: 80,
+    deck: { 'Gentle jab': 4, 'Strike': 4, 'Quick shield': 2, 'Tough shield': 2 },
     actions: [
       { damage: 8 },
       { shield: 8 },

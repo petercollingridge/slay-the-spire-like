@@ -1,16 +1,18 @@
 const CARD_DATA = {
   'Gentle jab': {
     img: 'sword-1',
+    type: ['attack', 'hex'],
     text: 'Deal (P) damage.',
     cost: 1,
     time: 1,
-    power: 2,
+    power: 5,
     onResolve: { damage: 'power' },
     target: 'enemy',
     rarity: 1,
   },
   'Strike': {
     img: 'sword-2',
+    type: ['attack', 'hex'],
     text: 'Deal (P) damage.',
     cost: 2,
     time: 1,
@@ -21,6 +23,7 @@ const CARD_DATA = {
   },
   'Mighty slash': {
     img: 'sword-3',
+    type: ['attack', 'hex'],
     text: 'Deal (P) damage.',
     cost: 3,
     time: 1,
@@ -31,6 +34,7 @@ const CARD_DATA = {
   },
   "Slice 'n' dice": {
     img: 'sword-3',
+    type: ['attack', 'hex'],
     text: 'Deal (P) damage twice.',
     cost: 2,
     time: 1,
@@ -41,6 +45,7 @@ const CARD_DATA = {
   },
   "Smash 'n' bash": {
     img: 'sword-4',
+    type: ['attack', 'hex'],
     text: 'Deal (P) damage twice.',
     cost: 3,
     time: 1,
@@ -51,7 +56,8 @@ const CARD_DATA = {
   },
   'Slow blow': {
     img: 'sword-3',
-    text: 'Deal (P) damage.',
+    type: ['attack', 'hex'],
+    text: 'Deal (P) damage after (T).',
     cost: 2,
     time: 2,
     power: 10,
@@ -61,6 +67,7 @@ const CARD_DATA = {
   },
   'Flashback': {
     img: 'sword-3',
+    type: ['attack', 'hex'],
     text: 'Deal (P) damage each turn.',
     cost: 2,
     time: 2,
@@ -71,16 +78,18 @@ const CARD_DATA = {
   },
   'Lightning strike': {
     img: 'lightning',
-    text: 'Deal (P) damage.',
-    cost: 1,
+    type: ['attack', 'instant'],
+    text: 'Deal (P) damage immediately.',
+    cost: 2,
     time: 0,
-    power: 2,
+    power: 3,
     onCast: { damage: 'power' },
     target: 'enemy',
     rarity: 2,
   },
   'Quick shot': {
     img: 'arrow-1',
+    type: ['attack', 'hex'],
     text: 'Deal 2 damage. Draw 1 card.',
     cost: 1,
     time: 1,
@@ -92,6 +101,7 @@ const CARD_DATA = {
   },
   'Rapid shot': {
     img: 'arrow-1',
+    type: ['attack', 'hex'],
     text: 'Deal 3 damage and draw 2 cards.',
     cost: 1,
     time: 1,
@@ -103,6 +113,7 @@ const CARD_DATA = {
   },
   'Poison blade': {
     img: 'sword-poison',
+    type: ['attack', 'hex'],
     text: 'Deal [P] damage, reduce power by one each tick.',
     cost: 1,
     time: 5,
@@ -113,6 +124,7 @@ const CARD_DATA = {
   },
   'Toxic bloom': {
     img: 'poison-mushroom',
+    type: ['attack', 'hex'],
     text: 'Deal [P] damage, reduce power by one each tick.',
     cost: 2,
     time: 5,
@@ -123,6 +135,7 @@ const CARD_DATA = {
   },
   'Constrict': {
     img: 'sword-poison',
+    type: ['attack', 'hex'],
     text: 'Deal [P] damage, increase power by one each tick.',
     cost: 1,
     time: 5,
@@ -131,78 +144,156 @@ const CARD_DATA = {
     target: 'enemy',
     rarity: 2,
   },
+  'Blade vortex': {
+    img: 'sword-spinning',
+    type: ['attack', 'hex'],
+    text: 'Deal (P) damage for each time this card has been cast.',
+    cost: 2,
+    time: 1,
+    power: 3,
+    onCast: { special: (spell) => { spell.card.castCount = (spell.card.castCount || 0) + 1 } },
+    onResolve: { damage: (spell) => (spell.card.castCount || 0) * spell.power },
+    target: 'enemy',
+    rarity: 3,
+  },
   'Quick shield': {
     img: 'shield',
-    text: 'Reduce damage by (P)',
+    type: ['shield', 'boon'],
+    text: 'Block (P) damage',
     target: 'self',
     cost: 1,
     time: 1,
-    power: 5,
-    onDamageIn: { damage: '-power' },
+    power: 4,
+    onDamagePass: { block: 'power' },
     rarity: 1,
   },
   'Tough shield': {
     img: 'shield-2',
+    type: ['shield', 'boon'],
+    text: 'Block (P) damage',
+    target: 'self',
+    cost: 2,
+    time: 2,
+    power: 8,
+    onDamagePass: { block: 'power' },
+    rarity: 2,
+  },
+  'Absorption shield': {
+    img: 'shield-2',
+    type: ['shield', 'boon'],
+    text: 'Block (P) damage. Gain (T) whenever you block damage.',
+    target: 'self',
+    cost: 2,
+    time: 1,
+    power: 2,
+    onDamagePass: [{ block: 'power' }, { time: 1 }],
+    rarity: 2,
+  },
+  'Unstable shield': {
+    img: 'shield-2',
+    type: ['shield', 'boon'],
     text: 'Reduce damage by (P)',
     target: 'self',
     cost: 1,
-    time: 2,
-    power: 4,
-    onDamageIn: { damage: '-power' },
+    time: 3,
+    power: 10,
+    // TODO: implement reducing power each time damage is blocked
+    onDamagePass: [{ damage: '-power' }, { power: '-damage' }],
+    onTick: { power: -1 },
+    onResolve: { damage: 'power' },
     rarity: 2,
   },
   'Pulse shield': {
     img: 'shield-2',
+    type: ['shield', 'boon'],
     text: 'Reduce damage by (P)',
     target: 'self',
     cost: 2,
     time: 5,
     power: 5,
-    onDamageIn: { damage: '-power' },
+    onDamagePass: { damage: '-power' },
     onTick: { power: -1 },
     rarity: 2,
   },
   'Growing shield': {
     img: 'shield-2',
+    type: ['shield', 'boon'],
     text: 'Reduce damage by (P)',
     target: 'self',
     cost: 2,
     time: 5,
     power: 1,
-    onDamageIn: { damage: '-power' },
+    onDamagePass: { damage: '-power' },
     onTick: { power: 1 },
     rarity: 2,
   },
-  'Tenderise': {
-    img: 'shield',
-    text: 'Increase damage by (P)',
+  'Soften up': {
+    img: 'hammer',
+    type: ['hex'],
+    text: 'Increase damage taken by (P)',
     target: 'enemy',
     cost: 1,
-    time: 3,
+    time: 2,
     power: 1,
-    onDamageIn: { damage: 'power' },
+    onDamagePass: { damage: 'power' },
     rarity: 1,
+  },
+  'Tenderise': {
+    img: 'hammer',
+    type: ['hex'],
+    text: 'Increase damage by (P)',
+    target: 'enemy',
+    cost: 2,
+    time: 3,
+    power: 2,
+    onDamagePass: { damage: 'power' },
+    rarity: 2,
   },
   'Anticipate': {
     img: 'draw-card',
+    type: ['instant'],
     text: 'Draw (P) cards.',
     cost: 1,
     power: 2,
-    onCast: [{ draw: 'power' }],
+    onCast: { draw: 'power' },
     target: 'self',
     rarity: 1,
   },
   'Prepare': {
     img: 'draw-card',
+    type: ['instant'],
     text: 'Draw (P) cards.',
     cost: 1,
     power: 3,
-    effect: { draw: 'power' },
+    onCast: { draw: 'power' },
     target: 'self',
     rarity: 2,
   },
+  'Study': {
+    img: 'draw-card',
+    type: ['boon'],
+    text: 'Draw (P) cards.',
+    cost: 2,
+    time: 3,
+    power: 1,
+    onTick: { draw: 'power' },
+    target: 'self',
+    rarity: 3,
+  },
+  'Research': {
+    img: 'draw-card',
+    type: ['boon'],
+    text: 'Draw (P) cards.',
+    cost: 2,
+    time: 6,
+    power: 5,
+    onCast: { draw: 'power' },
+    target: 'self',
+    rarity: 3,
+  },
   'Store magic': {
     img: 'potion',
+    type: ['boon'],
     text: 'Gain (P) mana next turn.',
     cost: 1,
     power: 1,
@@ -213,6 +304,7 @@ const CARD_DATA = {
   },
   'Accumulate magic': {
     img: 'potion',
+    type: ['boon'],
     text: 'Gain (P) mana next turn.',
     cost: 2,
     power: 2,
@@ -223,6 +315,7 @@ const CARD_DATA = {
   },
   'Sustain magic': {
     img: 'potion',
+    type: ['boon'],
     text: 'Gain (P) mana each turn.',
     cost: 2,
     power: 1,
@@ -231,21 +324,20 @@ const CARD_DATA = {
     target: 'self',
     rarity: 3,
   },
+  'Strengthen': {
+    img: 'sword-clash',
+    type: ['boon'],
+    text: 'Add +(P) power to attacks.',
+    cost: 1,
+    power: 1,
+    time: 2,
+    onDamageOut: { damage: 'power' },
+    target: 'self',
+    rarity: 2,
+  },
 };
 
 const OLD_CARD_DATA = {
-  'Strengthen': {
-    img: 'sword-clash',
-    text: 'Boon 2. Attacks deal +1 damage.',
-    cost: 1,
-    enchant: {
-      energy: 2,
-      type: 'attack',
-      effect: (damage) => damage + 1,
-    },
-    target: 'self',
-    rarity: 1,
-  },
   'Fortify': {
     img: 'sword-clash',
     text: 'Boon 3. Attacks deal +2 damage.',
@@ -407,16 +499,6 @@ const OLD_CARD_DATA = {
     target: 'enemy',
     rarity: 3,
   },
-  'Blade vortex': {
-    img: 'sword-spinning',
-    text: 'Deal 3 damage for each time this card has been cast.',
-    cost: 2,
-    effect: {
-      damage: (card) => card.castCount * 3
-    },
-    target: 'enemy',
-    rarity: 3,
-  },
   'Drain life': {
     img: 'fangs',
     text: 'Deal 3 damage and heal 3.',
@@ -431,27 +513,6 @@ const OLD_CARD_DATA = {
     cost: 2,
     effect: {
       draw: (_, target) => 1 + target.enchantments.length
-    },
-    target: 'self',
-    rarity: 3,
-  },
-  'Research': {
-    img: 'draw-card',
-    text: 'Boon 5. Draw 5 cards.',
-    cost: 2,
-    effect: { draw: 5 },
-    enchant: { energy: 5, type: 'null' },
-    target: 'self',
-    rarity: 3,
-  },
-  'Study': {
-    img: 'draw-card',
-    text: 'Boon 5. Draw an extra card each turn.',
-    cost: 2,
-    enchant: {
-      energy: 5,
-      type: 'draw',
-      effect: (cards) => cards + 1,
     },
     target: 'self',
     rarity: 3,
@@ -475,23 +536,11 @@ const OLD_CARD_DATA = {
   }
 };
 
-const ENEMY_CARDS = {
-  poison: {
-    name: 'Poison',
-    img: 'sword-poison',
-    enchant: {
-      energy: 8,
-      type: 'start',
-      effect: (target) => target.takeDamage(1),
-    },
-    target: 'player',
-  },
-  shield: {
-    name: 'Shield',
-    img: 'shield',
-    enchant: { type: 'shield' },
-    target: 'self',
-  }
+const ENEMY_DECK = {
+  'Gentle jab': 4,
+  'Strike': 4,
+  'Quick shield': 2,
+  'Tough shield': 2,
 };
 
 const RARITY_LETTERS = ['C', 'U', 'R'];
@@ -529,11 +578,25 @@ const startingDeck = {
   'Tough shield': 1,
   'Anticipate': 1,
 
-  'Quick shot': 1,
-  'Lightning strike': 1,
-  'Store magic': 1,
-  'Growing shield': 1,
+  // 'Quick shot': 1,
+  // 'Lightning strike': 1,
+  // 'Store magic': 1,
+  // 'Research': 1,
+  // 'Blade vortex': 1,
 };
+
+function convertNamesToCards(names) {
+  return names.map((name) => {
+    const data = CARD_DATA[name];
+
+    if (!data) {
+      console.error(`No data for card: ${name}`);
+    }
+    data.name = name;
+
+    return data;
+  });
+}
 
 function getPackOfCards() {
   const deck = {};
@@ -559,20 +622,3 @@ function getCardsToWin(n) {
 }
 
 const firstPack = getPackOfCards();
-
-// const startingDeck = {
-//   'Gentle jab': 1,
-//   'Strike': 1,
-//   'Mighty slash': 1,
-//   "Slice 'n' dice": 1,
-//   "Smash 'n' bash": 1,
-//   'Prepare': 1,
-//   'Heal': 1,
-//   'Study': 1,
-//   'Basic shield': 1,
-//   'Double damage': 1,
-//   'Arcane sword': 1,
-//   'Strengthen': 1,
-//   'Fortify': 1,
-//   'Research': 1,
-// };

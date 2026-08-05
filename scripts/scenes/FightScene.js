@@ -56,7 +56,7 @@ class Fight extends DraggableScene {
     this.discardMsg = this.add.text(MIDX, HEIGHT - 24, '', FIGHT_STYLE).setOrigin(0.5);
 
     // Objects to handle Player and Enemy characters
-    this.player = new Player(this, PLAYER_DATA);
+    this.player = new Player(this, PLAYER_DATA, startingDeck);
     this.enemy = new Enemy(this, this.enemyType, this.enemyLevel);
 
     // Objects to render Player and Enemy characters

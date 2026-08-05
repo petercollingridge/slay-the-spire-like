@@ -14,8 +14,18 @@ class Spell extends Phaser.Events.EventEmitter {
     this.power = card.data.power;
     this.time = card.data.time;
     this.onTick = card.data.onTick;
-    this.onDamageIn = card.data.onDamageIn;
+    this.onDamagePass = card.data.onDamagePass;
     this.onResolve = card.data.onResolve;
+
+    // Hexes played on opponents pass through caster's enchantments, which may alter their power.
+    if (this.type === 'hex') {
+      this.source.enchantments.forEach((enchantment) => {
+        if (enchantment.onSpellPass) {
+          let updateValue = getCardValue(enchantment.onSpellPass.power, enchantment);
+          this.power = Math.max(0, this.power + updateValue);
+        }
+      });
+    }
 
     if (card.data.onCast) {
       this.triggerEffect(card.data.onCast);
@@ -79,6 +89,9 @@ class Spell extends Phaser.Events.EventEmitter {
       if (effect.power) {
         const value = getCardValue(effect.power, this);
         this.updatePower(this.power + value);
+      }
+      if (effect.special) {
+        effect.special(this);
       }
     }
   }

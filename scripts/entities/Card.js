@@ -15,10 +15,6 @@ class Card {
     this.enchant = data.enchant;
     this.target = data.target;
 
-    // Keep track of how many times this card was cast during the game
-    // Used for some card effects
-    this.castCount = 0;
-
     // Create a sprite and text
     this.container = getCardSprite(scene, data, 60, HEIGHT - 80);
     this.container.parent = this;
@@ -96,45 +92,6 @@ class Card {
 
   clearTint() { 
     // this.cardImg.clearTint();
-  }
-
-  // play(source, target) {
-
-  //   if (Array.isArray(this.effect)) {
-  //     this.effect.forEach((effect) => this._applyEffect(effect, target));
-  //   } else {
-  //     this._applyEffect(this.effect, target);
-  //   }
-
-  //   if (this.enchant) {
-  //     const value = getCardValue(this.enchant.energy, this);
-  //     target.enchant(this, value);
-  //   } else if (!this.data.oneUse) {
-  //     // Add card to discard pile after it's effect is resolved, unless it's one use only
-  //     this.scene.discard.addCard(this);
-  //   }
-  // }
-
-  _applyEffect(effect, target) {
-    if (effect.damage) {
-      const value = getCardValue(effect.damage, this);
-      this.scene.player.dealDamage(target, value);
-    }
-    if (effect.draw) {
-      const value = getCardValue(effect.draw, this, target);
-      this.scene.drawCards(value);
-    }
-    if (effect.heal) {
-      const value = getCardValue(effect.heal, this);
-      target.heal(value);
-    }
-    if (effect.special) {
-      effect.special(this, target);
-    }
-    if (effect.store) {
-      const value = getCardValue(effect.store, this);
-      this.scene.player.manaBonus(value);
-    }
   }
 }
 
