@@ -41,15 +41,6 @@ class Character extends Phaser.Events.EventEmitter {
     this.emit('updateEnchantments');
   }
 
-  playCard(card, target) {
-    this.updateMana(this.mana - card.cost);
-    const spell = new Spell(this.scene, card, this, target);
-
-    if (spell.time) {
-      target.emit('addSpell', spell);
-    }
-  }
-
   setHealth(value) {
     this.health = Math.max(0, value);
     this.emit('updateHealth', this.health);
@@ -63,6 +54,22 @@ class Character extends Phaser.Events.EventEmitter {
     this.updateMana(this.maxMana);
     this.tickDownActiveSpells();
     console.log(this.cards.hand);
+  }
+
+  endTurn() {
+    this.cards.discardHand();
+  }
+
+  playCard(card, target) {
+    this.updateMana(this.mana - card.data.cost);
+    this.cards.removeCardFromHand(card);
+
+    // Playing a card creates a spell, which is added to the target's enchantments
+    const spell = new Spell(this.scene, card, this, target);
+
+    if (spell.time) {
+      target.emit('addSpell', spell);
+    }
   }
 
   updateMana(amount) {
@@ -145,19 +152,21 @@ class Enemy extends Character {
     console.log(player);
 
     this.startTurn();
-
-    // Enemy AI logic to determine what action to take
-    // const cardName = getRand(['Strike', 'Gentle jab', 'Tenderise', "Slice 'n' dice"])
-    // const cardName = 'Gentle jab';
-    const cardToPlay = expensiveFirst(this, player);
     console.log(this.cards.hand);
-    
-    if (cardToPlay) {
-      console.log(`Enemy plays card: ${cardToPlay.name}`);
-      const card = { data: cardToPlay };
-      this.playCard(card, player);
-      // TODO: Keep playing cards until mana runs out, or no playable cards remain
-    }
 
+    // Keep playing cards until mana runs out, or no playable cards remain
+    while (true) {
+      // Enemy AI logic to determine what action to take
+      const action = expensiveFirst(this, player);
+      
+      if (!action) break;
+
+      const { card, target } = action;
+      console.log(`Enemy plays card: ${card.name}`);
+      this.playCard({ data: card }, target);
+
+      // await this.delay(500);
+    }
+    this.endTurn();
   }
 }

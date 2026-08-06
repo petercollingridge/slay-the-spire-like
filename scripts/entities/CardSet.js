@@ -42,6 +42,15 @@ class CardSet {
     this.discard.push(card);
   }
 
+  discardHand() {
+    this.discard.push(...this.hand);
+    this.hand = [];
+  }
+
+  removeCardFromHand(card) {
+    removeFromArray(this.hand, card);
+  }
+
   shuffle() {
     Phaser.Utils.Array.Shuffle(this.deck);
   }

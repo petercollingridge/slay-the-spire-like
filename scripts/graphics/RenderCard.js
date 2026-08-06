@@ -16,6 +16,113 @@ class PropertySprite extends Phaser.GameObjects.Container {
   }
 }
 
+class RenderCard {
+  constructor(scene, name) {
+    const data = CARD_DATA[name];
+
+    if (!data) {
+      console.error(`No data for card: ${name}`);
+    }
+
+    this.data = data;
+    this.scene = scene;
+
+    // Copy some values from data to make look up easier
+    this.cost = data.cost;
+    this.effect = data.effect || {};
+    this.target = data.target;
+
+    // Create a sprite and text
+    this.container = getCardSprite(scene, data, 60, HEIGHT - 80);
+    this.container.parent = this;
+    this.cardImg = this.container.list[0];
+
+    // Make card draggable
+    this.container.setInteractive();
+    scene.input.setDraggable(this.container);
+    this.container.setVisible(false);
+
+    this.container.on('pointerdown', () => {
+      // this.cardImg.setTint(YELLOW_TINT);
+      this.scene.selectCard(this);
+    });
+  };
+
+  show() {
+    this.container.setVisible(true);
+  }
+
+  hide() {
+    this.container.setVisible(false);
+  }
+
+  moveTo(x, y, rotation = 0) {
+    this.scene.tweens.add({
+      targets: this.container,
+      x,
+      y,
+      rotation,
+      duration: 240,
+      ease: 'Sine.easeOut',
+    });
+  }
+
+  setPosition(x, y, rotation = 0) {
+    this.container.x = x;
+    this.container.y = y;
+    this.container.rotation = rotation;
+  }
+
+  disable() {
+    this.container.disableInteractive();
+    this.setTint(GREY_TINT);
+  }
+
+  enable() {
+    this.container.setInteractive();
+    this.clearTint();
+  }
+
+  dragStart() {
+    // Save card's current position so we can return it if the card is cancelled
+    this.startX = this.container.x;
+    this.startY = this.container.y;
+  }
+
+  dragEnd() {
+    // Return card to hand
+    this.clearTint();
+    this.scene.drop(this);
+  }
+
+  setPlayability(availableMana) {
+    if (this.cost <= availableMana) {
+      this.enable()
+    } else {
+      this.disable();
+    }
+  }
+
+  setTint(tint) {
+    // this.cardImg.setTint(tint);
+  }
+
+  clearTint() { 
+    // this.cardImg.clearTint();
+  }
+}
+
+// Get and array of card object from an objecting mapping card name to count
+function createCards(cardCounts, scene) {
+  const cards = [];
+  Object.entries(cardCounts).forEach(([name, count]) => {
+    for (let i = 0; i < count; i++) {
+      cards.push(new RenderCard(scene, name));
+    }
+  });
+  return cards;
+}
+
 function getCardSprite(scene, data, x, y) {
   const width = CARD_WIDTH;
   const height = CARD_HEIGHT;

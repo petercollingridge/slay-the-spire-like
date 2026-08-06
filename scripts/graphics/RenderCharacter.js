@@ -238,7 +238,7 @@ class RenderEnemy extends RenderCharacter {
           this.dealDamage(player, value)
         } else if (name === 'curse') {
           for (let i = 0; i < value; i++) {
-            const card = new Card(this.game, 'Curse');
+            const card = new RenderCard(this.game, 'Curse');
             this.game.discard.addCard(card);
           }
         }

@@ -5,7 +5,7 @@ class CardListItem {
     this.scene = scene;
     this.index = index;
     this.parent = parent;
-    this.card = new Card(scene, name);
+    this.card = new RenderCard(scene, name);
     this.count = count;
     this.coords = coords;
     this.selected = false;
