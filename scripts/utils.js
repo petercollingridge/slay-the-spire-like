@@ -33,6 +33,10 @@ function removeFromArray(arr, item) {
   }
 }
 
+function shuffleArray(arr) {
+  return Phaser.Utils.Array.Shuffle(arr);
+}
+
 // Convert a given value into a numerical value
 function getCardValue(givenValue, spell) {
   if (!givenValue) {

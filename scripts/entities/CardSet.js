@@ -52,6 +52,6 @@ class CardSet {
   }
 
   shuffle() {
-    Phaser.Utils.Array.Shuffle(this.deck);
+    this.deck = shuffleArray(this.deck);
   }
 }

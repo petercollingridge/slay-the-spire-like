@@ -1,17 +1,17 @@
 class PropertySprite extends Phaser.GameObjects.Container {
   constructor(scene, x, y, value, colour) {
     super(scene, x, y);
-    this.value = value;
+    this.value = value || 0;
     this.colour = colour;
     this.circle = scene.add.graphics();
     this.circle.fillStyle(colour, 1);
     this.circle.fillCircle(0, 0, 8);
-    this.text = scene.add.text(0, 0, value, CIRCLE_NUM_STYLE).setOrigin(0.5);
+    this.text = scene.add.text(0.5, -0.5, value, CARD_PROP_STYLE).setOrigin(0.5);
     this.add([this.circle, this.text]);
   }
 
   setValue(value) {
-    this.value = value;
+    this.value = value || 0;
     this.text.setText(value);
   }
 }
@@ -156,28 +156,4 @@ function getCardSprite(scene, data, x, y) {
   const container = scene.add.container(x, y, elements);
   container.setSize(width, height);
   return container
-}
-
-function getSpellSprite(scene, data, x, y, type) {
-  const w2 = SPELL_WIDTH / 2;
-  const h2 = SPELL_HEIGHT / 2;
-
-  const background = scene.add.graphics();
-  const colour = type === 'boon' ? 0xffffff : 0xffa0b0;
-  background.fillStyle(colour, 1);
-  background.fillRoundedRect(-w2, 1 - h2, SPELL_WIDTH, SPELL_HEIGHT, 5);
-  background.lineStyle(1, 0x000000, 1);
-  background.strokeRoundedRect(-w2, 1 - h2, SPELL_WIDTH, SPELL_HEIGHT, 5);
-
-  const image = scene.add.sprite(12 - w2, 1, data.img).setScale(0.28);
-  const cardName = scene.add.text(24 - w2, 2, data.name, CARD_NAME_STYLE).setOrigin(0, 0.5);
-
-  const timeSprite = new PropertySprite(scene, w2 - 27, 1, data.time, 0x416296);
-  const powerSprite = new PropertySprite(scene, w2 - 10, 1, data.power, 0x8b4348);
-
-  const elements = [background, image, cardName, timeSprite, powerSprite];
-  const container = scene.add.container(x, y, elements);
-  container.setSize(SPELL_WIDTH, SPELL_HEIGHT);
-
-  return { container, timeSprite, powerSprite };
 }

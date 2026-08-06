@@ -24,8 +24,9 @@ class RenderCharacter {
 
     this.spellViews = [];
 
+
     character.on("addSpell", (spell) => {
-      this.addSpellView(spell);
+      this.addRenderSpell(spell);
     });
 
     character.on("shieldBlock", (amount) => {
@@ -70,8 +71,8 @@ class RenderCharacter {
     dropZone.parent = this;
   }
 
-  addSpellView(spell) {
-    const spellView = new SpellView(this.game, spell, this);
+  addRenderSpell(spell) {
+    const spellView = new RenderSpell(this.game, spell, this);
     this.spellViews.push(spellView);
   }
 
@@ -220,6 +221,30 @@ class RenderCharacter {
   clearTint() {
     this.highlightImg.setVisible(false);
   }
+}
+
+function drawShield(game, x, y, size, direction) {
+    const graphics = game.add.graphics();
+    const domeRadius = size * 0.9;
+
+    const midAngle = direction === 1 ? 0 : 180;
+    const startAngle = Phaser.Math.DegToRad(midAngle - 60);
+    const endAngle = Phaser.Math.DegToRad(midAngle + 60);
+
+    // Draw glow
+    for (let i = 10; i >= 1; i--) {
+      const dAngle = i * Phaser.Math.DegToRad(1);
+      graphics.lineStyle(i * 2, 0x00ffff, 0.05);
+      graphics.beginPath();
+      graphics.arc(x, y, domeRadius - i, startAngle + dAngle, endAngle - dAngle, false);
+      graphics.strokePath();
+    }
+
+    // Draw the bright core
+    graphics.lineStyle(2, 0x00ffff, 0.25);
+    graphics.beginPath();
+    graphics.arc(x, y, domeRadius, startAngle, endAngle, false);
+    graphics.strokePath();
 }
 
 class RenderEnemy extends RenderCharacter {

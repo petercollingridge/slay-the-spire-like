@@ -28,10 +28,10 @@ const IMPACT_STYLE = {
   fontSize: '80px',
 };
 
-const CIRCLE_NUM_STYLE = {
+const CARD_PROP_STYLE = {
   fill: '#fff',
   fontFamily: 'Arial',
-  fontSize: '12px',
+  fontSize: '11px',
 };
 
 const FIGHT_STYLE = {

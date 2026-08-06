@@ -94,10 +94,10 @@ class EnemyChoice extends Choice {
 
     // Health
     let textY = y - cardImg.height / 2 + 22;
-    this.add.text(x - w2 + 8, textY, enemyData.health, CIRCLE_NUM_STYLE).setOrigin(0.5);
+    this.add.text(x - w2 + 8, textY, enemyData.health, CARD_PROP_STYLE).setOrigin(0.5);
 
     // Level
-    this.add.text(x + w2 - 7, textY, data.level || 1, CIRCLE_NUM_STYLE).setOrigin(0.5);
+    this.add.text(x + w2 - 7, textY, data.level || 1, CARD_PROP_STYLE).setOrigin(0.5);
 
     // Show enemy actions
     const textX = x - w2;
@@ -113,10 +113,12 @@ class EnemyChoice extends Choice {
   }
 
   makeSelection() {
-    this.scene.start('Fight', {
-      enemyType: this.selectedChoice.name,
-      enemyLevel: this.selectedChoice.data.level,
-    });
+    if (this.selectedChoice) {
+      this.scene.start('Fight', {
+        enemyType: this.selectedChoice.name,
+        enemyLevel: this.selectedChoice.data.level,
+      });
+    }
   }
 }
 
