@@ -60,17 +60,17 @@ const ENEMY_DATA = {
   //     { heal: 10 },
   //   ]
   // },
-  // gorgon: {
-  //   img: 'enemy-7',
-  //   name: 'Gorgon',
-  //   health: 75,
-  //   actions: [
-  //     { damage: 16, poison: 6 },
-  //     { damage: 2, curse: 10 },
-  //     { damage: 1 },
-  //     { damage: 2, curse: 1},
-  //   ]
-  // },
+  gorgon: {
+    img: 'enemy-7',
+    name: 'Gorgon',
+    health: 75,
+    actions: [
+      { damage: 16, poison: 6 },
+      { damage: 2, curse: 10 },
+      { damage: 1 },
+      { damage: 2, curse: 1},
+    ]
+  },
 };
 
 // Given an attribute with value n, get the value for the levelled up value

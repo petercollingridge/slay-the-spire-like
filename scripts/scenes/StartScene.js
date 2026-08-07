@@ -16,12 +16,12 @@ class StartScene extends Phaser.Scene {
     this.load.image('highlight', 'assets/characters/highlight.svg');
     this.load.image('enemy-1', 'assets/characters/sasquatch.svg');
     this.load.image('enemy-4', 'assets/characters/poison-demon.svg');
-    this.load.image('enemy-7', 'assets/characters/gorgon.svg');
     
     this.load.image('enemy-2', 'assets/characters/Minotaur.png');
     this.load.image('enemy-3', 'assets/characters/Spike.png');
     this.load.image('enemy-5', 'assets/characters/Ghost.png');
     this.load.image('enemy-6', 'assets/characters/Serpent.png');
+    this.load.image('enemy-7', 'assets/characters/Gorgon.png');
 
     this.load.image('arrow-1', 'assets/cards/arrow-1.svg');
     this.load.image('arrow-2', 'assets/cards/arrow-2.svg');
