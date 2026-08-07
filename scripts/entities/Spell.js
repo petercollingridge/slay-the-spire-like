@@ -73,26 +73,27 @@ class Spell extends Phaser.Events.EventEmitter {
 
     if (Array.isArray(effect)) {
       effect.forEach((effect) => this.triggerEffect(effect));
+    } else if (effect.type === 'special') {
+      effect.effect(this);
     } else {
-      if (effect.damage) {
-        const value = getCardValue(effect.damage, this);
-        this.target.triggerDamage(this, value);
-      }
-      if (effect.draw) {
-        const value = getCardValue(effect.draw, this);
-        this.game.drawCards(value);
-      }
-      if (effect.mana) {
-        const value = getCardValue(effect.mana, this);
-        this.target.updateMana(this.target.mana + value);
-      }
-      if (effect.power) {
-        const value = getCardValue(effect.power, this);
-        this.updatePower(this.power + value);
-      }
-      if (effect.special) {
-        effect.special(this);
-      }
+      const value = getCardValue(effect.value, this);
+      this[`_effect_${effect.type}`](value);
     }
+  }
+
+  _effect_damage(value) {
+    this.target.triggerDamage(this, value);
+  }
+
+  _effect_draw(value) {
+    this.game.drawCards(value);
+  }
+
+  _effect_mana(value) {
+    this.target.updateMana(this.target.mana + value);
+  }
+
+  _effect_power(value) {
+    this.updatePower(this.power + value);
   }
 }
