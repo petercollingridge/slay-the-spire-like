@@ -14,7 +14,7 @@ class RenderCharacter {
     this.img = game.add.image(x, y, character.data.img);
     this.img.setDisplaySize(size * this.img.width / this.img.height, size);
 
-    const txtX = x - this.direction * 20;
+    const txtX = x;
     const txtY = y + this.img.displayHeight / 2 + 5;
     const txtStyle = { fontSize: '16px', fill: '#000' };
 
@@ -72,7 +72,7 @@ class RenderCharacter {
   }
 
   addRenderSpell(spell) {
-    const spellView = new RenderSpell(this.game, spell, this);
+    const spellView = new RenderSpell(this.game, spell);
     this.spellViews.push(spellView);
   }
 

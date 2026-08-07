@@ -50,9 +50,9 @@ class Character extends Phaser.Events.EventEmitter {
   }
 
   startTurn() {
-    this.cards.drawCards(5);
     this.updateMana(this.maxMana);
     this.tickDownActiveSpells();
+    this.cards.drawCards(5);
     console.log(this.cards.hand);
   }
 
@@ -70,6 +70,12 @@ class Character extends Phaser.Events.EventEmitter {
     if (spell.time) {
       target.emit('addSpell', spell);
     }
+  }
+
+  delay(ms) {
+    return new Promise(resolve => {
+      this.scene.time.delayedCall(ms, resolve);
+    });
   }
 
   updateMana(amount) {
@@ -147,7 +153,7 @@ class Enemy extends Character {
     // Enemies don't have a discard pile, so just remove the card from play
   }
 
-  turn(player) {
+  async turn(player) {
     console.log(`Enemy turn: ${this.data.name}`);
     console.log(player);
 
@@ -165,7 +171,7 @@ class Enemy extends Character {
       console.log(`Enemy plays card: ${card.name}`);
       this.playCard({ data: card }, target);
 
-      // await this.delay(500);
+      await this.delay(1000);
     }
     this.endTurn();
   }

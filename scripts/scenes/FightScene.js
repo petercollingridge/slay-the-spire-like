@@ -63,6 +63,10 @@ class Fight extends DraggableScene {
     this.playerView = new RenderPlayer(this, this.player, 200, HEIGHT / 2 - 20);
     this.enemyView = new RenderEnemy(this, this.enemy, 810, HEIGHT / 2 - 10);
 
+    // Ideally we wouldn't need to map the view back to the character, but it's useful
+    this.player.view = this.playerView;
+    this.enemy.view = this.enemyView;
+
     // Deck
     const deckHeight = HEIGHT - 95;
     this.deck = new Deck(this, 'Draw pile', 65, deckHeight, startingDeck);
@@ -163,8 +167,8 @@ class Fight extends DraggableScene {
     this.nextTurnBtn.show();
     
     if (!this.player.dead) {
-      this.drawCardsTo(START_HAND_SIZE);
       this.player.startTurn();
+      this.drawCardsTo(START_HAND_SIZE);
     }
   }
 

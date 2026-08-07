@@ -51,6 +51,7 @@ function getCardValue(givenValue, spell) {
     }
     return spell[givenValue];
   } else {
+    // Must be a function, so call it with the spell as an argument
     return givenValue(spell);
   }
 }
